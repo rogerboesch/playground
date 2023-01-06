@@ -11,6 +11,8 @@
 #include "rb_vtext.h"
 #include "rb_draw.h"
 
+float _scale = 0.5f;
+
 void _vtext_moveto(int x, int y);
 void _vtext_moveby(int x, int y);
 void _vtext_lineby(int x, int y);
@@ -25,19 +27,19 @@ void _vtext_moveto(int x, int y) {
 }
 
 void _vtext_moveby(int x, int y) {
-    _vtext_cursor_x += x;
-    _vtext_cursor_y += y;
+    _vtext_cursor_x += x*_scale;
+    _vtext_cursor_y += y*_scale;
 }
 
 void _vtext_lineby(int x, int y) {
     _line_count++;
     
     vec2 start={_vtext_cursor_x, _vtext_cursor_y};
-    vec2 end={_vtext_cursor_x+x, _vtext_cursor_y+y};
+    vec2 end={_vtext_cursor_x+x*_scale, _vtext_cursor_y+y*_scale};
     draw_line(start, end);
 
-    _vtext_cursor_x += x;
-    _vtext_cursor_y += y;
+    _vtext_cursor_x += x*_scale;
+    _vtext_cursor_y += y*_scale;
 }
 
 // MARK: - Vector font table
@@ -166,19 +168,20 @@ void _vtext_draw_char_xy(int x, int y, char ch) {
     _vtext_draw_char(ch);
 }
 
-void vtext_draw_string(int x, int y, char* str) {
+void vtext_draw_string(int x, int y, char* str, float scale) {
     if (use_external_vtext()) {
         engine_vtext_extern(x, y, str);
         return;
     }
 
+    _scale = scale;
     _line_count = 0;
     
     while (*str != 0) {
         char ch = *str;
     
         _vtext_draw_char_xy(x, y, ch);
-        x += FONT_WIDTH;
+        x += FONT_WIDTH*_scale;
         
         str++;
     }

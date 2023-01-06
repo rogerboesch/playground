@@ -33,6 +33,7 @@
 #define COLOR_TANK          ARGB_MAGENTA
 #define COLOR_ROCKET        ARGB_YELLOW
 #define COLOR_JET           ARGB_RED
+#define COLOR_INFO          ARGB_YELLOW
 
 void _create_section(level_line* line);
 void _add_left_border_cube(int height);
@@ -56,10 +57,10 @@ float _accel = 0.3f;
 float _moving = 0.1f;
 
 void vexxon_target_settings(setting* setting) {
-    setting->screen_width = 1280;
-    setting->screen_height = 720;
-    setting->buffer_width = 1280/2;
-    setting->buffer_height = 720;
+    setting->screen_width = 330*2;
+    setting->screen_height = 440*2;
+    setting->buffer_width = 330;
+    setting->buffer_height = 440;
     setting->fullscreen = false;
 }
 
@@ -146,13 +147,21 @@ void vexxon_target_pre_render(camera3d* cam) {
         
         draw3d_line(start, end, *cam);
     }
+
+    draw_setcolor(COLOR_INFO);
+    vtext_draw_string(10, 40, "ARROW LEFT   MOVE LEFT", 0.5f);
+    vtext_draw_string(10, 50, "ARROW RIGHT  MOVE RIGHT", 0.5f);
+    vtext_draw_string(10, 60, "ARROW UP     MOVE FORWARD", 0.5f);
+    vtext_draw_string(10, 70, "ARROW DOWN   MOVE BACK", 0.5f);
+    vtext_draw_string(10, 80, "BUTTON 1     MOVE UP", 0.5f);
+    vtext_draw_string(10, 90, "BUTTON 2     MOVE DOWN", 0.5f);
 }
 
 void vexxon_target_post_render(camera3d* cam) {
     UNUSED_VAR(cam);
     
     draw_setcolor(ARGB_WHITE);
-    vtext_draw_string(10, 10, "VEXXON");
+    vtext_draw_string(10, 10, "VEXXON", 1.0f);
 }
 
 void vexxon_target_cleanup(void) {}

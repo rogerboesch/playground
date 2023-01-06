@@ -11,7 +11,6 @@
 #ifndef RB_VTEXT_H
 #define RB_VTEXT_H
 
-
-void vtext_draw_string(int x, int y, char* str);
+void vtext_draw_string(int x, int y, char* str, float scale);
 
 #endif
