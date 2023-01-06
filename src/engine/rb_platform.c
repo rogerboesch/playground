@@ -37,7 +37,7 @@ void _rb_write_to_log(const char* str) {
 	printf("%s", str);
 
 	if (firstlog) {
-		sprintf(logpath, "%s/classics-coder-log.txt", platform_home_path());
+		sprintf(logpath, "%s/playground-log.txt", platform_home_path());
 		firstlog = 0;
 
 		printf(" >> Create log file %s\n", logpath);

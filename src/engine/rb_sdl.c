@@ -122,7 +122,7 @@ int sdl_init(int width, int height, int buffer_width, int buffer_height) {
 		rblog_num1("Screen height is ", _screen_height);
 	}
 
-    _window = SDL_CreateWindow("THE CLASSICS CODER", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screen_width, _screen_height, 0);
+    _window = SDL_CreateWindow("PLAYGROUND", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screen_width, _screen_height, 0);
  
     Uint32 render_flags = SDL_RENDERER_ACCELERATED;
     _renderer = SDL_CreateRenderer(_window, -1, render_flags);
