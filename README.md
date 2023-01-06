@@ -25,7 +25,7 @@ If you just want to use the final binary, **SDL2.dll** (which is in that repo to
 
 After that you have a Visual Studio solution file which you can use in the ```build``` folder.
 To execute Playground.exe from within Visual Studio, **SDL2.dll* has to be in the same folder as the executable.
-Also level1.txt (which is in the asset folder) must for now be in %HOMEFOLDER%\vexxon\level1.txt
+Also level1.txt (which is in the assets folder) must for now be in %HOMEFOLDER%\vexxon\level1.txt
 
 
 ### Execute Playground.exe
@@ -35,7 +35,7 @@ To use Playground.exe download this repo and do the following:
 - Copy **Playground.exe** to a folder
 - Copy **SDL2.dll** to the same folder
 - Create a folder ```%HOMEFOLDER%\vexxon\```
-- Copy **level1.txt** (which is in the asset folder) to ```%HOMEFOLDER%\vexxon```
+- Copy **level1.txt** (which is in the assets folder) to ```%HOMEFOLDER%\vexxon```
 
 
 ## macOS
