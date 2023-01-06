@@ -36,6 +36,22 @@ void game_objects_update(float delta);
 void game_objects_render(camera3d cam);
 void game_objects_cleanup(void);
 
+bool use_external_vline(void) {
+    return target.draw_line == NULL ? false : true;
+}
+
+bool use_external_vtext(void) {
+    return target.draw_vtext == NULL ? false : true;
+}
+
+void engine_draw_line_extern(float x1, float y1, float x2, float y2) {
+    target.draw_line(x1, y1, x2, y2);
+}
+
+void engine_vtext_extern(float x, float y, char* str) {
+    target.draw_vtext(x, y, str);
+}
+
 void engine_set_functions(game_fp fp) {
 	target = fp;
     

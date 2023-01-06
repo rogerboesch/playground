@@ -12,6 +12,8 @@
 #include "rb_base.h"
 #include "rb_graphics.h"
 
+extern bool use_external_vline(void);
+
 graphics* draw_gb;
 ARGB_color active_color;
 
@@ -165,6 +167,11 @@ void _draw_line(vec2 start, vec2 end) {
 }
 
 void draw_line(vec2 start, vec2 end) {
+    if (use_external_vline()) {
+        engine_draw_line_extern(start.x, start.y, end.x, end.y);
+        return;
+    }
+
     _clip(&_draw_line, start, end);
 }
 
@@ -179,6 +186,11 @@ extern inline void _draw_point_asqrt(double x, double y, double alpha) {
 }
 
 void _draw_line_aa(vec2 start, vec2 end) {
+    if (use_external_vline()) {
+        engine_draw_line_extern(start.x, start.y, end.x, end.y);
+        return;
+    }
+
     // Implements Xiaolin Wu's line algorithm in software
     int steep = fabs(end.y-start.y) > fabs(end.x-start.x);
     
@@ -312,6 +324,10 @@ ARGB_color _get_rainbow(float percent, float alpha) {
 }
 
 void draw_rainbow(int height) {
+    if (use_external_vline()) {
+        return;
+    }
+
     pixel px;
 
     for (px.y=0; px.y<height; px.y++) {
@@ -322,12 +338,4 @@ void draw_rainbow(int height) {
             graphics_blend_over(draw_gb, px, color);
         }
     }
-}
-
-void platform_draw_line(int x1, int y1, int x2, int y2, int color) {
-    draw_setcolor(ARGB_WHITE);
-     
-    vec2 start = {x1, y1};
-    vec2 end = {x2, y2};
-    draw_line(start, end);
 }

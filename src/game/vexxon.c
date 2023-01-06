@@ -52,7 +52,8 @@ void _add_end_level(level_obj* obj);
 int _distance = START_DISTANCE;
 int _space_area = -1;                // Here space starts (end of floor)
 float _speed = 0.0f;
-float _moving = 0.4f;
+float _accel = 0.3f;
+float _moving = 0.1f;
 
 void vexxon_target_settings(setting* setting) {
     setting->screen_width = 1280;
@@ -107,80 +108,26 @@ void vexxon_target_update(float delta, camera3d* cam) {
     }
     
     if (input_get_control(CONTROL_UP)) {
-        cam->pos.y += _moving;
+        cam->pos.z += _accel * cos(t);
+        cam->pos.x += _accel * sin(t);
     }
     else if (input_get_control(CONTROL_DOWN)) {
-        cam->pos.y -= _moving;
+        cam->pos.z -= _accel * cos(t);
+        cam->pos.x -= _accel * sin(t);
     }
 
     if (input_get_button(BUTTON_1)) {
-        cam->rot.x += 0.1/cam->fov;
-    }
-    if (input_get_button(BUTTON_2)) {
-        cam->rot.x -= 0.1/cam->fov;
-    }
-    if (input_get_button(BUTTON_3)) {
-        cam->pos.z += _moving*cos(t);
-        cam->pos.x += _moving*sin(t);
-    }
-    if (input_get_button(BUTTON_4)) {
-        cam->pos.z -= _moving*cos(t);
-        cam->pos.x -= _moving*sin(t);
-    }
-    if (input_get_button(BUTTON_5)) {
-        cam->pos.z += _moving*sin(t);
-        cam->pos.x -= _moving*cos(t);
-    }
-    if (input_get_button(BUTTON_6)) {
-        cam->pos.z -= _moving*sin(t);
-        cam->pos.x += _moving*cos(t);
-    }
-    if (input_get_button(BUTTON_7)) {
         cam->pos.y += _moving;
     }
-    if (input_get_button(BUTTON_8)) {
+    else if (input_get_button(BUTTON_2)) {
         cam->pos.y -= _moving;
-    }
-    if (input_get_button(BUTTON_9)) {
-        //cam->fov *= 1.25;
-        _speed = 0.5;
-    }
-    if (input_get_button(BUTTON_0)) {
-        //cam->pos.x = 0.0; cam->pos.y = 2.0; cam->pos.z = -10.0;
-        //cam->rot.x = 0.0; cam->rot.y = 0.0; cam->rot.z = 0.0;
-        //cam->fov = 1.0;
-
-        _speed *= -1.0;
     }
 }
 
 void vexxon_target_pre_render(camera3d* cam) {
+#ifdef _WIN32
     graphics_fill(draw_getgb(), ARGB_BLACK);
-
-/*
-    draw_rainbow(120);
-
-    pixel res = draw_getres();
-    draw_setcolor(ARGB_RED);
-    draw_line((vec2){0.0, 200}, (vec2){res.x, 200});
-
-    draw_setcolor(ARGB_GREEN);
-    draw_line((vec2){0.0, 300}, (vec2){res.x, 300});
-
-    draw_setcolor(ARGB_BLUE);
-    draw_line((vec2){0.0, 400}, (vec2){res.x, 400});
-
-    draw_setcolor(ARGB_YELLOW);
-    draw_line((vec2){0.0, 500}, (vec2){res.x, 500});
-
-    draw_setcolor(ARGB_CYAN);
-    draw_line((vec2){0.0, 600}, (vec2){res.x, 600});
-
-    vec3 pos = {0,0,0};
-    vec3 scl = {1,1,1};
-    vec3 rot = {0,0,0};
-    primitive_draw_cube(pos, scl, rot, *cam);
-*/
+#endif
 
     // Draw horizontal line
     pixel res = draw_getres();
@@ -189,7 +136,6 @@ void vexxon_target_pre_render(camera3d* cam) {
     double hpos = (0.5+tan(cam->rot.x)*cam->fov)*res.y;
     draw_line((vec2){0.0, hpos}, (vec2){res.x, hpos});
 
-#if _WIN32
     draw_setcolor(COLOR_FLOOR);
 
     int offset = START_DISTANCE/10;
@@ -200,9 +146,6 @@ void vexxon_target_pre_render(camera3d* cam) {
         
         draw3d_line(start, end, *cam);
     }
-
-    primitive_draw_point_grid(*cam);
-#endif
 }
 
 void vexxon_target_post_render(camera3d* cam) {
@@ -218,7 +161,13 @@ void vexxon_target_after_render(void) {
 }
 
 bool vexxon_target_handle_key(RBEvent event) {
-	return false;
+    return false;
+}
+
+void vexxon_draw_line(float x1, float y1, float x2, float y2) {
+}
+
+void vexxon_draw_vtext(float x, float y, char* str) {
 }
 
 void game_main(void) {
@@ -232,6 +181,14 @@ void game_main(void) {
     fp.after_render = vexxon_target_after_render;
     fp.cleanup = vexxon_target_cleanup;
     fp.handle_key = vexxon_target_handle_key;
+
+#ifdef _WIN32
+    fp.draw_line = NULL;
+    fp.draw_vtext = NULL;
+#else
+    fp.draw_line = vexxon_draw_line;
+    fp.draw_vtext = vexxon_draw_vtext;
+#endif
 
     engine_set_functions(fp);
 }

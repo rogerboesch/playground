@@ -167,6 +167,11 @@ void _vtext_draw_char_xy(int x, int y, char ch) {
 }
 
 void vtext_draw_string(int x, int y, char* str) {
+    if (use_external_vtext()) {
+        engine_vtext_extern(x, y, str);
+        return;
+    }
+
     _line_count = 0;
     
     while (*str != 0) {

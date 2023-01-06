@@ -31,6 +31,8 @@ typedef struct {
     uint16_t screen_width, screen_height;
     uint16_t buffer_width, buffer_height;
     bool fullscreen;
+    bool use_pixels;
+    bool use_vtext;
     int fps;
 } setting;
 
@@ -58,6 +60,9 @@ typedef void (*fp_after_render)(void);
 typedef void (*fp_cleanup)(void);
 typedef bool (*fp_handle_key)(RBEvent);
 
+typedef void (*fp_draw_line)(float x1, float y1, float x2, float y2);
+typedef void (*fp_draw_vtext)(float x, float y, char* str);
+
 typedef struct {
 	fp_settings settings;
 	fp_init init;
@@ -67,9 +72,16 @@ typedef struct {
 	fp_after_render after_render;
 	fp_cleanup cleanup;
 	fp_handle_key handle_key;
+    fp_draw_line draw_line;
+    fp_draw_vtext draw_vtext;
 } game_fp;
 
+bool use_external_vline(void);
+bool use_external_vtext(void);
+
 void engine_set_functions(game_fp fp);
+void engine_draw_line_extern(float x1, float y1, float x2, float y2);
+void engine_vtext_extern(float x, float y, char* str);
 
 void game_objects_update(float delta);
 void game_objects_render(camera3d cam);
