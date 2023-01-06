@@ -8,16 +8,16 @@ This project allows to execute and test games on Windows, macOS and Linux
 
 ## Windows
 
-### To build Playground.exe
+### Build Playground.exe
 
 To use Playground.exe you have to install **SDL2** and **SDL2_image** on your Windows machine (only if you want to compile and link the project).
 If you just want to use the final binary, **SDL2.dll** (which is in that repo too) is enough.
 
 - Download **SDL2** from https://github.com/libsdl-org/SDL/releases/download/release-2.26.2/SDL2-devel-2.26.2-VC.zip
-- Copy to a folder (ex. *C:\Dev\SDL2*)
+- Copy the folder ```SDL2-2.26.2``` to a folder (ex. *C:\Dev*)
 - Set an environment variable ```SDL2DIR``` that points to that folder ```SET SDL2DIR={PATH_TO_FOLDER}```
 - Download **SDL2_image** from https://github.com/libsdl-org/SDL_image/releases/download/release-2.6.2/SDL2_image-devel-2.6.2-VC.zip
-- Copy to a folder (ex. *C:\Dev\SDL2_image*)
+- Copy the ```SDL2_image-2.6.2``` a folder (ex. *C:\Dev*)
 - Set an environment variable ```SDL2IMAGEDIRDIR``` that points to that folder ```SET SDL2IMAGEDIR={PATH_TO_FOLDER}```
 - Download this repo and copy to a folder (ex: *C:\Vexxon*)
 - Open the Windows Command Prompt and go to that folder (ex. ```cd C:\Vectrex```)
@@ -28,7 +28,7 @@ To execute Playground.exe from within Visual Studio, **SDL2.dll* has to be in th
 Also level1.txt (which is in the asset folder) must for now be in %HOMEFOLDER%\vexxon\level1.txt
 
 
-### To execute Playground.exe
+### Execute Playground.exe
 
 To use Playground.exe download this repo and do the following:
 
