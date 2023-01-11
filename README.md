@@ -45,10 +45,8 @@ To execute Playground.exe from within Visual Studio, **SDL2.dll** has to be in t
 
 ### Execute Playground.exe
 
-To use **Playground.exe** download this repo and do the following:
-
-- Copy **Playground.exe** to a folder
-- Copy **SDL2.dll** to the same folder
+To use **Playground.exe** download **playground_windows.zip** and extract it to a folder.
+No further installation is needed.
 
 
 ## macOS
@@ -76,7 +74,7 @@ Now you have a XCode solution file which you can use in the *build* folder.
 
 ### Execute Playground.app
 
-To **use** Playground.app download this repo and copy **Playground.app** to a folder you want.
+To **use** Playground.app download **playground_macos.zip** and extract it to a folder.
 No further installation is needed.
 
 
@@ -108,9 +106,7 @@ Now you have a make file which you can use in the *build* folder. To build it yo
 
 ### Execute Playground
 
-To **use** Playground download this repo and copy Playground.app to a folder you want.
-No further installation is needed.
-
+Coming soon...
 
 # Vexxon - The Game
 
