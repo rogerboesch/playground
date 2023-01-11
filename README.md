@@ -1,5 +1,7 @@
 # Playground
-This project allows to execute and test **PiTrex** games on Windows, macOS and Linux
+
+This project allows to build, execute and test **PiTrex** games on Windows, macOS and Linux.
+If you are only interested to us it without buulding at first, take a look at the public repo: https://github.com/rogerboesch/pitrex-public
 
 # Setup
 
@@ -43,12 +45,6 @@ Now you have a Visual Studio solution file which you can use in the *build* fold
 To execute Playground.exe from within Visual Studio, **SDL2.dll** has to be in the same folder as the executable.
 
 
-### Execute Playground.exe
-
-To use **Playground.exe** download **playground_windows.zip** and extract it to a folder.
-No further installation is needed.
-
-
 ## macOS
 
 ### Build Playground.app
@@ -70,12 +66,6 @@ after that create the XCode project with
 ```
 
 Now you have a XCode solution file which you can use in the *build* folder.
-
-
-### Execute Playground.app
-
-To **use** Playground.app download **playground_macos.zip** and extract it to a folder.
-No further installation is needed.
 
 
 ## Linux
@@ -104,9 +94,6 @@ Now you have a make file which you can use in the *build* folder. To build it yo
     $ make
 ```
 
-### Execute Playground
-
-Coming soon...
 
 # Vexxon - The Game
 
