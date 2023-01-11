@@ -1,7 +1,8 @@
 # Playground
 
 This project allows to build, execute and test **PiTrex** games on Windows, macOS and Linux.
-If you are only interested to us it without buulding at first, take a look at the public repo: https://github.com/rogerboesch/pitrex-public
+
+If you are only interested to use it without building at first, take a look at the public repo: https://github.com/rogerboesch/pitrex-public
 
 # Setup
 
