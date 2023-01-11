@@ -11,6 +11,9 @@
 #include "rb_vtext.h"
 #include "rb_draw.h"
 
+extern bool use_external_vtext(void);
+extern void engine_vtext_extern(float x, float y, char* str);
+
 float _scale = 0.5f;
 
 void _vtext_moveto(int x, int y);

@@ -14,10 +14,6 @@ find_package(SDL2_image REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
 
-if(APPLE)
-	include_directories("/opt/homebrew/Cellar/sdl2/2.0.22/include" "/opt/homebrew/Cellar/sdl2_image/2.6.0_1/include")
-endif()
-
 # ==============================================================================
 # Headers and sources
 # ==============================================================================

@@ -126,7 +126,7 @@ void vexxon_target_update(float delta, camera3d* cam) {
 }
 
 void vexxon_target_pre_render(camera3d* cam) {
-#ifdef _WIN32
+#ifndef PITREX
     graphics_fill(draw_getgb(), ARGB_BLACK);
 #endif
 
@@ -191,12 +191,12 @@ void game_main(void) {
     fp.cleanup = vexxon_target_cleanup;
     fp.handle_key = vexxon_target_handle_key;
 
-#ifdef _WIN32
-    fp.draw_line = NULL;
-    fp.draw_vtext = NULL;
-#else
+#ifdef PITREX
     fp.draw_line = vexxon_draw_line;
     fp.draw_vtext = vexxon_draw_vtext;
+#else
+    fp.draw_line = NULL;
+    fp.draw_vtext = NULL;
 #endif
 
     engine_set_functions(fp);
