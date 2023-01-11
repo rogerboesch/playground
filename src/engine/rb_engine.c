@@ -11,9 +11,14 @@
 #include "rb_engine.h"
 #include "rb_primitive.h"
 #include "rb_draw3d.h"
-#include "rb_sdl.h"
 #include "rb_keys.h"
 #include "rb_vtext.h"
+
+#ifdef PITREX
+#include "rb_pitrex.h"
+#else
+#include "rb_sdl.h"
+#endif
 
 int counter = 0;
 game_object* list_of_objects[MAX_GAME_OBJECTS];
@@ -52,10 +57,26 @@ void engine_vtext_extern(float x, float y, char* str) {
     target.draw_vtext(x, y, str);
 }
 
+double engine_get_ticks(void) {
+#ifdef PITREX
+    return pitrex_get_ticks();
+#else
+    return SDL_GetTicks();
+#endif
+}
+
 void engine_set_functions(game_fp fp) {
+#ifdef PITREX
+    fp.draw_line = pitrex_draw_line;
+    fp.draw_vtext = pitrex_draw_vtext;
+#else
+    fp.draw_line = NULL;
+    fp.draw_vtext = NULL;
+#endif
+
 	target = fp;
     
-    t1 = SDL_GetTicks();
+    t1 = engine_get_ticks();
 }
 
 void engine_init(void) {    
@@ -105,9 +126,6 @@ bool engine_handle_key(RBEvent event) {
             return true;
 
         // Game buttons
-        case RB_KEYCODE_0:
-            input_set_control(BUTTON_0, down);
-            return true;
         case RB_KEYCODE_1:
             input_set_control(BUTTON_1, down);
             return true;
@@ -119,21 +137,6 @@ bool engine_handle_key(RBEvent event) {
             return true;
         case RB_KEYCODE_4:
             input_set_control(BUTTON_4, down);
-            return true;
-        case RB_KEYCODE_5:
-            input_set_control(BUTTON_5, down);
-            return true;
-        case RB_KEYCODE_6:
-            input_set_control(BUTTON_6, down);
-            return true;
-        case RB_KEYCODE_7:
-            input_set_control(BUTTON_7, down);
-            return true;
-        case RB_KEYCODE_8:
-            input_set_control(BUTTON_8, down);
-            return true;
-        case RB_KEYCODE_9:
-            input_set_control(BUTTON_9, down);
             return true;
             
         default:
@@ -165,10 +168,10 @@ void engine_cleanup(void) {
 
 int engine_step(void) {
     float delta = 0.0;
-    t2 = SDL_GetTicks();
+    t2 = engine_get_ticks();
     delta = t2-t1;
     fps = 1000.0 / delta;
-    t1 = SDL_GetTicks();
+    t1 = engine_get_ticks();
 
     engine_update(delta);
     engine_render(cam);
@@ -196,6 +199,16 @@ int main(int argc, char *argv[]) {
 
     target.settings(&settings);
 
+#ifdef PITREX
+    if (!pitrex_init()) {
+        return -1;
+    }
+
+    engine_init();
+    pitrex_run();
+    engine_cleanup();
+
+#else
     if (!sdl_init(settings.screen_width, settings.screen_height, settings.buffer_width, settings.buffer_height)) {
         return -1;
     }
@@ -206,6 +219,7 @@ int main(int argc, char *argv[]) {
     sdl_run();
     engine_cleanup();
     sdl_cleanup();
+#endif
 
     return 0;
 }

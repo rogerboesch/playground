@@ -11,7 +11,10 @@
 #include "rb_graphics.h"
 #include "rb_draw.h"
 #include "rb_graphics.h"
-#include "rb_sdl.h"
+
+#ifndef PITREX
+    #include "rb_sdl.h"
+#endif
 
 #include <string.h>
 
@@ -36,11 +39,15 @@ int graphics_close(graphics* gb) {
 }
 
 void graphics_fill(graphics* gb, ARGB_color color) {
+#ifndef PITREX
     sdl_clear_buffer(color);
+#endif
 }
 
 void graphics_setpixel(graphics* gb, pixel px, ARGB_color value) {
+#ifndef PITREX
     sdl_set_pixel(px.x, px.y, value);
+#endif
 }
 
 void graphics_blend_over(graphics* gb, pixel px, ARGB_color value) {
@@ -54,15 +61,24 @@ void graphics_blend_over(graphics* gb, pixel px, ARGB_color value) {
     color.b = fg.b*alpha + bg.b*(1-alpha);
     color.a = 255;
 
+#ifndef PITREX
     sdl_set_pixel(px.x, px.y, value);
+#endif
 }
 
 ARGB_color graphics_getpixel(graphics* gb, pixel px) {
+#ifdef PITREX
+    return 0; 
+#else
     return sdl_get_pixel(px.x, px.y);
+#endif
 }
 
 void graphics_clear(graphics* gb) {
+#ifdef PITREX
+#else
     sdl_clear_buffer(ARGB_BLACK);
+#endif
 }
 
 ARGB_color graphics_rgb(uint8_t r, uint8_t g, uint8_t b) {
