@@ -11,7 +11,8 @@ This project allows to execute and test games on Windows, macOS and Linux
 
 The game engine uses several asset files that must be in a folder *{HOME_FOLDER}\vexxon*.
 Copy all files from the *assets* folder in the repo to this folder.
-This must be done no matter if you are on Windows, macOS or Linux
+
+**IMPORTANT**: This must be done no matter if you are on Windows, macOS or Linux.
 
 
 ## Windows
@@ -38,8 +39,8 @@ after that create the Visual Studio (I use 2022) project with
     C:\> cmake -B build -G"Visual Studio 17 2022"
 ```
 
-Now you have a Visual Studio solution file which you can use in the ```build``` folder.
-*(To execute Playground.exe from within Visual Studio, **SDL2.dll** has to be in the same folder as the executable)*
+Now you have a Visual Studio solution file which you can use in the *build* folder.
+To execute Playground.exe from within Visual Studio, **SDL2.dll** has to be in the same folder as the executable.
 
 
 ### Execute Playground.exe
@@ -105,9 +106,9 @@ Now you have a make file which you can use in the *build* folder. To build it yo
     $ make
 ```
 
-### Execute Playground.app
+### Execute Playground
 
-To **use** Playground.app download this repo and copy **Playground.app** to a folder you want.
+To **use** Playground download this repo and copy Playground.app to a folder you want.
 No further installation is needed.
 
 
