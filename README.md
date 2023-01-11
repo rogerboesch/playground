@@ -1,5 +1,5 @@
 # Playground
-This project allows to execute and test games on Windows, macOS and Linux
+This project allows to execute and test **PiTrex** games on Windows, macOS and Linux
 
 # Setup
 
