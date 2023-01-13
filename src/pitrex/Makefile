@@ -4,7 +4,7 @@ ROOT_DIR := ../pitrex/pitrex
 
 # This is the standard folder structure used in the PiTrex repo
 SDK_DIR := $(ROOT_DIR)/pitrex
-INC_DIR := $(SDK_DIR)
+INC_DIR := $(SDK_DIR) ../engine
 PITREX_DIR := $(SDK_DIR)/pitrex/
 VECTREX_DIR := $(SDK_DIR)/vectrex/
 
