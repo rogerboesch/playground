@@ -51,6 +51,7 @@ void graphics_setpixel(graphics* gb, pixel px, ARGB_color value) {
 }
 
 void graphics_blend_over(graphics* gb, pixel px, ARGB_color value) {
+#ifndef PITREX
     ARGB bg, fg, color;
     bg.argb = sdl_get_pixel(px.x, px.y);
     fg.argb = value;
@@ -61,7 +62,6 @@ void graphics_blend_over(graphics* gb, pixel px, ARGB_color value) {
     color.b = fg.b*alpha + bg.b*(1-alpha);
     color.a = 255;
 
-#ifndef PITREX
     sdl_set_pixel(px.x, px.y, value);
 #endif
 }
