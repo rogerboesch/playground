@@ -37,7 +37,7 @@ void pitrex_frame(void) {
     v_readJoystick1Analog();
 }
 
-void pitrex_delay(void) {
+void pitrex_delay(int64_t ms) {
     // TODO: Implement
 }
 
@@ -131,9 +131,9 @@ int pitrex_run() {
         engine_step();
         engine_after_render();
 
-        Uint32 now = pitrex_get_ticks();
+        int64_t now = pitrex_get_ticks();
         if (now < next_frame) {
-            pitrex_dely(next_frame - now);
+            pitrex_delay(next_frame - now);
         }
         else {
             next_frame = now;
