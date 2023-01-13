@@ -18,39 +18,39 @@ include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS})
 # Headers and sources
 # ==============================================================================
 
-include_directories(src/engine src/sdl)
+include_directories(src/sdl)
 
 set(ENGINE_SOURCES
-    src/engine/rb_sdl.c
-    src/engine/rb_sdl.h
-    src/engine/rb_base.h
-    src/engine/rb_draw.c
-    src/engine/rb_draw.h
-    src/engine/rb_draw3d.c
-    src/engine/rb_draw3d.h
-    src/engine/rb_engine.c
-    src/engine/rb_engine.h
-    src/engine/rb_graphics.c
-    src/engine/rb_graphics.h
-    src/engine/rb_input.c
-    src/engine/rb_input.h
-    src/engine/rb_level.c
-    src/engine/rb_level.h
-    src/engine/rb_math.c
-    src/engine/rb_math.h
-    src/engine/rb_primitive.c
-    src/engine/rb_primitive.h
-    src/engine/rb_vector.c
-    src/engine/rb_vector.h
-    src/engine/rb_vtext.c
-    src/engine/rb_vtext.h
-    src/engine/rb_keys.h
-    src/engine/rb_platform.c
-    src/engine/rb_platform.h
+    src/rb_sdl.c
+    src/rb_sdl.h
+    src/rb_base.h
+    src/rb_draw.c
+    src/rb_draw.h
+    src/rb_draw3d.c
+    src/rb_draw3d.h
+    src/rb_engine.c
+    src/rb_engine.h
+    src/rb_graphics.c
+    src/rb_graphics.h
+    src/rb_input.c
+    src/rb_input.h
+    src/rb_level.c
+    src/rb_level.h
+    src/rb_math.c
+    src/rb_math.h
+    src/rb_primitive.c
+    src/rb_primitive.h
+    src/rb_vector.c
+    src/rb_vector.h
+    src/rb_vtext.c
+    src/rb_vtext.h
+    src/rb_keys.h
+    src/rb_platform.c
+    src/rb_platform.h
 )
 
 set(GAME_SOURCES
-	src/game/vexxon.c
+	src/vexxon.c
 )
 
 # ==============================================================================
@@ -125,7 +125,6 @@ endif()
 set_directory_properties(PROPERTIES VS_STARTUP_PROJECT ${TARGET})
 
 source_group("Engine" FILES ${ENGINE_SOURCES})
-source_group("Platform" FILES ${PLATFORM_SOURCES})
 source_group("Vexxon" FILES ${GAME_SOURCES})
 
 # ==============================================================================
