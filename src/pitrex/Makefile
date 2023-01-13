@@ -1,4 +1,4 @@
-# Vexxon makefile
+# Playground makefile
 # Just change root dir if your repo is located in another folder
 ROOT_DIR := ../pitrex/pitrex
 
