@@ -58,6 +58,7 @@
 		"rb_base.h": "c",
 		"vec3x_laser_dac.h": "c",
 		"stdint.h": "c",
-		"vec3x_laser_types.h": "c"
+		"vec3x_laser_types.h": "c",
+		"rb_pitrex_window.h": "c"
 	}
 }

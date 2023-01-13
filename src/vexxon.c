@@ -126,9 +126,7 @@ void vexxon_target_update(float delta, camera3d* cam) {
 }
 
 void vexxon_target_pre_render(camera3d* cam) {
-#ifdef _WIN32
     graphics_fill(draw_getgb(), ARGB_BLACK);
-#endif
 
     // Draw horizontal line
     pixel res = draw_getres();
@@ -173,12 +171,6 @@ bool vexxon_target_handle_key(RBEvent event) {
     return false;
 }
 
-void vexxon_draw_line(float x1, float y1, float x2, float y2) {
-}
-
-void vexxon_draw_vtext(float x, float y, char* str) {
-}
-
 void game_main(void) {
     game_fp fp;
 
@@ -190,14 +182,6 @@ void game_main(void) {
     fp.after_render = vexxon_target_after_render;
     fp.cleanup = vexxon_target_cleanup;
     fp.handle_key = vexxon_target_handle_key;
-
-#ifdef _WIN32
-    fp.draw_line = NULL;
-    fp.draw_vtext = NULL;
-#else
-    fp.draw_line = vexxon_draw_line;
-    fp.draw_vtext = vexxon_draw_vtext;
-#endif
 
     engine_set_functions(fp);
 }

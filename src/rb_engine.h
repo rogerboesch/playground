@@ -85,6 +85,7 @@ void engine_vtext_extern(float x, float y, char* str);
 
 void game_objects_update(float delta);
 void game_objects_render(camera3d cam);
+void engine_after_render(void);
 
 int game_object_add(int type);
 void game_object_set_pos(int id, float x, float y, float z);

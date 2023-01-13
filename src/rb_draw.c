@@ -13,6 +13,7 @@
 #include "rb_graphics.h"
 
 extern bool use_external_vline(void);
+extern void engine_draw_line_extern(float x1, float y1, float x2, float y2);
 
 graphics* draw_gb;
 ARGB_color active_color;
