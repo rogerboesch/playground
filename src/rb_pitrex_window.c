@@ -2,7 +2,8 @@
 #include <string.h> // for strrchr
 #include <pitrex/pitrexio-gpio.h>
 #include <vectrex/vectrexInterface.h>
-#include "window.h"
+#include "rb_pitrex_window.h"
+
 extern void setCustomClipping(int enabled, int x0, int y0, int x1, int y1); // should be in vectrexInterface.h
 
 #ifndef TRUE

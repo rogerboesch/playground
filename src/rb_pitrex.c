@@ -15,7 +15,7 @@
 // PiTrex includes
 #include <pitrex/pitrexio-gpio.h>
 #include <vectrex/vectrexInterface.h>
-#include "window.h"
+#include "rb_pitrex_window.h"
 
 #define LIGHT_LOW       80
 #define LIGHT_HIGH      110
