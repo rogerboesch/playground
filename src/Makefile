@@ -1,7 +1,9 @@
 # Playground makefile (PITREX ONLY)
 
 # Just change root dir if your repo is located in another folder
-ROOT_DIR := ../pitrex/pitrex
+# This relative path works if the Makefile is in ~/{project}/src,
+# otherwise you must change here.
+ROOT_DIR := ../../pitrex/pitrex
 
 # This is the standard folder structure used in the PiTrex repo
 SDK_DIR := $(ROOT_DIR)/pitrex

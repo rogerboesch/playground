@@ -79,12 +79,14 @@ void engine_set_functions(game_fp fp) {
     t1 = engine_get_ticks();
 }
 
-void engine_init(void) {    
+void engine_init(void) {
+#ifndef PITREX
     if (settings.fullscreen) {
 		rblog("Goto fullscreen mode");
 
         sdl_set_fullscreen();
     }
+#endif
     
     fb = graphics_open(settings.buffer_width, settings.buffer_width);
     draw_setgb(fb);
