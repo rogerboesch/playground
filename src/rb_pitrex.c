@@ -87,28 +87,28 @@ int pitrex_init(void) {
 
 void pitrex_handle_input() {
     // Handle joystick 1
-    if (get_current_joy1_x() < -50) {
+    if (currentJoy1X < -50) {
         input_set_control(CONTROL_LEFT, true);
     }
     else {
         input_set_control(CONTROL_LEFT, false);
     }    
 
-    if (get_current_joy1_x() > 50) {
+    if (currentJoy1X > 50) {
         input_set_control(CONTROL_RIGHT, true);
     }
     else {
         input_set_control(CONTROL_RIGHT, false);
     }    
 
-    if (get_current_joy1_y() > 50) {
+    if (currentJoy1Y > 50) {
         input_set_control(CONTROL_UP, true);
     }
     else {
         input_set_control(CONTROL_UP, false);
     }    
 
-    if (get_current_joy1_y() < -50) {
+    if (currentJoy1Y < -50) {
         input_set_control(CONTROL_DOWN, true);
     }
     else {
