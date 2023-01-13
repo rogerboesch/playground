@@ -27,6 +27,14 @@ static int _light = LIGHT_DEFAULT;
 static bool _quit = false;
 static int _time_per_frame = 16;
 
+int get_brightness(int color) {    
+    int light = (int)(10*color);
+    int bright = LIGHT_LOW + (light*LIGHT_STEPS);
+    bright = fmin(LIGHT_HIGH, bright);
+    
+    return bright;
+}
+
 double pitrex_get_ticks(void) {
     return v_millis() / 1000.0f;
 }
@@ -49,8 +57,8 @@ void pitrex_draw_vtext(float x, float y, char* str) {
 #if 0
     v_printString(x, y, str, size, _light); /* TODO: Get from graphics */
 #else
-    v_setBrightness(color);
-    v_printStringRaster(x, y, msg, 40, -7, 0);
+    v_setBrightness(LIGHT_DEFAULT);
+    v_printStringRaster(x, y, str, 40, -7, 0);
 #endif
 }
 
