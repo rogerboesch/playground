@@ -25,6 +25,6 @@ void pitrex_draw_line(float x1, float y1, float x2, float y2);
 void pitrex_draw_vtext(float x, float y, char* str);
 
 int pitrex_init(void);
-void pitrex_run(void);
+int pitrex_run(void);
 
 #endif

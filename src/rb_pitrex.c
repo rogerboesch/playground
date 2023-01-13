@@ -46,7 +46,12 @@ void pitrex_draw_line(float x1, float y1, float x2, float y2) {
 }
 
 void pitrex_draw_vtext(float x, float y, char* str) {
-    v_printString(x, y, msg, size, _light); /* TODO: Get from graphics */
+#if 0
+    v_printString(x, y, str, size, _light); /* TODO: Get from graphics */
+#else
+    v_setBrightness(color);
+    v_printStringRaster(x, y, msg, 40, -7, 0);
+#endif
 }
 
 int pitrex_init(void) {    
@@ -65,7 +70,7 @@ int pitrex_init(void) {
     v_enableButtons(1);
 #endif
 
-    v_setRefresh(hz);
+    v_setRefresh(50);
     v_setBrightness(60);
     v_window(0, 0, 362, 482, 0); /* TODO: Put into settings */
 
