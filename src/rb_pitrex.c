@@ -8,6 +8,7 @@
 
 #include "rb_pitrex.h"
 #include "rb_input.h"
+#include "rb_engine.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -34,6 +35,10 @@ void pitrex_frame(void) {
     v_WaitRecal();
     v_readButtons();
     v_readJoystick1Analog();
+}
+
+void pitrex_delay(void) {
+    // TODO: Implement
 }
 
 void pitrex_draw_line(float x1, float y1, float x2, float y2) {
@@ -112,11 +117,11 @@ int pitrex_run() {
 
     input_clear_controls();
 
-    Uint32 next_frame = pitrex_get_ticks() + _time_per_frame;
+    int64_t next_frame = pitrex_get_ticks() + _time_per_frame;
 
     while (!_quit) {
-        pitrex_frame():
-        pitrex_handle_input():
+        pitrex_frame();
+        pitrex_handle_input();
 
         engine_step();
         engine_after_render();
