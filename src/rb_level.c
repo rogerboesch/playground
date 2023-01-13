@@ -73,7 +73,12 @@ level level_data;
 
 bool level_load_file(char* filename) {
     char path[256];
+#ifdef PITREX
+    sprintf(path, "assets/%s.txt", filename);
+#else
     sprintf(path, "%s%s.txt", platform_get_app_folder(), filename);
+#endif
+
     rbmsg_str1("Load level file ", path);
  
     FILE* fp;
