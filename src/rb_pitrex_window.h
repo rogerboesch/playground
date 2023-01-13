@@ -7,8 +7,6 @@ extern void setCustomClipping(int enabled, int x0, int y0, int x1, int y1); // s
 #define FALSE (0!=0)
 #endif
 
-typedef int bool;
-
 #define VECTREX_DEFAULT 0
 // rotate 90 degrees anticlockwise for each step:
 #define VECTREX_VERTICAL 1
@@ -19,7 +17,6 @@ typedef int bool;
 
 void v_set_hardware_orientation(int orientation);
 void v_line(int xl, int yb, int xr, int yt, int col);
-void v_window(int xl, int yb, int xr, int yt,
-	      bool clip_to_window);
+void v_window(int xl, int yb, int xr, int yt, int clip_to_window);
 void v_clip(int xl, int yb, int xr, int yt);
 #endif

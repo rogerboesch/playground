@@ -14,8 +14,6 @@ extern void setCustomClipping(int enabled, int x0, int y0, int x1, int y1); // s
 #define CLIP TRUE
 #define NO_CLIP FALSE
 
-typedef int bool;
-
 #define VECTREX_DEFAULT 0
 // rotate 90 degrees anticlockwise for each step:
 #define VECTREX_VERTICAL 1
@@ -61,8 +59,7 @@ void v_line(int xl, int yb, int xr, int yt, int col) {
   v_directDraw32(tx(xl),ty(yb), tx(xr),ty(yt), col);
 }
 
-void v_window(int xl, int yb, int xr, int yt,
-	      bool clip_to_window) {
+void v_window(int xl, int yb, int xr, int yt, int clip_to_window) {
   // We will use normalised viewport coordinates of x: -18000 : 18000 and y: -24000 : 24000
   int64_t width, height;
   int xc, yc;

@@ -24,7 +24,7 @@
 
 static int _light = LIGHT_DEFAULT;
 static bool _quit = false;
-static Uint32 _time_per_frame = 16;
+static int _time_per_frame = 16;
 
 double pitrex_get_ticks(void) {
     return v_millis() / 1000.0f;
@@ -62,7 +62,7 @@ int pitrex_init(void) {
 
     v_setRefresh(hz);
     v_setBrightness(60);
-    v_window(0, 0, 362, 482, false); /* TODO: Put into settings */
+    v_window(0, 0, 362, 482, 0); /* TODO: Put into settings */
 
     return 1;
 }
