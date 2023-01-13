@@ -92,7 +92,7 @@ playground: $(BUILD_DIR)vexxon.o \
 	$(BUILD_DIR)rb_draw.o $(BUILD_DIR)rb_draw3d.o $(BUILD_DIR)rb_engine.o $(BUILD_DIR)rb_graphics.o \
 	$(BUILD_DIR)rb_input.o $(BUILD_DIR)rb_level.o $(BUILD_DIR)rb_math.o $(BUILD_DIR)rb_platform.o \
 	$(BUILD_DIR)rb_primitive.o $(BUILD_DIR)rb_vector.o $(BUILD_DIR)rb_vtext.o \
-	$(BUILD_DIR)bcm2835.o $(BUILD_DIR)pitrexio-gpio.o $(BUILD_DIR)vectrexInterface.o $(BUILD_DIR)osWrapper.o $(BUILD_DIR)baremetalUtil.o $(BUILD_DIR)window.o
+	$(BUILD_DIR)bcm2835.o $(BUILD_DIR)pitrexio-gpio.o $(BUILD_DIR)vectrexInterface.o $(BUILD_DIR)osWrapper.o $(BUILD_DIR)baremetalUtil.o $(BUILD_DIR)rb_pitrex_window.o
 
 	$(RM) playground
 	$(CC) $(CFLAGS) -o playground \
