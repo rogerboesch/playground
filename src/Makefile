@@ -1,10 +1,11 @@
-# Playground makefile
+# Playground makefile (PITREX ONLY)
+
 # Just change root dir if your repo is located in another folder
 ROOT_DIR := ../pitrex/pitrex
 
 # This is the standard folder structure used in the PiTrex repo
 SDK_DIR := $(ROOT_DIR)/pitrex
-INC_DIR := $(SDK_DIR) ../engine
+INC_DIR := $(SDK_DIR)
 PITREX_DIR := $(SDK_DIR)/pitrex/
 VECTREX_DIR := $(SDK_DIR)/vectrex/
 
@@ -13,10 +14,6 @@ SETTINGS := /opt/pitrex/settings
 BUILD_DIR := build/
 CFLAGS := -g -I$(INC_DIR) -DSETTINGS_DIR="\"$(SETTINGS)\"" -DAVOID_TICKS -DPIZERO -DRPI0 -DPITREX -lpthread
 CC := gcc
-
-# Folders
-GAME_SRC_DIR := ../game/
-ENGINE_SRC_DIR := ../engine/
 
 .PHONY: dirCheck
 
@@ -48,44 +45,44 @@ $(BUILD_DIR)baremetalUtil.o: $(VECTREX_DIR)baremetalUtil.c
 
 
 # project files
-$(BUILD_DIR)vexxon.o: $(GAME_SRC_DIR)vexxon.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)vexxon.o -c $(GAME_SRC_DIR)vexxon.c
+$(BUILD_DIR)vexxon.o: vexxon.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)vexxon.o -c vexxon.c
 
-$(BUILD_DIR)rb_draw.o: $(ENGINE_SRC_DIR)rb_draw.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_draw.o -c $(ENGINE_SRC_DIR)rb_draw.c
+$(BUILD_DIR)rb_draw.o: rb_draw.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_draw.o -c rb_draw.c
 
-$(BUILD_DIR)rb_draw3d.o: $(ENGINE_SRC_DIR)rb_draw3d.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_draw3d.o -c $(ENGINE_SRC_DIR)rb_draw3d.c
+$(BUILD_DIR)rb_draw3d.o: rb_draw3d.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_draw3d.o -c rb_draw3d.c
 
-$(BUILD_DIR)rb_engine.o: $(ENGINE_SRC_DIR)rb_engine.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_engine.o -c $(ENGINE_SRC_DIR)rb_engine.c
+$(BUILD_DIR)rb_engine.o: rb_engine.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_engine.o -c rb_engine.c
 
-$(BUILD_DIR)rb_graphics.o: $(ENGINE_SRC_DIR)rb_graphics.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_graphics.o -c $(ENGINE_SRC_DIR)rb_graphics.c
+$(BUILD_DIR)rb_graphics.o: rb_graphics.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_graphics.o -c rb_graphics.c
 
-$(BUILD_DIR)rb_input.o: $(ENGINE_SRC_DIR)rb_input.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_input.o -c $(ENGINE_SRC_DIR)rb_input.c
+$(BUILD_DIR)rb_input.o: rb_input.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_input.o -c rb_input.c
 
-$(BUILD_DIR)rb_level.o: $(ENGINE_SRC_DIR)rb_level.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_level.o -c $(ENGINE_SRC_DIR)rb_level.c
+$(BUILD_DIR)rb_level.o: rb_level.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_level.o -c rb_level.c
 
-$(BUILD_DIR)rb_math.o: $(ENGINE_SRC_DIR)rb_math.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_math.o -c $(ENGINE_SRC_DIR)rb_math.c
+$(BUILD_DIR)rb_math.o: rb_math.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_math.o -c rb_math.c
 
-$(BUILD_DIR)rb_platform.o: $(ENGINE_SRC_DIR)rb_platform.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_platform.o -c $(ENGINE_SRC_DIR)rb_platform.c
+$(BUILD_DIR)rb_platform.o: rb_platform.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_platform.o -c rb_platform.c
 
-$(BUILD_DIR)rb_primitive.o: $(ENGINE_SRC_DIR)rb_primitive.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_primitive.o -c $(ENGINE_SRC_DIR)rb_primitive.c
+$(BUILD_DIR)rb_primitive.o: rb_primitive.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_primitive.o -c rb_primitive.c
 
-$(BUILD_DIR)rb_vector.o: $(ENGINE_SRC_DIR)rb_vector.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_vector.o -c $(ENGINE_SRC_DIR)rb_vector.c
+$(BUILD_DIR)rb_vector.o: rb_vector.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_vector.o -c rb_vector.c
 
-$(BUILD_DIR)rb_vtext.o: $(ENGINE_SRC_DIR)rb_vtext.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_vtext.o -c $(ENGINE_SRC_DIR)rb_vtext.c
+$(BUILD_DIR)rb_vtext.o: rb_vtext.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_vtext.o -c rb_vtext.c
 
-$(BUILD_DIR)window.o: window.c
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)window.o -c window.c
+$(BUILD_DIR)rb_pitrex_window.o: rb_pitrex_window.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_pitrex_window.o -c rb_pitrex_window.c
 
 
 # build
@@ -102,7 +99,7 @@ playground: $(BUILD_DIR)vexxon.o \
 	$(BUILD_DIR)vectrexInterface.o \
 	$(BUILD_DIR)osWrapper.o \
 	$(BUILD_DIR)baremetalUtil.o \
-	$(BUILD_DIR)window.o \
+	$(BUILD_DIR)rb_pitrex_window.o \
 	$(BUILD_DIR)vexxon.o \
 	$(BUILD_DIR)rb_draw.o \
 	$(BUILD_DIR)rb_draw3d.o \
@@ -114,7 +111,7 @@ playground: $(BUILD_DIR)vexxon.o \
 	$(BUILD_DIR)rb_platform.o \
 	$(BUILD_DIR)rb_primitive.o \
 	$(BUILD_DIR)rb_vector.o \
-	$(BUILD_DIR)rb_vtext.o \
+	$(BUILD_DIR)rb_vtext.o
 
 install:
 #	install -o root -g games -m 6555 playground /opt/pitrex/bin
