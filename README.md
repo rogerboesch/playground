@@ -85,13 +85,12 @@ To **build** Playground you have to install **SDL2** and **SDL2_image** on your 
 after that create the make file with
 
 ```
-    $ cmake -B build
+    $ cmake .
 ```
 
 Now you have a make file which you can use in the *build* folder. To build it you simply type in
 
 ```
-    $ cd build
     $ make
 ```
 
