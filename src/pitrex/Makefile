@@ -11,7 +11,7 @@ VECTREX_DIR := $(SDK_DIR)/vectrex/
 # Build and compiler flags
 SETTINGS := /opt/pitrex/settings
 BUILD_DIR := build/
-CFLAGS := -g -I$(SDK_DIR) -DSETTINGS_DIR="\"$(SETTINGS)\"" -DAVOID_TICKS -DPIZERO -DRPI0 -DPITREX -lpthread
+CFLAGS := -g -I$(INC_DIR) -DSETTINGS_DIR="\"$(SETTINGS)\"" -DAVOID_TICKS -DPIZERO -DRPI0 -DPITREX -lpthread
 CC := gcc
 
 # Folders
