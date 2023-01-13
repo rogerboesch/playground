@@ -83,6 +83,9 @@ $(BUILD_DIR)rb_vector.o: rb_vector.c
 $(BUILD_DIR)rb_vtext.o: rb_vtext.c
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_vtext.o -c rb_vtext.c
 
+$(BUILD_DIR)rb_pitrex.o: rb_pitrex.c
+	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_pitrex.o -c rb_pitrex.c
+
 $(BUILD_DIR)rb_pitrex_window.o: rb_pitrex_window.c
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_pitrex_window.o -c rb_pitrex_window.c
 
@@ -92,7 +95,8 @@ playground: $(BUILD_DIR)vexxon.o \
 	$(BUILD_DIR)rb_draw.o $(BUILD_DIR)rb_draw3d.o $(BUILD_DIR)rb_engine.o $(BUILD_DIR)rb_graphics.o \
 	$(BUILD_DIR)rb_input.o $(BUILD_DIR)rb_level.o $(BUILD_DIR)rb_math.o $(BUILD_DIR)rb_platform.o \
 	$(BUILD_DIR)rb_primitive.o $(BUILD_DIR)rb_vector.o $(BUILD_DIR)rb_vtext.o \
-	$(BUILD_DIR)bcm2835.o $(BUILD_DIR)pitrexio-gpio.o $(BUILD_DIR)vectrexInterface.o $(BUILD_DIR)osWrapper.o $(BUILD_DIR)baremetalUtil.o $(BUILD_DIR)rb_pitrex_window.o
+	 $(BUILD_DIR)rb_pitrex.o $(BUILD_DIR)rb_pitrex_window.o
+	$(BUILD_DIR)bcm2835.o $(BUILD_DIR)pitrexio-gpio.o $(BUILD_DIR)vectrexInterface.o $(BUILD_DIR)osWrapper.o $(BUILD_DIR)baremetalUtil.o
 
 	$(RM) playground
 	$(CC) $(CFLAGS) -o playground \
@@ -101,6 +105,7 @@ playground: $(BUILD_DIR)vexxon.o \
 	$(BUILD_DIR)vectrexInterface.o \
 	$(BUILD_DIR)osWrapper.o \
 	$(BUILD_DIR)baremetalUtil.o \
+	$(BUILD_DIR)rb_pitrex.o \
 	$(BUILD_DIR)rb_pitrex_window.o \
 	$(BUILD_DIR)vexxon.o \
 	$(BUILD_DIR)rb_draw.o \
