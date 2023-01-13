@@ -1,5 +1,5 @@
 //
-//  target_vexxon.c
+//  vexxon.c
 //  3d wireframe game engine
 //
 //  Vexxon game
