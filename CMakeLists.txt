@@ -1,4 +1,3 @@
-# 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
 
 cmake_minimum_required(VERSION 3.10)
 project(Playground)
