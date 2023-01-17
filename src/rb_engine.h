@@ -87,10 +87,11 @@ void game_objects_update(float delta);
 void game_objects_render(camera3d cam);
 void engine_after_render(void);
 
-int game_object_add(int type);
-void game_object_set_pos(int id, float x, float y, float z);
-void game_object_set_scl(int id, float x, float y, float z);
-void game_object_set_rot(int id, float x, float y, float z);
+int game_object_create(int type);
+
+void game_object_set_pos(int id, float x, float y, float z, bool add);
+void game_object_set_scl(int id, float x, float y, float z, bool add);
+void game_object_set_rot(int id, float x, float y, float z, bool add);
 void game_object_set_speed(int id, float x, float y, float z);
 void game_object_set_rot_speed(int id, float x, float y, float z);
 void game_object_set_color(int id, ARGB_color color);

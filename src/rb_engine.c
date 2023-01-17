@@ -92,7 +92,7 @@ void engine_init(void) {
     draw_setgb(fb);
 
      // camera position/rotation
-    cam.pos = vec3_make(0.0, 2.0, -10.0);
+    cam.pos = vec3_make(0.0, 2.0, 0.0);
     cam.rot = vec3_make(0.0, 0.0, 0.0);
     cam.fov = 1.0;
     cam.distort = 0.0;
@@ -110,7 +110,6 @@ bool engine_handle_key(RBEvent event) {
     }
     
     bool down = event.type == RBEVT_KeyPressed ? true : false;
-    printf("Down: %d=%d\n", event.key_code, down);
     
     switch (event.key_code) {
         // Game keys
@@ -270,19 +269,18 @@ void game_objects_cleanup(void) {
     counter = 0;
 }
 
-int game_object_add(int type) {
-    if (counter >= MAX_GAME_OBJECTS) {
-        rblog_num1("Maximum of game objects reached: ", counter);
-        return 0;
-    }
-    
+int game_object_create(int type) {
     if (type < 0 || type >= GAME_OBJECT_LAST) {
         rblog_num1("Unknown game object type specified: ", type);
         return 0;
     }
 
+    if (counter >= MAX_GAME_OBJECTS) {
+        rblog_num1("Maximum of game objects reached: ", counter);
+        return 0;
+    }
+
     game_object* obj = (game_object*)malloc(sizeof(game_object));
-    obj->id = counter+1;
     obj->type = type;
     obj->pos.x = 0.0; obj->pos.y = 0.0; obj->pos.z = 0.0;
     obj->scl.x = 1.0; obj->scl.y = 1.0; obj->scl.z = 1.0;
@@ -294,44 +292,66 @@ int game_object_add(int type) {
     obj->dead = 0;
     obj->lifetime = 0;
     obj->life = 0;
-    
+
+    obj->id = counter + 1;
     list_of_objects[counter] = obj;
     counter++;
 
     return obj->id;
 }
 
-void game_object_set_pos(int id, float x, float y, float z) {
+void game_object_set_pos(int id, float x, float y, float z, bool add) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
     
-    list_of_objects[id-1]->pos.x = x;
-    list_of_objects[id-1]->pos.y = y;
-    list_of_objects[id-1]->pos.z = z;
+    if (add) {
+        list_of_objects[id - 1]->pos.x += x;
+        list_of_objects[id - 1]->pos.y += y;
+        list_of_objects[id - 1]->pos.z += z;
+    }
+    else {
+        list_of_objects[id - 1]->pos.x = x;
+        list_of_objects[id - 1]->pos.y = y;
+        list_of_objects[id - 1]->pos.z = z;
+    }
 }
 
-void game_object_set_scl(int id, float x, float y, float z) {
+void game_object_set_scl(int id, float x, float y, float z, bool add) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
-    
-    list_of_objects[id-1]->scl.x = x;
-    list_of_objects[id-1]->scl.y = y;
-    list_of_objects[id-1]->scl.z = z;
+
+    if (add) {
+        list_of_objects[id - 1]->scl.x += x;
+        list_of_objects[id - 1]->scl.y += y;
+        list_of_objects[id - 1]->scl.z += z;
+    }
+    else {
+        list_of_objects[id - 1]->scl.x = x;
+        list_of_objects[id - 1]->scl.y = y;
+        list_of_objects[id - 1]->scl.z = z;
+    }
 }
 
-void game_object_set_rot(int id, float x, float y, float z) {
+void game_object_set_rot(int id, float x, float y, float z, bool add) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
-    
-    list_of_objects[id-1]->rot.x = x;
-    list_of_objects[id-1]->rot.y = y;
-    list_of_objects[id-1]->rot.z = z;
+
+    if (add) {
+        list_of_objects[id - 1]->rot.x += x;
+        list_of_objects[id - 1]->rot.y += y;
+        list_of_objects[id - 1]->rot.z += z;
+    }
+    else {
+        list_of_objects[id - 1]->rot.x = x;
+        list_of_objects[id - 1]->rot.y = y;
+        list_of_objects[id - 1]->rot.z = z;
+    }
 }
 
 void game_object_set_speed(int id, float x, float y, float z) {
