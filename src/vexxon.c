@@ -22,10 +22,10 @@ static float _moving = 0.1f;
 static int cube_id = 0;
 
 void vexxon_target_settings(setting* setting) {
-    setting->screen_width = 330*2;
-    setting->screen_height = 440*2;
-    setting->buffer_width = 330;
-    setting->buffer_height = 440;
+    setting->screen_width = 360*2;
+    setting->screen_height = 480*2;
+    setting->buffer_width = 360;
+    setting->buffer_height = 480;
     setting->fullscreen = false;
 }
 
@@ -85,8 +85,8 @@ void vexxon_target_pre_render(camera3d* cam) {
     draw_setcolor(ARGB_BLUE);
 
     for (int i = 0; i < 10; i++) {
-        vec3 start = {-10, 0, 5+i*30};
-        vec3 end = {10+20, 0, 5+i*30};
+        vec3 start = {-15, 0, i*30};
+        vec3 end = {15, 0, i*30};
         
         draw3d_line(start, end, *cam);
     }
