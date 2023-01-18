@@ -33,7 +33,7 @@ void vexxon_init(void) {
     platform_set_app_folder("vexxon");
 
     cube_id = game_object_create(GAME_OBJECT_CUBE);
-    game_object_set_pos(cube_id, 0, 3, 10, false);
+    game_object_set_pos(cube_id, 0, 3, 10, COORDINATE_IS_ABSOLUITE);
 
     return;
 }

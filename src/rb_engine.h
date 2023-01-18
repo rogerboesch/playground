@@ -27,6 +27,9 @@
 #define ENGINE_FLAG_VECTOR_BASED 0
 #define ENGINE_FLAGS_MAX 1
 
+#define COORDINATE_IS_RELATIVE true
+#define COORDINATE_IS_ABSOLUITE false
+
 typedef struct {
     uint16_t screen_width, screen_height;
     uint16_t buffer_width, buffer_height;
