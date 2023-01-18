@@ -90,6 +90,13 @@ void vexxon_pre_render(camera3d* cam) {
         
         draw3d_line(start, end, *cam);
     }
+}
+
+void vexxon_post_render(camera3d* cam) {
+    UNUSED_VAR(cam);
+    
+    draw_setcolor(ARGB_WHITE);
+    vtext_draw_string(10, 10, "VEXXON", 1.0f);
 
     draw_setcolor(ARGB_YELLOW);
     vtext_draw_string(10, 40, "ARROW LEFT   MOVE LEFT", 0.5f);
@@ -98,13 +105,6 @@ void vexxon_pre_render(camera3d* cam) {
     vtext_draw_string(10, 70, "ARROW DOWN   MOVE BACK", 0.5f);
     vtext_draw_string(10, 80, "BUTTON 1     MOVE UP", 0.5f);
     vtext_draw_string(10, 90, "BUTTON 2     MOVE DOWN", 0.5f);
-}
-
-void vexxon_post_render(camera3d* cam) {
-    UNUSED_VAR(cam);
-    
-    draw_setcolor(ARGB_WHITE);
-    vtext_draw_string(10, 10, "VEXXON", 1.0f);
 }
 
 void vexxon_cleanup(void) {}
