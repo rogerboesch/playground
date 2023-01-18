@@ -21,7 +21,7 @@ static float _accel = 0.3f;
 static float _moving = 0.1f;
 static int cube_id = 0;
 
-void vexxon_target_settings(setting* setting) {
+void vexxon_settings(setting* setting) {
     setting->screen_width = 360*2;
     setting->screen_height = 480*2;
     setting->buffer_width = 360;
@@ -29,7 +29,7 @@ void vexxon_target_settings(setting* setting) {
     setting->fullscreen = false;
 }
 
-void vexxon_target_init(void) {
+void vexxon_init(void) {
     platform_set_app_folder("vexxon");
 
     cube_id = game_object_create(GAME_OBJECT_CUBE, true);
@@ -38,7 +38,7 @@ void vexxon_target_init(void) {
     return;
 }
 
-void vexxon_target_update(float delta, camera3d* cam) {
+void vexxon_update(float delta, camera3d* cam) {
     UNUSED_VAR(delta);
     double t = cam->rot.y;
 
@@ -72,7 +72,7 @@ void vexxon_target_update(float delta, camera3d* cam) {
     }
 }
 
-void vexxon_target_pre_render(camera3d* cam) {
+void vexxon_pre_render(camera3d* cam) {
     graphics_fill(draw_getgb(), ARGB_BLACK);
 
     // Draw horizontal line
@@ -100,30 +100,30 @@ void vexxon_target_pre_render(camera3d* cam) {
     vtext_draw_string(10, 90, "BUTTON 2     MOVE DOWN", 0.5f);
 }
 
-void vexxon_target_post_render(camera3d* cam) {
+void vexxon_post_render(camera3d* cam) {
     UNUSED_VAR(cam);
     
     draw_setcolor(ARGB_WHITE);
     vtext_draw_string(10, 10, "VEXXON", 1.0f);
 }
 
-void vexxon_target_cleanup(void) {}
+void vexxon_cleanup(void) {}
 
-void vexxon_target_after_render(void) {}
+void vexxon_after_render(void) {}
 
-bool vexxon_target_handle_key(RBEvent event) { return false; }
+bool vexxon_handle_key(RBEvent event) { return false; }
 
 void game_main(void) {
     game_fp fp;
 
-    fp.settings = vexxon_target_settings;
-    fp.init = vexxon_target_init;
-    fp.update = vexxon_target_update;
-    fp.pre_render = vexxon_target_pre_render;
-    fp.post_render = vexxon_target_post_render;
-    fp.after_render = vexxon_target_after_render;
-    fp.cleanup = vexxon_target_cleanup;
-    fp.handle_key = vexxon_target_handle_key;
+    fp.settings = vexxon_settings;
+    fp.init = vexxon_init;
+    fp.update = vexxon_update;
+    fp.pre_render = vexxon_pre_render;
+    fp.post_render = vexxon_post_render;
+    fp.after_render = vexxon_after_render;
+    fp.cleanup = vexxon_cleanup;
+    fp.handle_key = vexxon_handle_key;
 
     engine_set_functions(fp);
 }
