@@ -42,7 +42,7 @@ void vexxon_update(float delta, camera3d* cam) {
     UNUSED_VAR(delta);
     double t = cam->rot.y;
 
-    game_object_set_rot(cube_id, 0, 1/delta, 0, true);
+    game_object_set_rot(cube_id, 0, 1/delta, 0, COORDINATE_IS_RELATIVE);
 
     cam->pos.z += _speed;
 
