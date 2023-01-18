@@ -73,21 +73,25 @@ void vexxon_update(float delta, camera3d* cam) {
 }
 
 void vexxon_pre_render(camera3d* cam) {
+    // Fill background
     graphics_fill(draw_getgb(), ARGB_BLACK);
 
-    // Draw horizontal line
+    // Get resolution (width, height)
     pixel res = draw_getres();
 
+    // Draw fix horizontal line (horizon)
     draw_setcolor(ARGB_GREY);
-    double hpos = (0.5+tan(cam->rot.x)*cam->fov)*res.y;
-    draw_line((vec2){0.0, hpos}, (vec2){res.x, hpos});
 
+    double hpos = (0.5 + tan(cam->rot.x) * cam->fov) * res.y;
+    draw_line((vec2) { 0.0, hpos }, (vec2) { res.x, hpos });
+
+    // Draw horizontal lines in 3d space (floor)
     draw_setcolor(ARGB_BLUE);
 
     for (int i = 0; i < 10; i++) {
-        vec3 start = {-15, 0, i*30};
-        vec3 end = {15, 0, i*30};
-        
+        vec3 start = { -15, 0, i * 30 };
+        vec3 end = { 15, 0, i * 30 };
+
         draw3d_line(start, end, *cam);
     }
 }
