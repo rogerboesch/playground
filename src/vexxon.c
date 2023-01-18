@@ -32,7 +32,7 @@ void vexxon_settings(setting* setting) {
 void vexxon_init(void) {
     platform_set_app_folder("vexxon");
 
-    cube_id = game_object_create(GAME_OBJECT_CUBE, true);
+    cube_id = game_object_create(GAME_OBJECT_CUBE);
     game_object_set_pos(cube_id, 0, 3, 10, false);
 
     return;
