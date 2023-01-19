@@ -55,7 +55,7 @@ typedef struct {
 } game_object;
 
 typedef void (*fp_settings)(setting*);
-typedef void (*fp_init)(void);
+typedef void (*fp_init)(camera3d*);
 typedef void (*fp_update)(float, camera3d*);
 typedef void (*fp_pre_render)(camera3d*);
 typedef void (*fp_post_render)(camera3d*);

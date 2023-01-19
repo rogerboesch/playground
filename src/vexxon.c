@@ -24,12 +24,12 @@ static int cube_id = 0;
 void vexxon_settings(setting* setting) {
     setting->screen_width = 360*2;
     setting->screen_height = 480*2;
-    setting->buffer_width = 360;
-    setting->buffer_height = 480;
+    setting->buffer_width = 360*2;
+    setting->buffer_height = 480*2;
     setting->fullscreen = false;
 }
 
-void vexxon_init(void) {
+void vexxon_init(camera3d* cam) {
     platform_set_app_folder("vexxon");
 
     cube_id = game_object_create(GAME_OBJECT_CUBE);

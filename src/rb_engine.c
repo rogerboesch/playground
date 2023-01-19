@@ -91,13 +91,13 @@ void engine_init(void) {
     fb = graphics_open(settings.buffer_width, settings.buffer_width);
     draw_setgb(fb);
 
-     // camera position/rotation
-    cam.pos = vec3_make(0.0, 2.0, 0.0);
+    // camera position/rotation
+    cam.pos = vec3_make(0.0, 0.0, 0.0);
     cam.rot = vec3_make(0.0, 0.0, 0.0);
     cam.fov = 1.0;
     cam.distort = 0.0;
 
-    target.init();
+    target.init(&cam);
 
     is_running = true;
 }
