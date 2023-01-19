@@ -311,13 +311,13 @@ int main(int argc, char *argv[]) {
 void game_objects_update(float delta) {
     for (int i = 0; i < counter; i++) {
         if (list_of_objects[i]->dead == 0) {
-            list_of_objects[i]->pos.x += (list_of_objects[i]->speed.x * delta);
-            list_of_objects[i]->pos.y += (list_of_objects[i]->speed.y * delta);
-            list_of_objects[i]->pos.z += (list_of_objects[i]->speed.z * delta);
+            list_of_objects[i]->pos.x += (list_of_objects[i]->velocity.x * delta);
+            list_of_objects[i]->pos.y += (list_of_objects[i]->velocity.y * delta);
+            list_of_objects[i]->pos.z += (list_of_objects[i]->velocity.z * delta);
 
-            list_of_objects[i]->rot.x += (list_of_objects[i]->rot_speed.x * delta);
-            list_of_objects[i]->rot.y += (list_of_objects[i]->rot_speed.y * delta);
-            list_of_objects[i]->rot.z += (list_of_objects[i]->rot_speed.z * delta);
+            list_of_objects[i]->rot.x += (list_of_objects[i]->rot_velocity.x * delta);
+            list_of_objects[i]->rot.y += (list_of_objects[i]->rot_velocity.y * delta);
+            list_of_objects[i]->rot.z += (list_of_objects[i]->rot_velocity.z * delta);
 
             if (list_of_objects[i]->lifetime > 0) {
                 list_of_objects[i]->life += delta;
@@ -369,8 +369,8 @@ int game_object_create(int type) {
     obj->scl.x = 1.0; obj->scl.y = 1.0; obj->scl.z = 1.0;
     obj->rot.x = 0.0; obj->rot.y = 0.0; obj->rot.z = 0.0;
     obj->color = ARGB_WHITE;
-    obj->speed.x = 0.0; obj->speed.y = 0.0; obj->speed.z = 0.0;
-    obj->rot_speed.x = 0.0; obj->rot_speed.y = 0.0; obj->rot_speed.z = 0.0;
+    obj->velocity.x = 0.0; obj->velocity.y = 0.0; obj->velocity.z = 0.0;
+    obj->rot_velocity.x = 0.0; obj->rot_velocity.y = 0.0; obj->rot_velocity.z = 0.0;
     obj->hidden = 0;
     obj->dead = 0;
     obj->lifetime = 0;
@@ -448,26 +448,26 @@ void game_object_set_rot(int id, float x, float y, float z, bool relative) {
     }
 }
 
-void game_object_set_speed(int id, float x, float y, float z) {
+void game_object_set_velocity(int id, float x, float y, float z) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
     
-    list_of_objects[id-1]->speed.x = x;
-    list_of_objects[id-1]->speed.y = y;
-    list_of_objects[id-1]->speed.z = z;
+    list_of_objects[id-1]->velocity.x = x;
+    list_of_objects[id-1]->velocity.y = y;
+    list_of_objects[id-1]->velocity.z = z;
 }
 
-void game_object_set_rot_speed(int id, float x, float y, float z) {
+void game_object_set_rot_velocity(int id, float x, float y, float z) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
     
-    list_of_objects[id-1]->rot_speed.x = x;
-    list_of_objects[id-1]->rot_speed.y = y;
-    list_of_objects[id-1]->rot_speed.z = z;
+    list_of_objects[id-1]->rot_velocity.x = x;
+    list_of_objects[id-1]->rot_velocity.y = y;
+    list_of_objects[id-1]->rot_velocity.z = z;
 }
 
 void game_object_set_color(int id, ARGB_color color) {

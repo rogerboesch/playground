@@ -47,7 +47,7 @@ void vexxon_init(camera3d* cam) {
     // Player/Space fighter
     player_id = game_object_create(GAME_OBJECT_CUBE);
     game_object_set_pos(player_id, 0.0f, 1.0f, 10.0f, COORDINATE_IS_ABSOLUTE);
-    game_object_set_speed(player_id, 0, 0, player_speed);
+    game_object_set_velocity(player_id, 0, 0, player_speed);
 
     // Get camera offset for later update
     vec3 pos = game_object_get_position(player_id);
@@ -69,8 +69,6 @@ void vexxon_init(camera3d* cam) {
 }
 
 void vexxon_update(float delta, camera3d* cam) {
-    UNUSED_VAR(delta);
-
     // Move camera forward
     cam->pos.z += player_speed * delta;
  
