@@ -15,6 +15,8 @@
 #include "rb_level.h"
 #include <math.h>
 
+void restart(camera3d* cam);
+
 static const float LEVEL_WIDTH = 30.f;
 static const float LEVEL_WIDTH_HALF = 15.0f;
 static const float FLIGHT_WIDTH_LIMIT = 6.0f;
@@ -69,6 +71,13 @@ void vexxon_init(camera3d* cam) {
 }
 
 void vexxon_update(float delta, camera3d* cam) {
+    // End of level?
+    vec3 player_pos = game_object_get_position(player_id);
+    if (player_pos.z > 300) {
+        restart(cam);
+        return;
+    }
+
     // Move camera forward
     cam->pos.z += player_speed * delta;
  
@@ -89,7 +98,7 @@ void vexxon_update(float delta, camera3d* cam) {
         }
     }
  
-    vec3 player_pos = game_object_get_position(player_id);
+    player_pos = game_object_get_position(player_id);
     cam->pos.x = player_pos.x - camera_x_offset;
 
     if (input_get_control(CONTROL_UP)) {
@@ -168,4 +177,9 @@ void game_main(void) {
     fp.handle_key = vexxon_handle_key;
 
     engine_set_functions(fp);
+}
+
+void restart(camera3d* cam) {
+    game_object_set_pos(player_id, 0.0f, 1.0f, 10.0f, COORDINATE_IS_ABSOLUTE);
+    cam->pos = vec3_make(7.82f, 4.37f, 1.82f);
 }
