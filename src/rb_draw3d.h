@@ -18,7 +18,6 @@ typedef struct {
     vec3 pos;
     vec3 rot;
     double fov;
-    double distort; // Not used yet
 } camera3d;
 
 void draw3d_point(vec3 point, camera3d cam);

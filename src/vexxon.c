@@ -13,13 +13,19 @@
 #include "rb_vtext.h"
 #include "rb_primitive.h"
 #include "rb_level.h"
-
 #include <math.h>
 
-static float _speed = 0.0f;
-static float _accel = 0.3f;
-static float _moving = 0.1f;
-static int cube_id = 0;
+static const float LEVEL_WIDTH = 30.f;
+static const float LEVEL_WIDTH_HALF = 15.0f;
+static const float FLIGHT_WIDTH_LIMIT = 6.0f;
+static const float FLIGHT_HEIGHT_LIMIT = 5.0f;
+static const float FLIGHT_FLOOR_LIMIT = 0.1f;
+
+static int player_id = 0;               
+static float player_speed = 10.0f;
+static float player_movement = 10.0f;
+
+static float camera_x_offset = 0.0f;
 
 void vexxon_settings(setting* setting) {
     setting->screen_width = 360*2;
@@ -30,45 +36,79 @@ void vexxon_settings(setting* setting) {
 }
 
 void vexxon_init(camera3d* cam) {
-    platform_set_app_folder("vexxon");
+    // Follow
+    // cam->pos = vec3_make(0.0f, 2.0f, 0.0f);
+    // cam->rot = vec3_make(0.0f, 0.0f, 0.0f);
 
-    cube_id = game_object_create(GAME_OBJECT_CUBE);
-    game_object_set_pos(cube_id, 0, 3, 10, COORDINATE_IS_ABSOLUITE);
+    // ISO view
+    cam->pos = vec3_make(7.82f, 4.37f, 1.82f);
+    cam->rot = vec3_make(0.0f, -0.43f, 0.0f);
+
+    // Player/Space fighter
+    player_id = game_object_create(GAME_OBJECT_CUBE);
+    game_object_set_pos(player_id, 0.0f, 1.0f, 10.0f, COORDINATE_IS_ABSOLUTE);
+    game_object_set_speed(player_id, 0, 0, player_speed);
+
+    // Get camera offset for later update
+    vec3 pos = game_object_get_position(player_id);
+    camera_x_offset = pos.x - cam->pos.x;
+
+    // Create some random level elements
+    for (int i = 0; i < 10; i++) {
+        int id = game_object_create(GAME_OBJECT_CUBE);
+
+        int offset = random_int(-5, 5);
+        int scale = random_int(1, 5);
+
+        game_object_set_pos(id, 0.0f+offset, 1.0f, i*30.0f+15.0f, COORDINATE_IS_ABSOLUTE);
+        game_object_set_scl(id, scale, 1.0f, 1.0f, COORDINATE_IS_ABSOLUTE);
+        game_object_set_color(id, ARGB_RED);
+    }
 
     return;
 }
 
 void vexxon_update(float delta, camera3d* cam) {
     UNUSED_VAR(delta);
-    double t = cam->rot.y;
 
-    game_object_set_rot(cube_id, 0, 1/delta, 0, COORDINATE_IS_RELATIVE);
-
-    cam->pos.z += _speed;
-
+    // Move camera forward
+    cam->pos.z += player_speed * delta;
+ 
     if (input_get_control(CONTROL_LEFT)) {
-        cam->pos.z += _moving*sin(t);
-        cam->pos.x -= _moving*cos(t);
-    }
-    else if (input_get_control(CONTROL_RIGHT)) {
-        cam->pos.z -= _moving*sin(t);
-        cam->pos.x += _moving*cos(t);
-    }
-    
-    if (input_get_control(CONTROL_UP)) {
-        cam->pos.z += _accel * cos(t);
-        cam->pos.x += _accel * sin(t);
-    }
-    else if (input_get_control(CONTROL_DOWN)) {
-        cam->pos.z -= _accel * cos(t);
-        cam->pos.x -= _accel * sin(t);
-    }
+        game_object_set_pos(player_id, -player_movement * delta, 0.0f, 0.0f, COORDINATE_IS_RELATIVE);
 
-    if (input_get_button(BUTTON_1)) {
-        cam->pos.y += _moving;
+        vec3 pos = game_object_get_position(player_id);
+        if (pos.x < -FLIGHT_WIDTH_LIMIT) {
+            game_object_set_pos(player_id, -FLIGHT_WIDTH_LIMIT, pos.y, pos.z, COORDINATE_IS_ABSOLUTE);
+        }
     }
-    else if (input_get_button(BUTTON_2)) {
-        cam->pos.y -= _moving;
+    if (input_get_control(CONTROL_RIGHT)) {
+        game_object_set_pos(player_id, player_movement * delta, 0.0f, 0.0f, COORDINATE_IS_RELATIVE);
+
+        vec3 pos = game_object_get_position(player_id);
+        if (pos.x > FLIGHT_WIDTH_LIMIT) {
+            game_object_set_pos(player_id, FLIGHT_WIDTH_LIMIT, pos.y, pos.z, COORDINATE_IS_ABSOLUTE);
+        }
+    }
+ 
+    vec3 player_pos = game_object_get_position(player_id);
+    cam->pos.x = player_pos.x - camera_x_offset;
+
+    if (input_get_control(CONTROL_UP)) {
+        game_object_set_pos(player_id, 0.0f, player_movement * delta, 0.0f, COORDINATE_IS_RELATIVE);
+
+        vec3 pos = game_object_get_position(player_id);
+        if (pos.y > FLIGHT_HEIGHT_LIMIT) {
+            game_object_set_pos(player_id, pos.x, FLIGHT_HEIGHT_LIMIT, pos.z, COORDINATE_IS_ABSOLUTE);
+        }
+    }
+    if (input_get_control(CONTROL_DOWN)) {
+        game_object_set_pos(player_id, 0.0f, -player_movement * delta, 0.0f, COORDINATE_IS_RELATIVE);
+
+        vec3 pos = game_object_get_position(player_id);
+        if (pos.y < FLIGHT_FLOOR_LIMIT) {
+            game_object_set_pos(player_id, pos.x, FLIGHT_FLOOR_LIMIT, pos.z, COORDINATE_IS_ABSOLUTE);
+        }
     }
 }
 
@@ -82,15 +122,15 @@ void vexxon_pre_render(camera3d* cam) {
     // Draw fix horizontal line (horizon)
     draw_setcolor(ARGB_GREY);
 
-    double hpos = (0.5 + tan(cam->rot.x) * cam->fov) * res.y;
-    draw_line((vec2) { 0.0, hpos }, (vec2) { res.x, hpos });
+    double hpos = (0.5f + tan(cam->rot.x) * cam->fov) * res.y;
+    draw_line((vec2) { 0.0f, hpos }, (vec2) { res.x, hpos });
 
     // Draw horizontal lines in 3d space (floor)
     draw_setcolor(ARGB_BLUE);
 
     for (int i = 0; i < 10; i++) {
-        vec3 start = { -15, 0, i * 30 };
-        vec3 end = { 15, 0, i * 30 };
+        vec3 start = { -LEVEL_WIDTH_HALF, 0.0f, i * 30.0f };
+        vec3 end = { LEVEL_WIDTH_HALF, 0.0f, i * 30.0f };
 
         draw3d_line(start, end, *cam);
     }

@@ -62,3 +62,8 @@ unsigned int fast_dist2(int x, int y) {
     return ((( max << 8 ) + ( max << 3 ) - ( max << 4 ) - ( max << 1 ) +
            ( min << 7 ) - ( min << 5 ) + ( min << 3 ) - ( min << 1 )) >> 8 );
 }
+
+int random_int(int min, int max)
+{
+    return min + rand() % (max + 1 - min);
+}

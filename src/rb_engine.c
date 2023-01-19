@@ -92,10 +92,9 @@ void engine_init(void) {
     draw_setgb(fb);
 
     // camera position/rotation
-    cam.pos = vec3_make(0.0, 0.0, 0.0);
-    cam.rot = vec3_make(0.0, 0.0, 0.0);
-    cam.fov = 1.0;
-    cam.distort = 0.0;
+    cam.pos = vec3_make(0.0f, 0.0f, 0.0f);
+    cam.rot = vec3_make(0.0f, 0.0f, 0.0f);
+    cam.fov = 1.0f;
 
     target.init(&cam);
 
@@ -139,7 +138,91 @@ bool engine_handle_key(RBEvent event) {
         case RB_KEYCODE_4:
             input_set_control(BUTTON_4, down);
             return true;
-            
+            // Game buttons
+
+        // Keys
+        case RB_KEYCODE_a:
+            input_set_control(KEY_A, down);
+            return true;
+        case RB_KEYCODE_b:
+            input_set_control(KEY_B, down);
+            return true;
+        case RB_KEYCODE_c:
+            input_set_control(KEY_C, down);
+            return true;
+        case RB_KEYCODE_d:
+            input_set_control(KEY_D, down);
+            return true;
+        case RB_KEYCODE_e:
+            input_set_control(KEY_E, down);
+            return true;
+        case RB_KEYCODE_f:
+            input_set_control(KEY_F, down);
+            return true;
+        case RB_KEYCODE_g:
+            input_set_control(KEY_G, down);
+            return true;
+        case RB_KEYCODE_h:
+            input_set_control(KEY_H, down);
+            return true;
+        case RB_KEYCODE_i:
+            input_set_control(KEY_I, down);
+            return true;
+        case RB_KEYCODE_j:
+            input_set_control(KEY_J, down);
+            return true;
+        case RB_KEYCODE_k:
+            input_set_control(KEY_K, down);
+            return true;
+        case RB_KEYCODE_l:
+            input_set_control(KEY_L, down);
+            return true;
+        case RB_KEYCODE_m:
+            input_set_control(KEY_M, down);
+            return true;
+        case RB_KEYCODE_n:
+            input_set_control(KEY_N, down);
+            return true;
+        case RB_KEYCODE_o:
+            input_set_control(KEY_O, down);
+            return true;
+        case RB_KEYCODE_p:
+            input_set_control(KEY_P, down);
+            return true;
+        case RB_KEYCODE_q:
+            input_set_control(KEY_Q, down);
+            return true;
+        case RB_KEYCODE_r:
+            input_set_control(KEY_R, down);
+            return true;
+        case RB_KEYCODE_s:
+            input_set_control(KEY_S, down);
+            return true;
+        case RB_KEYCODE_t:
+            input_set_control(KEY_T, down);
+            return true;
+        case RB_KEYCODE_u:
+            input_set_control(KEY_U, down);
+            return true;
+        case RB_KEYCODE_v:
+            input_set_control(KEY_V, down);
+            return true;
+        case RB_KEYCODE_w:
+            input_set_control(KEY_W, down);
+            return true;
+        case RB_KEYCODE_x:
+            input_set_control(KEY_X, down);
+            return true;
+        case RB_KEYCODE_y:
+            input_set_control(KEY_Y, down);
+            return true;
+        case RB_KEYCODE_z:
+            input_set_control(KEY_Z, down);
+            return true;
+        case RB_KEYCODE_SPACE:
+            input_set_control(KEY_SPACE, down);
+            return true;
+
         default:
             break;
     }
@@ -174,7 +257,7 @@ int engine_step(void) {
     fps = 1000.0 / delta;
     t1 = engine_get_ticks();
 
-    engine_update(delta);
+    engine_update(delta/1000.0f);
     engine_render(cam);
     
     char str[255];
@@ -300,13 +383,13 @@ int game_object_create(int type) {
     return obj->id;
 }
 
-void game_object_set_pos(int id, float x, float y, float z, bool add) {
+void game_object_set_pos(int id, float x, float y, float z, bool relative) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
-    
-    if (add) {
+
+    if (relative) {
         list_of_objects[id - 1]->pos.x += x;
         list_of_objects[id - 1]->pos.y += y;
         list_of_objects[id - 1]->pos.z += z;
@@ -318,13 +401,24 @@ void game_object_set_pos(int id, float x, float y, float z, bool add) {
     }
 }
 
-void game_object_set_scl(int id, float x, float y, float z, bool add) {
+vec3 game_object_get_position(int id) {
+    vec3 pos = { 0.0f, 0.0f, 0.0f };
+
+    if (id <= 0 || id > counter) {
+        rblog_num1("This object id does not exist: ", id);
+        return pos;
+    }
+
+    return list_of_objects[id - 1]->pos;
+}
+
+void game_object_set_scl(int id, float x, float y, float z, bool relative) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
 
-    if (add) {
+    if (relative) {
         list_of_objects[id - 1]->scl.x += x;
         list_of_objects[id - 1]->scl.y += y;
         list_of_objects[id - 1]->scl.z += z;
@@ -336,13 +430,13 @@ void game_object_set_scl(int id, float x, float y, float z, bool add) {
     }
 }
 
-void game_object_set_rot(int id, float x, float y, float z, bool add) {
+void game_object_set_rot(int id, float x, float y, float z, bool relative) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
 
-    if (add) {
+    if (relative) {
         list_of_objects[id - 1]->rot.x += x;
         list_of_objects[id - 1]->rot.y += y;
         list_of_objects[id - 1]->rot.z += z;
@@ -401,4 +495,8 @@ void game_object_set_dead(int id, bool flag) {
     }
     
     list_of_objects[id-1]->dead = flag;
+}
+
+void print_camera_data(camera3d* cam) {
+    printf("Camera: %f,%f,%f - %f,%f,%f : %f\n", cam->pos.x, cam->pos.y, cam->pos.z, cam->rot.x, cam->rot.y, cam->rot.z, cam->fov);
 }
