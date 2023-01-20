@@ -20,6 +20,8 @@ void input_clear_controls(void) {
 
 void input_set_control(uint8_t number, bool flag) {
     _controls[number] = flag;
+
+    printf("Set control %d to %d\n", number, flag);
 }
 
 bool input_get_control(uint8_t direction) {

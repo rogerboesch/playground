@@ -18,6 +18,8 @@
 #include <vectrex/vectrexInterface.h>
 #include "rb_pitrex_window.h"
 
+extern int engine_step(void);
+
 #define LIGHT_LOW       80
 #define LIGHT_HIGH      110
 #define LIGHT_DEFAULT   95
@@ -81,8 +83,8 @@ int pitrex_init(int width, int height) {
     v_setRefresh(50);
     v_setBrightness(60);
 
-    v_set_hardware_orientation(VECTREX_HORIZONTAL_INVERTED);
-    v_window(0, 0, width, height, 0); /* TODO: Put into settings */
+    v_set_hardware_orientation(VECTREX_HORIZONTAL);
+    v_window(0, 0, width, height, 1);
 
     return 1;
 }

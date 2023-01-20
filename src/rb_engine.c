@@ -315,8 +315,6 @@ int main(int argc, char *argv[]) {
 
 void game_objects_update(float delta) {
     for (int i = 0; i < counter; i++) {
-        print_object_data(i+1);
-
         if (list_of_objects[i]->dead == 0) {
             list_of_objects[i]->pos.x += (list_of_objects[i]->velocity.x * delta);
             list_of_objects[i]->pos.y += (list_of_objects[i]->velocity.y * delta);
