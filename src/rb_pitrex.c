@@ -52,7 +52,7 @@ void pitrex_delay(int64_t ms) {
 }
 
 void pitrex_draw_line(float x1, float y1, float x2, float y2) {
-    v_line(x1, y1, x2, y2, _light); /* TODO: Get from graphics */
+    v_line(360-x1, y1, 360-x2, y2, _light); /* TODO: Get from graphics */
 }
 
 void pitrex_draw_vtext(float x, float y, char* str) {
@@ -60,7 +60,7 @@ void pitrex_draw_vtext(float x, float y, char* str) {
     v_printString(x, y, str, size, _light); /* TODO: Get from graphics */
 #else
     v_setBrightness(LIGHT_DEFAULT);
-    v_printStringRaster(x, y, str, 40, -7, 0);
+    v_printStringRaster(x-127, y, str, 40, -7, 0);
 #endif
 }
 
@@ -83,7 +83,7 @@ int pitrex_init(int width, int height) {
     v_setRefresh(50);
     v_setBrightness(60);
 
-    v_set_hardware_orientation(VECTREX_HORIZONTAL);
+    v_set_hardware_orientation(VECTREX_INVERTED);
     v_window(0, 0, width, height, 0);
 
     return 1;
