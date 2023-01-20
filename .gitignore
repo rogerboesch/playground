@@ -4,6 +4,7 @@
 
 ### Custom ###
 build/
+src/playground
 .DS_Store
 
 ### C++ ###

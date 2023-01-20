@@ -17,5 +17,6 @@ unsigned int iabs(int val);
 double fast_rsqrt(double number);
 unsigned int fast_dist(int x, int y);
 unsigned int fast_dist2(int x, int y);
+int random_int(int min, int max);
 
 #endif

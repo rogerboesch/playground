@@ -18,6 +18,8 @@
 #include <vectrex/vectrexInterface.h>
 #include "rb_pitrex_window.h"
 
+extern int engine_step(void);
+
 #define LIGHT_LOW       80
 #define LIGHT_HIGH      110
 #define LIGHT_DEFAULT   95
@@ -26,6 +28,8 @@
 static int _light = LIGHT_DEFAULT;
 static bool _quit = false;
 static int _time_per_frame = 16;
+static int _screen_width = 0;
+static int _screen_height = 0;
 
 int get_brightness(int color) {    
     int light = (int)(10*color);
@@ -50,20 +54,19 @@ void pitrex_delay(int64_t ms) {
 }
 
 void pitrex_draw_line(float x1, float y1, float x2, float y2) {
-    v_line(x1, y1, x2, y2, _light); /* TODO: Get from graphics */
+    v_line(_screen_width-x1, y1, _screen_width-x2, y2, _light); /* TODO: Get from graphics */
 }
 
 void pitrex_draw_vtext(float x, float y, char* str) {
-#if 0
-    v_printString(x, y, str, size, _light); /* TODO: Get from graphics */
-#else
     v_setBrightness(LIGHT_DEFAULT);
-    v_printStringRaster(x, y, str, 40, -7, 0);
-#endif
+    v_printStringRaster(x-127, 127-y, str, 40, -7, 0);
 }
 
-int pitrex_init(void) {    
+int pitrex_init(int width, int height) {    
     vectrexinit(1);
+
+    _screen_width = width;
+    _screen_height = height;
 
 #ifndef FREESTANDING
     v_setName("VEXXON"); /* TODO: Put into settings */
@@ -80,7 +83,9 @@ int pitrex_init(void) {
 
     v_setRefresh(50);
     v_setBrightness(60);
-    v_window(0, 0, 362, 482, 0); /* TODO: Put into settings */
+
+    v_set_hardware_orientation(VECTREX_INVERTED);
+    v_window(0, 0, _screen_width, _screen_height, 0);
 
     return 1;
 }

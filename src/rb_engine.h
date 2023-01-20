@@ -28,7 +28,7 @@
 #define ENGINE_FLAGS_MAX 1
 
 #define COORDINATE_IS_RELATIVE true
-#define COORDINATE_IS_ABSOLUITE false
+#define COORDINATE_IS_ABSOLUTE false
 
 typedef struct {
     uint16_t screen_width, screen_height;
@@ -46,8 +46,8 @@ typedef struct {
     vec3 scl;
     vec3 rot;
     ARGB_color color;
-    vec3 speed;
-    vec3 rot_speed;
+    vec3 velocity;
+    vec3 rot_velocity;
     uint8_t hidden;
     uint8_t dead;
     float lifetime;
@@ -92,13 +92,18 @@ void engine_after_render(void);
 
 int game_object_create(int type);
 
-void game_object_set_pos(int id, float x, float y, float z, bool add);
-void game_object_set_scl(int id, float x, float y, float z, bool add);
-void game_object_set_rot(int id, float x, float y, float z, bool add);
-void game_object_set_speed(int id, float x, float y, float z);
-void game_object_set_rot_speed(int id, float x, float y, float z);
+void game_object_set_pos(int id, float x, float y, float z, bool relative);
+void game_object_set_scl(int id, float x, float y, float z, bool relative);
+void game_object_set_rot(int id, float x, float y, float z, bool relative);
+void game_object_set_velocity(int id, float x, float y, float z);
+void game_object_set_rot_velocity(int id, float x, float y, float z);
 void game_object_set_color(int id, ARGB_color color);
 void game_object_set_hidden(int id, bool flag);
 void game_object_set_dead(int id, bool flag);
+
+vec3 game_object_get_position(int id);
+
+void print_camera_data(camera3d* cam);
+void print_object_data(int id);
 
 #endif

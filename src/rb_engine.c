@@ -92,10 +92,9 @@ void engine_init(void) {
     draw_setgb(fb);
 
     // camera position/rotation
-    cam.pos = vec3_make(0.0, 0.0, 0.0);
-    cam.rot = vec3_make(0.0, 0.0, 0.0);
-    cam.fov = 1.0;
-    cam.distort = 0.0;
+    cam.pos = vec3_make(0.0f, 0.0f, 0.0f);
+    cam.rot = vec3_make(0.0f, 0.0f, 0.0f);
+    cam.fov = 1.0f;
 
     target.init(&cam);
 
@@ -139,7 +138,91 @@ bool engine_handle_key(RBEvent event) {
         case RB_KEYCODE_4:
             input_set_control(BUTTON_4, down);
             return true;
-            
+            // Game buttons
+
+        // Keys
+        case RB_KEYCODE_a:
+            input_set_control(KEY_A, down);
+            return true;
+        case RB_KEYCODE_b:
+            input_set_control(KEY_B, down);
+            return true;
+        case RB_KEYCODE_c:
+            input_set_control(KEY_C, down);
+            return true;
+        case RB_KEYCODE_d:
+            input_set_control(KEY_D, down);
+            return true;
+        case RB_KEYCODE_e:
+            input_set_control(KEY_E, down);
+            return true;
+        case RB_KEYCODE_f:
+            input_set_control(KEY_F, down);
+            return true;
+        case RB_KEYCODE_g:
+            input_set_control(KEY_G, down);
+            return true;
+        case RB_KEYCODE_h:
+            input_set_control(KEY_H, down);
+            return true;
+        case RB_KEYCODE_i:
+            input_set_control(KEY_I, down);
+            return true;
+        case RB_KEYCODE_j:
+            input_set_control(KEY_J, down);
+            return true;
+        case RB_KEYCODE_k:
+            input_set_control(KEY_K, down);
+            return true;
+        case RB_KEYCODE_l:
+            input_set_control(KEY_L, down);
+            return true;
+        case RB_KEYCODE_m:
+            input_set_control(KEY_M, down);
+            return true;
+        case RB_KEYCODE_n:
+            input_set_control(KEY_N, down);
+            return true;
+        case RB_KEYCODE_o:
+            input_set_control(KEY_O, down);
+            return true;
+        case RB_KEYCODE_p:
+            input_set_control(KEY_P, down);
+            return true;
+        case RB_KEYCODE_q:
+            input_set_control(KEY_Q, down);
+            return true;
+        case RB_KEYCODE_r:
+            input_set_control(KEY_R, down);
+            return true;
+        case RB_KEYCODE_s:
+            input_set_control(KEY_S, down);
+            return true;
+        case RB_KEYCODE_t:
+            input_set_control(KEY_T, down);
+            return true;
+        case RB_KEYCODE_u:
+            input_set_control(KEY_U, down);
+            return true;
+        case RB_KEYCODE_v:
+            input_set_control(KEY_V, down);
+            return true;
+        case RB_KEYCODE_w:
+            input_set_control(KEY_W, down);
+            return true;
+        case RB_KEYCODE_x:
+            input_set_control(KEY_X, down);
+            return true;
+        case RB_KEYCODE_y:
+            input_set_control(KEY_Y, down);
+            return true;
+        case RB_KEYCODE_z:
+            input_set_control(KEY_Z, down);
+            return true;
+        case RB_KEYCODE_SPACE:
+            input_set_control(KEY_SPACE, down);
+            return true;
+
         default:
             break;
     }
@@ -168,18 +251,19 @@ void engine_cleanup(void) {
 }
 
 int engine_step(void) {
-    float delta = 0.0;
+    float delta = 0.016f;
+
+#ifndef PITREX
     t2 = engine_get_ticks();
     delta = t2-t1;
     fps = 1000.0 / delta;
     t1 = engine_get_ticks();
 
+    delta = delta / 1000.0f;
+#endif
+
     engine_update(delta);
     engine_render(cam);
-    
-    char str[255];
-    sprintf(str, "FPS: %.0f", fps);
-    vtext_draw_string(560, 10, str, 1.0f);
 
     return 0;
 }
@@ -201,7 +285,7 @@ int main(int argc, char *argv[]) {
     target.settings(&settings);
 
 #ifdef PITREX
-    if (!pitrex_init()) {
+    if (!pitrex_init(settings.screen_width, settings.screen_height)) {
         return -1;
     }
 
@@ -228,13 +312,13 @@ int main(int argc, char *argv[]) {
 void game_objects_update(float delta) {
     for (int i = 0; i < counter; i++) {
         if (list_of_objects[i]->dead == 0) {
-            list_of_objects[i]->pos.x += (list_of_objects[i]->speed.x * delta);
-            list_of_objects[i]->pos.y += (list_of_objects[i]->speed.y * delta);
-            list_of_objects[i]->pos.z += (list_of_objects[i]->speed.z * delta);
+            list_of_objects[i]->pos.x += (list_of_objects[i]->velocity.x * delta);
+            list_of_objects[i]->pos.y += (list_of_objects[i]->velocity.y * delta);
+            list_of_objects[i]->pos.z += (list_of_objects[i]->velocity.z * delta);
 
-            list_of_objects[i]->rot.x += (list_of_objects[i]->rot_speed.x * delta);
-            list_of_objects[i]->rot.y += (list_of_objects[i]->rot_speed.y * delta);
-            list_of_objects[i]->rot.z += (list_of_objects[i]->rot_speed.z * delta);
+            list_of_objects[i]->rot.x += (list_of_objects[i]->rot_velocity.x * delta);
+            list_of_objects[i]->rot.y += (list_of_objects[i]->rot_velocity.y * delta);
+            list_of_objects[i]->rot.z += (list_of_objects[i]->rot_velocity.z * delta);
 
             if (list_of_objects[i]->lifetime > 0) {
                 list_of_objects[i]->life += delta;
@@ -281,13 +365,19 @@ int game_object_create(int type) {
     }
 
     game_object* obj = (game_object*)malloc(sizeof(game_object));
+
+    if (obj == NULL) {
+        rblog_num1("Cant allocate memory for object %d\n", counter+1);
+        return 0;
+    }
+
     obj->type = type;
     obj->pos.x = 0.0; obj->pos.y = 0.0; obj->pos.z = 0.0;
     obj->scl.x = 1.0; obj->scl.y = 1.0; obj->scl.z = 1.0;
     obj->rot.x = 0.0; obj->rot.y = 0.0; obj->rot.z = 0.0;
     obj->color = ARGB_WHITE;
-    obj->speed.x = 0.0; obj->speed.y = 0.0; obj->speed.z = 0.0;
-    obj->rot_speed.x = 0.0; obj->rot_speed.y = 0.0; obj->rot_speed.z = 0.0;
+    obj->velocity.x = 0.0; obj->velocity.y = 0.0; obj->velocity.z = 0.0;
+    obj->rot_velocity.x = 0.0; obj->rot_velocity.y = 0.0; obj->rot_velocity.z = 0.0;
     obj->hidden = 0;
     obj->dead = 0;
     obj->lifetime = 0;
@@ -300,13 +390,13 @@ int game_object_create(int type) {
     return obj->id;
 }
 
-void game_object_set_pos(int id, float x, float y, float z, bool add) {
+void game_object_set_pos(int id, float x, float y, float z, bool relative) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
-    
-    if (add) {
+
+    if (relative) {
         list_of_objects[id - 1]->pos.x += x;
         list_of_objects[id - 1]->pos.y += y;
         list_of_objects[id - 1]->pos.z += z;
@@ -318,13 +408,24 @@ void game_object_set_pos(int id, float x, float y, float z, bool add) {
     }
 }
 
-void game_object_set_scl(int id, float x, float y, float z, bool add) {
+vec3 game_object_get_position(int id) {
+    vec3 pos = { 0.0f, 0.0f, 0.0f };
+
+    if (id <= 0 || id > counter) {
+        rblog_num1("This object id does not exist: ", id);
+        return pos;
+    }
+
+    return list_of_objects[id - 1]->pos;
+}
+
+void game_object_set_scl(int id, float x, float y, float z, bool relative) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
 
-    if (add) {
+    if (relative) {
         list_of_objects[id - 1]->scl.x += x;
         list_of_objects[id - 1]->scl.y += y;
         list_of_objects[id - 1]->scl.z += z;
@@ -336,13 +437,13 @@ void game_object_set_scl(int id, float x, float y, float z, bool add) {
     }
 }
 
-void game_object_set_rot(int id, float x, float y, float z, bool add) {
+void game_object_set_rot(int id, float x, float y, float z, bool relative) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
 
-    if (add) {
+    if (relative) {
         list_of_objects[id - 1]->rot.x += x;
         list_of_objects[id - 1]->rot.y += y;
         list_of_objects[id - 1]->rot.z += z;
@@ -354,26 +455,26 @@ void game_object_set_rot(int id, float x, float y, float z, bool add) {
     }
 }
 
-void game_object_set_speed(int id, float x, float y, float z) {
+void game_object_set_velocity(int id, float x, float y, float z) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
     
-    list_of_objects[id-1]->speed.x = x;
-    list_of_objects[id-1]->speed.y = y;
-    list_of_objects[id-1]->speed.z = z;
+    list_of_objects[id-1]->velocity.x = x;
+    list_of_objects[id-1]->velocity.y = y;
+    list_of_objects[id-1]->velocity.z = z;
 }
 
-void game_object_set_rot_speed(int id, float x, float y, float z) {
+void game_object_set_rot_velocity(int id, float x, float y, float z) {
     if (id <= 0 || id > counter) {
         rblog_num1("This object id does not exist: ", id);
         return;
     }
     
-    list_of_objects[id-1]->rot_speed.x = x;
-    list_of_objects[id-1]->rot_speed.y = y;
-    list_of_objects[id-1]->rot_speed.z = z;
+    list_of_objects[id-1]->rot_velocity.x = x;
+    list_of_objects[id-1]->rot_velocity.y = y;
+    list_of_objects[id-1]->rot_velocity.z = z;
 }
 
 void game_object_set_color(int id, ARGB_color color) {
@@ -401,4 +502,18 @@ void game_object_set_dead(int id, bool flag) {
     }
     
     list_of_objects[id-1]->dead = flag;
+}
+
+void print_camera_data(camera3d* cam) {
+    printf("Camera: %f,%f,%f - %f,%f,%f : %f\n", cam->pos.x, cam->pos.y, cam->pos.z, cam->rot.x, cam->rot.y, cam->rot.z, cam->fov);
+}
+
+void print_object_data(int id) {
+    if (id <= 0 || id > counter) {
+        rblog_num1("This object id does not exist: ", id);
+        return;
+    }
+
+    game_object* obj = list_of_objects[id - 1];
+    printf("Object %d: P %.02f,%0.2f,%0.2f-S %0.2f,%0.2f,%0.2f-R %0.2f,%0.2f,%0.2f-V %0.2f,%0.2f,%0.2f-H:%d-D:%d\n", obj->id, obj->pos.x, obj->pos.y, obj->pos.z, obj->scl.x, obj->scl.y, obj->scl.z, obj->rot.x, obj->rot.y, obj->rot.z, obj->velocity.x, obj->velocity.y, obj->velocity.z, obj->hidden, obj->dead);
 }

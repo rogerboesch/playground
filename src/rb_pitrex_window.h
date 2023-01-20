@@ -19,4 +19,5 @@ void v_set_hardware_orientation(int orientation);
 void v_line(int xl, int yb, int xr, int yt, int col);
 void v_window(int xl, int yb, int xr, int yt, int clip_to_window);
 void v_clip(int xl, int yb, int xr, int yt);
+
 #endif

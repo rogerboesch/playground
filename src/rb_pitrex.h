@@ -24,7 +24,7 @@ double pitrex_get_ticks(void);
 void pitrex_draw_line(float x1, float y1, float x2, float y2);
 void pitrex_draw_vtext(float x, float y, char* str);
 
-int pitrex_init(void);
+int pitrex_init(int width, int height);
 int pitrex_run(void);
 
 #endif
