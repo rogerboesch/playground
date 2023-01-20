@@ -75,6 +75,9 @@ void vexxon_init(camera3d* cam) {
 }
 
 void vexxon_update(float delta, camera3d* cam) {
+//    printf("%f\n", delta);
+    delta = 0.016f;
+
     // End of level?
     vec3 player_pos = game_object_get_position(player_id);
     if (player_pos.z > 300) {
