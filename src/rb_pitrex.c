@@ -28,6 +28,8 @@ extern int engine_step(void);
 static int _light = LIGHT_DEFAULT;
 static bool _quit = false;
 static int _time_per_frame = 16;
+static int _screen_width = 0;
+static int _screen_height = 0;
 
 int get_brightness(int color) {    
     int light = (int)(10*color);
@@ -52,7 +54,7 @@ void pitrex_delay(int64_t ms) {
 }
 
 void pitrex_draw_line(float x1, float y1, float x2, float y2) {
-    v_line(360-x1, y1, 360-x2, y2, _light); /* TODO: Get from graphics */
+    v_line(_screen_width-x1, y1, _screen_width-x2, y2, _light); /* TODO: Get from graphics */
 }
 
 void pitrex_draw_vtext(float x, float y, char* str) {
@@ -66,6 +68,9 @@ void pitrex_draw_vtext(float x, float y, char* str) {
 
 int pitrex_init(int width, int height) {    
     vectrexinit(1);
+
+    _screen_width = width;
+    _screen_height = height;
 
 #ifndef FREESTANDING
     v_setName("VEXXON"); /* TODO: Put into settings */
@@ -84,7 +89,7 @@ int pitrex_init(int width, int height) {
     v_setBrightness(60);
 
     v_set_hardware_orientation(VECTREX_INVERTED);
-    v_window(0, 0, width, height, 0);
+    v_window(0, 0, _screen_width, _screen_height, 0);
 
     return 1;
 }

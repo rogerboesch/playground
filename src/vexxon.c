@@ -158,8 +158,6 @@ void vexxon_post_render(camera3d* cam) {
     vtext_draw_string(10, 50, "ARROW RIGHT  MOVE RIGHT", 0.5f);
     vtext_draw_string(10, 60, "ARROW UP     MOVE FORWARD", 0.5f);
     vtext_draw_string(10, 70, "ARROW DOWN   MOVE BACK", 0.5f);
-    vtext_draw_string(10, 80, "BUTTON 1     MOVE UP", 0.5f);
-    vtext_draw_string(10, 90, "BUTTON 2     MOVE DOWN", 0.5f);
 }
 
 void vexxon_cleanup(void) {}
