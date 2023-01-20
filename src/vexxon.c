@@ -30,10 +30,10 @@ static float player_movement = 10.0f;
 static float camera_x_offset = 0.0f;
 
 void vexxon_settings(setting* setting) {
-    setting->screen_width = 360*2;
-    setting->screen_height = 480*2;
-    setting->buffer_width = 360*2;
-    setting->buffer_height = 480*2;
+    setting->screen_width = 360;
+    setting->screen_height = 480;
+    setting->buffer_width = 360;
+    setting->buffer_height = 480;
     setting->fullscreen = false;
 }
 
@@ -119,6 +119,8 @@ void vexxon_update(float delta, camera3d* cam) {
             game_object_set_pos(player_id, pos.x, FLIGHT_FLOOR_LIMIT, pos.z, COORDINATE_IS_ABSOLUTE);
         }
     }
+
+    printf("Player: %f\n", player_pos.z);
 }
 
 void vexxon_pre_render(camera3d* cam) {
