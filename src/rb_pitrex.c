@@ -62,7 +62,7 @@ void pitrex_draw_vtext(float x, float y, char* str) {
 #endif
 }
 
-int pitrex_init(void) {    
+int pitrex_init(int width, int height) {    
     vectrexinit(1);
 
 #ifndef FREESTANDING
@@ -80,7 +80,7 @@ int pitrex_init(void) {
 
     v_setRefresh(50);
     v_setBrightness(60);
-    v_window(0, 0, 362, 482, 0); /* TODO: Put into settings */
+    v_window(0, 0, width, height, 0); /* TODO: Put into settings */
 
     return 1;
 }

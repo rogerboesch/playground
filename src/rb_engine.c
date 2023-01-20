@@ -289,7 +289,7 @@ int main(int argc, char *argv[]) {
     target.settings(&settings);
 
 #ifdef PITREX
-    if (!pitrex_init()) {
+    if (!pitrex_init(settings.screen_width, settings.screen_height)) {
         return -1;
     }
 
