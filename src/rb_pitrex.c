@@ -80,6 +80,8 @@ int pitrex_init(int width, int height) {
 
     v_setRefresh(50);
     v_setBrightness(60);
+
+    v_set_hardware_orientation(VECTREX_HORIZONTAL_INVERTED);
     v_window(0, 0, width, height, 0); /* TODO: Put into settings */
 
     return 1;
