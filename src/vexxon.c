@@ -38,17 +38,19 @@ void vexxon_settings(setting* setting) {
 }
 
 void vexxon_init(camera3d* cam) {
+#if 0
     // Follow
-    // cam->pos = vec3_make(0.0f, 2.0f, 0.0f);
-    // cam->rot = vec3_make(0.0f, 0.0f, 0.0f);
-
+    cam->pos = vec3_make(0.0f, 2.0f, 0.0f);
+    cam->rot = vec3_make(0.0f, 0.0f, 0.0f);
+#else
     // ISO view
     cam->pos = vec3_make(7.82f, 4.37f, 1.82f);
     cam->rot = vec3_make(0.0f, -0.43f, 0.0f);
+#endif
 
     // Player/Space fighter
     player_id = game_object_create(GAME_OBJECT_CUBE);
-    game_object_set_pos(player_id, 0.0f, 1.0f, 10.0f, COORDINATE_IS_ABSOLUTE);
+    game_object_set_pos(player_id, 0.0f, 0.0f, 10.0f, COORDINATE_IS_ABSOLUTE);
     game_object_set_velocity(player_id, 0, 0, player_speed);
 
     // Get camera offset for later update
