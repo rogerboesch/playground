@@ -264,10 +264,6 @@ int engine_step(void) {
 
     engine_update(delta);
     engine_render(cam);
-    
-    char str[255];
-    sprintf(str, "FPS: %.0f", fps);
-    vtext_draw_string(560, 10, str, 1.0f);
 
     return 0;
 }
