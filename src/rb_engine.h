@@ -104,5 +104,6 @@ void game_object_set_dead(int id, bool flag);
 vec3 game_object_get_position(int id);
 
 void print_camera_data(camera3d* cam);
+void print_object_data(int id);
 
 #endif

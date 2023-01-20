@@ -310,7 +310,7 @@ int main(int argc, char *argv[]) {
 
 void game_objects_update(float delta) {
     for (int i = 0; i < counter; i++) {
-        printf("Update object %d\n", i);
+        print_object_data(i);
 
         if (list_of_objects[i]->dead == 0) {
             list_of_objects[i]->pos.x += (list_of_objects[i]->velocity.x * delta);
@@ -366,6 +366,12 @@ int game_object_create(int type) {
     }
 
     game_object* obj = (game_object*)malloc(sizeof(game_object));
+
+    if (obj == NULL) {
+        rblog_num1("Cant allocate memory for object %d\n", counter+1);
+        return 0;
+    }
+
     obj->type = type;
     obj->pos.x = 0.0; obj->pos.y = 0.0; obj->pos.z = 0.0;
     obj->scl.x = 1.0; obj->scl.y = 1.0; obj->scl.z = 1.0;
@@ -501,4 +507,14 @@ void game_object_set_dead(int id, bool flag) {
 
 void print_camera_data(camera3d* cam) {
     printf("Camera: %f,%f,%f - %f,%f,%f : %f\n", cam->pos.x, cam->pos.y, cam->pos.z, cam->rot.x, cam->rot.y, cam->rot.z, cam->fov);
+}
+
+void print_object_data(int id) {
+    if (id <= 0 || id > counter) {
+        rblog_num1("This object id does not exist: ", id);
+        return;
+    }
+
+    game_object* obj = list_of_objects[id - 1];
+    printf("Object %d: %f,%f,%f - %f,%f,%f - %f,%f,%f > (%d, %d)\n", obj->id, obj->pos.x, obj->pos.y, obj->pos.z, obj->scl.x, obj->scl.y, obj->scl.z, obj->rot.x, obj->rot.y, obj->rot.z, obj->hidden, obj->dead);
 }
