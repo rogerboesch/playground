@@ -38,7 +38,7 @@ void vexxon_settings(setting* setting) {
 }
 
 void vexxon_init(camera3d* cam) {
-#if 0
+#if 1
     // Follow
     cam->pos = vec3_make(0.0f, 2.0f, 0.0f);
     cam->rot = vec3_make(0.0f, 0.0f, 0.0f);
@@ -57,7 +57,7 @@ void vexxon_init(camera3d* cam) {
     vec3 pos = game_object_get_position(player_id);
     camera_x_offset = pos.x - cam->pos.x;
 
-#if 0
+#if 1
     // Create some random level elements
     for (int i = 0; i < 10; i++) {
         int id = game_object_create(GAME_OBJECT_CUBE);
@@ -75,9 +75,6 @@ void vexxon_init(camera3d* cam) {
 }
 
 void vexxon_update(float delta, camera3d* cam) {
-//    printf("%f\n", delta);
-    delta = 0.016f;
-
     // End of level?
     vec3 player_pos = game_object_get_position(player_id);
     if (player_pos.z > 300) {

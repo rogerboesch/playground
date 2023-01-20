@@ -251,13 +251,18 @@ void engine_cleanup(void) {
 }
 
 int engine_step(void) {
-    float delta = 0.0;
+    float delta = 0.016f;
+
+#ifndef PITREX
     t2 = engine_get_ticks();
     delta = t2-t1;
     fps = 1000.0 / delta;
     t1 = engine_get_ticks();
 
-    engine_update(delta/1000.0f);
+    delta = delta / 1000.0f;
+#endif
+
+    engine_update(delta);
     engine_render(cam);
     
     char str[255];
