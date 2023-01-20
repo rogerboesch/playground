@@ -84,7 +84,7 @@ int pitrex_init(int width, int height) {
     v_setBrightness(60);
 
     v_set_hardware_orientation(VECTREX_HORIZONTAL);
-    v_window(0, 0, width, height, 1);
+    v_window(0, 0, width, height, 0);
 
     return 1;
 }
