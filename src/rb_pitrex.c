@@ -58,12 +58,8 @@ void pitrex_draw_line(float x1, float y1, float x2, float y2) {
 }
 
 void pitrex_draw_vtext(float x, float y, char* str) {
-#if 0
-    v_printString(x, y, str, size, _light); /* TODO: Get from graphics */
-#else
     v_setBrightness(LIGHT_DEFAULT);
-    v_printStringRaster(x-127, y, str, 40, -7, 0);
-#endif
+    v_printStringRaster(x-127, 127-y, str, 40, -7, 0);
 }
 
 int pitrex_init(int width, int height) {    
