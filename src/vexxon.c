@@ -57,6 +57,7 @@ void vexxon_init(camera3d* cam) {
     vec3 pos = game_object_get_position(player_id);
     camera_x_offset = pos.x - cam->pos.x;
 
+#if 0
     // Create some random level elements
     for (int i = 0; i < 10; i++) {
         int id = game_object_create(GAME_OBJECT_CUBE);
@@ -68,6 +69,7 @@ void vexxon_init(camera3d* cam) {
         game_object_set_scl(id, scale, 1.0f, 1.0f, COORDINATE_IS_ABSOLUTE);
         game_object_set_color(id, ARGB_RED);
     }
+#endif
 
     return;
 }

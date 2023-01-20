@@ -310,7 +310,7 @@ int main(int argc, char *argv[]) {
 
 void game_objects_update(float delta) {
     for (int i = 0; i < counter; i++) {
-        print_object_data(i);
+        print_object_data(i+1);
 
         if (list_of_objects[i]->dead == 0) {
             list_of_objects[i]->pos.x += (list_of_objects[i]->velocity.x * delta);
@@ -516,5 +516,5 @@ void print_object_data(int id) {
     }
 
     game_object* obj = list_of_objects[id - 1];
-    printf("Object %d: %f,%f,%f - %f,%f,%f - %f,%f,%f > (%d, %d)\n", obj->id, obj->pos.x, obj->pos.y, obj->pos.z, obj->scl.x, obj->scl.y, obj->scl.z, obj->rot.x, obj->rot.y, obj->rot.z, obj->hidden, obj->dead);
+    printf("Object %d: P %.02f,%0.2f,%0.2f-S %0.2f,%0.2f,%0.2f-R %0.2f,%0.2f,%0.2f-V %0.2f,%0.2f,%0.2f-H:%d-D:%d\n", obj->id, obj->pos.x, obj->pos.y, obj->pos.z, obj->scl.x, obj->scl.y, obj->scl.z, obj->rot.x, obj->rot.y, obj->rot.z, obj->velocity.x, obj->velocity.y, obj->velocity.z, obj->hidden, obj->dead);
 }
