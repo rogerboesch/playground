@@ -12,7 +12,6 @@
 #define SDL_INTERFACE_H
 
 #include "SDL.h"
-#include "SDL_image.h"
 
 #ifdef __cplusplus
     extern "C" {
