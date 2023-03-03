@@ -92,40 +92,15 @@ void vexxon_target_init(camera3d* cam) {
 
     _distance = START_DISTANCE;
     _space_area = -1;
-    int count = 0;
-
-#if 0
-    // Dont create entire level in init
-    while (level_has_more_lines()) {
-        level_line* line;
-        level_get_current_line(&line);
-
-        _create_section(line);
-
-        _distance += 10;
-
-        if (_space_area == -1 && line->border == 0) {
-            _space_area = count;
-        }
-
-        count++;
-    }
-#endif
 
     // Player/Space fighter
     player_id = game_object_create(GAME_OBJECT_CUBE);
     game_object_set_pos(player_id, 0.0f, 0.0f, 10.0f, COORDINATE_IS_ABSOLUTE);
     game_object_set_velocity(player_id, 0, 0, player_speed);
 
-#if 0
-    // Follow
-    cam->pos = vec3_make(0.0f, 2.0f, 0.0f);
-    cam->rot = vec3_make(0.0f, 0.0f, 0.0f);
-#else
     // ISO view
     cam->pos = vec3_make(7.82f, 4.37f, 1.82f);
     cam->rot = vec3_make(0.0f, -0.43f, 0.0f);
-#endif
 
     // Get camera offset for later update
     vec3 pos = game_object_get_position(player_id);
