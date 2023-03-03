@@ -17,6 +17,8 @@
 
 #include <math.h>
 
+#define SECTION_TIME         2.0    // Time when next section gets created
+
 #define LEVEL_WIDTH          20     // Width of field
 #define LEFT_BORDER         -10     // Right Border
 #define RIGHT_BORDER         10     // Left Border
@@ -41,13 +43,9 @@
 #define COLOR_JET           ARGB_RED
 #define COLOR_INFO          ARGB_YELLOW
 
-static int player_id = 0;
-static float player_speed = 10.0f;
-static float player_movement = 10.0f;
-static float camera_x_offset = 0.0f;
-
 void restart(camera3d* cam);
 
+void _add_next_section(float delta);
 void _create_section(level_line* line);
 void _add_left_border_cube(int height);
 void _add_right_border_cube(int height);
@@ -63,11 +61,19 @@ void _add_rocket(level_obj* obj);
 void _add_fuel_silo(level_obj* obj);
 void _add_end_level(level_obj* obj);
 
-int _distance = START_DISTANCE;
-int _space_area = -1;                // Here space starts (end of floor)
-float _speed = 0.0f;
-float _accel = 0.3f;
-float _moving = 0.1f;
+static int _distance = START_DISTANCE;      // Actual distance since start
+static int _space_area = -1;                // Here space starts (end of floor)
+static float _border_delay_time = 0.0f;     // Delay time since last section creation
+static int _section_count = -1;             // Number of sections already created
+
+float _speed = 0.0f;                        // Current speed
+float _accel = 0.3f;                        // Acceleration used
+float _moving = 0.1f;                       // Moving acceleration used
+
+static int player_id = 0;
+static float player_speed = 4.0f;
+static float player_movement = 10.0f;
+static float camera_x_offset = 0.0f;
 
 void vexxon_target_settings(setting* setting) {
     setting->screen_width = 330;
@@ -88,6 +94,8 @@ void vexxon_target_init(camera3d* cam) {
     _space_area = -1;
     int count = 0;
 
+#if 0
+    // Dont create entire level in init
     while (level_has_more_lines()) {
         level_line* line;
         level_get_current_line(&line);
@@ -102,14 +110,22 @@ void vexxon_target_init(camera3d* cam) {
 
         count++;
     }
+#endif
 
     // Player/Space fighter
     player_id = game_object_create(GAME_OBJECT_CUBE);
     game_object_set_pos(player_id, 0.0f, 0.0f, 10.0f, COORDINATE_IS_ABSOLUTE);
     game_object_set_velocity(player_id, 0, 0, player_speed);
 
+#if 0
+    // Follow
     cam->pos = vec3_make(0.0f, 2.0f, 0.0f);
     cam->rot = vec3_make(0.0f, 0.0f, 0.0f);
+#else
+    // ISO view
+    cam->pos = vec3_make(7.82f, 4.37f, 1.82f);
+    cam->rot = vec3_make(0.0f, -0.43f, 0.0f);
+#endif
 
     // Get camera offset for later update
     vec3 pos = game_object_get_position(player_id);
@@ -119,6 +135,9 @@ void vexxon_target_init(camera3d* cam) {
 }
 
 void vexxon_target_update(float delta, camera3d* cam) {
+    // Instead we create here the next section when we need it
+    _add_next_section(delta);
+
     // End of level?
     vec3 player_pos = game_object_get_position(player_id);
 
@@ -173,17 +192,6 @@ void vexxon_target_pre_render(camera3d* cam) {
     double hpos = (0.5 + tan(cam->rot.x) * cam->fov)* res.y;
     draw_line((vec2) { 0.0, hpos }, (vec2) { res.x, hpos });
 
-    draw_setcolor(COLOR_FLOOR);
-
-    int offset = START_DISTANCE / 10;
-
-    for (int i = 0; i < _space_area + offset; i++) {
-        vec3 start = { LEFT_BORDER, 0, 5 + i * 10 };
-        vec3 end = { LEFT_BORDER + LEVEL_WIDTH, 0, 5 + i * 10 };
-
-        draw3d_line(start, end, *cam);
-    }
-
     draw_setcolor(COLOR_INFO);
     vtext_draw_string(10, 40, "ARROW LEFT   MOVE LEFT", 0.5f);
     vtext_draw_string(10, 50, "ARROW RIGHT  MOVE RIGHT", 0.5f);
@@ -225,6 +233,29 @@ void game_main(void) {
 void restart(camera3d* cam) {
     game_object_set_pos(player_id, 0.0f, 1.0f, 10.0f, COORDINATE_IS_ABSOLUTE);
     cam->pos = vec3_make(7.82f, 4.37f, 1.82f);
+}
+
+void _add_next_section(float delta) {
+    _border_delay_time += delta;
+
+    if (_border_delay_time >= SECTION_TIME) {
+        if (level_has_more_lines()) {
+            level_line* line;
+            level_get_current_line(&line);
+
+            _create_section(line);
+
+            _distance += 10;
+
+            if (_space_area == -1 && line->border == 0) {
+                _space_area = _section_count;
+            }
+
+            _section_count++;
+        }
+
+        _border_delay_time = 0.0f;
+    }
 }
 
 void _create_section(level_line* line) {

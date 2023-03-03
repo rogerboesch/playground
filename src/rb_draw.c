@@ -60,6 +60,10 @@ int _clip_get_outcode(vec2 point) {
 }
 
 void _clip(_linedraw_func func, vec2 start, vec2 end) {
+    // Clipping has a bug but since we check after every line draw again we can pass here for now
+    (*func)(start, end);
+    return;
+    
     // Cohen-Sutherland viewport clipping
     const int xmin = 0, ymin = 0;
     int xmax = draw_gb->width-1, ymax = draw_gb->height-1;
