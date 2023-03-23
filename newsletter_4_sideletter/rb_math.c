@@ -17,6 +17,7 @@
 
 #include <math.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 unsigned int iabs(int val) {
     int temp = val >> 8*(sizeof(int)-1);
