@@ -94,21 +94,15 @@ public:
 private:
     GameObject* _spaceship;
     GameObject* _player;
-    GameObject* _shadow;
     GameObject* _tank;
     GameObject* _rocket;
     GameObject* _jet;
-    GameObject* _bullet;
     Mesh* _spaceshipMesh;
     
     int _levelNumber = 1;
     Level _level;
 
     bool _topView = false;
-    int _bullets_available = SCORE_BULLETS;
-    float _fuel_available = SCORE_FUEL;
-    int _fuel_per_second = SCORE_FUEL_PS;
-    int _score_per_second = SCORE_FUEL_PS;
 
     float _score = 0;
     GAME_STATE _state = GAME_INITIALIZE;
@@ -124,10 +118,6 @@ protected:
             return false;
         }
         
-        _bullets_available = _level.bullets;
-        _fuel_available = _level.fuel;
-        _fuel_per_second = _level.fuel_per_second;
-
         // To preload the objects
         _spaceship = new GameObject("spaceship");
         _jet = new GameObject("jet", LEVEL_OBJECT_JET_STANDING);
@@ -138,9 +128,6 @@ protected:
 
         _rocket = new GameObject("rocket", LEVEL_OBJECT_ROCKET);
         _rocket->SetColor(colorRed);
-
-        _bullet = new GameObject("bullet", LEVEL_OBJECT_BULLET);
-        _bullet->SetColor(colorYellow);
 
         _player = new GameObject(_jet->GetMesh(), GAME_OBJECT_PLAYER);
         _player->SetPosition(PLAYER_PLAY);
@@ -153,13 +140,6 @@ protected:
         _spaceship->SetColor(colorBlue);
         AddGameObject(_spaceship);
 
-        _shadow = new GameObject(GAME_OBJECT_TYPE_RECTANGLE);
-        _shadow->SetPosition(0, 0, 0);
-        _shadow->SetColor(colorWhite);
-        _shadow->SetSpeed(0, 0, 0);
-        _shadow->SetHidden(false);
-        AddGameObject(_shadow);
-
 		Mat4x4 matProj = MatrixMakeProjection(90.0f, (float)GetScreenHeight() / (float)GetScreenWidth(), 0.1f, 1000.0f);
 		SetProjectionMatrix(matProj);
 
@@ -171,8 +151,6 @@ protected:
 	}
 
 	virtual bool OnUpdate(float deltaTime) {
-        RemoveDeadObjects();
-
         if (_state == GAME_INTRO) {
             AddNextSection(deltaTime);
             IntroScene();
@@ -189,47 +167,12 @@ protected:
                 _player->SetRotationSpeed(0, 0, 0);
                 _player->SetScale(1, 1, 1);
                 _player->SetHidden(false);
-                _shadow->SetHidden(false);
                 _spaceship->SetHidden(true);
                 
                 SetCamera(GAME_PLAY);
             }
         }
-        else if (_state == GAME_LOST) {
-            DrawHUD();
-
-            _player->SetHidden(false);
-            _shadow->SetHidden(false);
-            _player->SetRotationSpeed(2, 2, 2);
-
-            if (IsControlPressed(CONTROL1_BTN4)) {
-                Restart();
-            }
-        }
-        else if (_state == GAME_END) {
-            DrawHUD();
-
-            AddNextSection(deltaTime);
-            
-            if (IsControlPressed(CONTROL1_BTN4)) {
-                Restart();
-            }
-            else if (IsControlPressed(CONTROL1_BTN1)) {
-                // Next level, not implemented yet
-            }
-        }
-        else {
-            if (_fuel_available <= 0) {
-                _state = GAME_LOST;
-                return true;
-            }
-            
-            _fuel_available -= _fuel_per_second*deltaTime;
-            _score += _score_per_second*deltaTime;
-            
-            DrawShadow();
-            DrawHUD();
-            
+        else {            
             AddNextSection(deltaTime);
 
             VerifyGameObjects();
@@ -262,17 +205,6 @@ protected:
                         _player->SetRotation(0, 0, 0);
                     }
                 }
-
-                if (IsControlPressed(CONTROL1_BTN2)) {
-                    _shadow->ToggleHidden();
-                }
-
-                if (IsControlHold(CONTROL1_BTN3)) {
-                    FireBullets(2);
-                }
-                else if (IsControlHold(CONTROL1_BTN4)) {
-                    FireBullets(1);
-                }
             }
         }
         
@@ -285,13 +217,10 @@ protected:
     void Restart() {
         _spaceship->SetHidden(true);
 
-        _shadow->SetHidden(false);
         _player->SetHidden(false);
         _player->SetRotationSpeed(0, 0, 0);
         
         _level.Rewind();
-        _bullets_available = _level.bullets;
-        _fuel_available = _level.fuel;
         _score = 0;
 
         _state = GAME_PLAY;
@@ -313,7 +242,6 @@ private:
         _spaceship->SetScale(3, 3, 3);
 
         _player->SetHidden(true);
-        _shadow->SetHidden(true);
     }
 
 // MARK: - State helpers
@@ -336,14 +264,6 @@ private:
         }
 
         _player->SetPosition(pos);
-    }
-
-    void RemoveDeadObjects() {
-        for (auto gameObject : m_gameObjects) {
-            if (gameObject->GetPosition().z < -40) {
-                gameObject->SetDead();
-            }
-        }
     }
 
     void SetCamera(int state) {
@@ -656,69 +576,11 @@ private:
                     return;
                 }
             }
-            
-            // Enemy alarms
-            if (!gameObject->IsDead() && gameObject->GetPosition().z < DISTANCE_ALARM) {
-                int tag = gameObject->GetTag();
-
-                switch (tag) {
-                    case LEVEL_OBJECT_JET_FLYING:
-                        DrawBitmapString(STR_FLIGHT_ALARM, 20, 60, 20, colorRed);
-                        return;
-                    case LEVEL_OBJECT_JET_STANDING:
-                        DrawBitmapString(STR_PLANE_ALARM, 20, 60, 20, colorYellow);
-                        return;
-                    case LEVEL_OBJECT_ROCKET:
-                        DrawBitmapString(STR_ROCKET_ALARM, 20, 60, 20, colorRed);
-                        return;
-                    case LEVEL_OBJECT_TANK:
-                        DrawBitmapString(STR_TANK_ALARM, 20, 60, 20, colorViolett);
-                        return;
-                }
-            }
         }
     }
 
 // MARK: - Player
 private:
-
-    void FireBullet(int offset) {
-        Vec3D pos = _player->GetPosition();
-
-        // Center
-        GameObject* cube = new GameObject(_bullet->GetMesh(), LEVEL_OBJECT_BULLET);
-        cube->SetLifeTime(1.0);
-        cube->SetPosition(pos.x+offset, pos.y, pos.z);
-        cube->SetSpeed(0, 0, 60);
-        cube->SetColor(colorYellowLight);
-        AddGameObject(cube);
-    }
-
-    void FireBullets(int bullets) {
-        if (_bullets_available <= 0) {
-            RBLOG("Fire: NO BULLETS LEFT");
-            return;
-        }
-        
-        switch (bullets) {
-            case 1:
-                FireBullet(0);
-                break;
-            case 2:
-                FireBullet(-1);
-                FireBullet(1);
-                break;
-            case 3:
-                FireBullet(-1);
-                FireBullet(0);
-                FireBullet(1);
-                break;
-            default:
-                return;
-        }
-
-        _bullets_available -= bullets;
-    }
 
 // MARK: - Drawing
 private:
@@ -727,53 +589,6 @@ private:
         DrawLine(134, HORIZONT, SCREEN_WIDTH-136, HORIZONT, colorGray);
     }
     
-    void DrawHUD() {
-        Vec3D pos = _player->GetPosition();
-        float y = -pos.y - MIN_FLY_HEIGHT;
-        float height = 100*y/(MAX_FLY_HEIGHT-MIN_FLY_HEIGHT);
-        
-        DrawLine(10, HORIZONT, 10, HORIZONT+100, colorGray);
-        DrawLine(10, HORIZONT, 10, HORIZONT+height, colorGreen);
-        DrawLine(11, HORIZONT, 11, HORIZONT+height, colorGreen);
-
-        DrawBitmapString(STR_HEIGHT_ABBRV, 6, 130, 40, 100);
-
-        char temp[256];
-        sprintf(temp, "B %03d", _bullets_available);
-        DrawBitmapString(temp, 20, 20, 40, _bullets_available >= SCORE_BULLETS_ALARM ? colorWhite : colorRed);
-
-        sprintf(temp, "F %03d", (int)_fuel_available);
-        DrawBitmapString(temp, 100, 20, 40, _fuel_available >= SCORE_FUEL_ALARM ? colorWhite : colorRed);
-
-        sprintf(temp, "S %04d", (int)_score);
-        DrawBitmapString(temp, 280, 20, 40, 100);
-                
-        if (_state == GAME_END) {
-            DrawBitmapString(STR_LEVEL_END,  60, 60, 40, colorYellow);
-        }
-        else if (_state == GAME_LOST) {
-            DrawBitmapString(STR_LEVEL_LOST,  60, 60, 40, colorRed);
-        }
-    }
-    
-    void DrawCross() {
-        Vec3D pos = _player->GetPosition();
-
-        float x = GetScreenWidth()/2-(pos.x*5);
-        float y = -1*(pos.y-GROUND)*5;
-        y += HORIZONT;
-        
-        DrawLine(x, y+20, x, y-20, colorGray);
-        DrawLine(x-20, y, x+20, y, colorGray);
-    }
-    
-    void DrawShadow() {
-        Vec3D pos = _player->GetPosition();
-        pos.z = -pos.y/2;
-        pos.y = 0;
-
-        _shadow->SetPosition(pos);
-    }
 };
 
 extern "C" {
