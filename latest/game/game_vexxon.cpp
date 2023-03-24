@@ -35,12 +35,13 @@
 #define SECTION_TIME         2.0    // Time until next section gets created
 
 #define CAMERA_INTRO        {0, 0, -9}
-#define CAMER_YAW_INTRO     0
+#define CAMERA_YAW_INTRO    0
 #define CAMERA_PLAY         {-21.799999,-7.900000,-7.290111}
 #define CAMERA_YAW_PLAY      -0.916769
 
-#define PLAYER_INTRO        {0, 2, 0}
+#define PLAYER_INTRO        { 0,  2, 0}
 #define PLAYER_PLAY         {-5, -2, 0}
+
 #define MAX_FLY_HEIGHT       6      // Maximum height of flight
 #define MIN_FLY_HEIGHT       2      // Minimum height of flight
 
@@ -63,21 +64,21 @@
 #define SPEED_GROUND        -10     // Ground speed
 #define SPEED_TANK          -8      // Speed of tanksend
 
-#define STR_PRG_NAME (char*)"VEXXON"
-#define STR_COPYRIGHT (char*)"VEXXON 0.3.5 BY RORO"
-#define STR_START_MSG (char*)"PRESS BUTTON TO START"
-#define STR_FLIGHT_ALARM (char*)"FLIGHT ALARM"
-#define STR_PLANE_ALARM (char*)"PLANE ALARM"
-#define STR_TANK_ALARM (char*)"TANK ALARM"
-#define STR_ROCKET_ALARM (char*)"ROCKET ALARM"
-#define STR_HEIGHT_ABBRV (char*)"H"
-#define STR_LEVEL_END (char*)"LEVEL COMPLETED"
-#define STR_LEVEL_LOST (char*)"LEVEL LOST"
+constexpr auto STR_PRG_NAME = (char*)"VEXXON";
+constexpr auto STR_COPYRIGHT = (char*)"VEXXON 0.3.5 BY RORO";
+constexpr auto STR_START_MSG = (char*)"PRESS BUTTON TO START";
+constexpr auto STR_FLIGHT_ALARM = (char*)"FLIGHT ALARM";
+constexpr auto STR_PLANE_ALARM = (char*)"PLANE ALARM";
+constexpr auto STR_TANK_ALARM = (char*)"TANK ALARM";
+constexpr auto STR_ROCKET_ALARM = (char*)"ROCKET ALARM";
+constexpr auto STR_HEIGHT_ABBRV = (char*)"H";
+constexpr auto STR_LEVEL_END = (char*)"LEVEL COMPLETED";
+constexpr auto STR_LEVEL_LOST = (char*)"LEVEL LOST";
 
 #define GAME_OBJECT_PLAYER 100
 
 typedef enum _GAME_STATE {
-    GAME_INITIALIZE, GAME_INTRO, GAME_PLAY, GAME_END, GAME_LOST
+    GAME_INITIALIZE, GAME_INTRO, GAME_PLAY, GAME_END
 } GAME_STATE;
 
 int random(int min, int max) {
@@ -269,7 +270,7 @@ private:
     void SetCamera(int state) {
         if (state == GAME_INTRO) {
             SetCameraPos(CAMERA_INTRO);
-            _fYaw = CAMER_YAW_INTRO;
+            _fYaw = CAMERA_YAW_INTRO;
         }
         else {
             SetCameraPos(CAMERA_PLAY);
