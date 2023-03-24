@@ -10,7 +10,6 @@ Vexxon is a Zaxxon alike game I write for the PiTrex as part of my [Vectrex news
 
 This project allows to build, execute and test **PiTrex** games on Windows, macOS and Linux.
 
-If you are only interested to use it without building at first, take a look in the [distribution folder](distribution/))
 
 ### Setup
 

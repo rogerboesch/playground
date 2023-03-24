@@ -87,10 +87,17 @@ set(CMAKE_CXX_STANDARD 17)
 
 set(TARGET Playground)
 
-add_executable(${TARGET} ${PLAYGROUND_SOURCES} ${BASE_SOURCES} ${ENGINE3D_SOURCES} ${GAME_SOURCES} ${ASSET_FILES})
+if(MSVC)
+    add_executable(${TARGET} ${PLAYGROUND_SOURCES} ${BASE_SOURCES} ${ENGINE3D_SOURCES} ${GAME_SOURCES})
+endif()
 
 if(APPLE)
+    add_executable(${TARGET} ${PLAYGROUND_SOURCES} ${BASE_SOURCES} ${ENGINE3D_SOURCES} ${GAME_SOURCES} ${ASSET_FILES})
     set_target_properties(Playground PROPERTIES MACOSX_BUNDLE TRUE MACOSX_FRAMEWORK_IDENTIFIER org.cmake.ExecutableTarget RESOURCE "${ASSET_FILES}" )
+endif()
+
+if(UNIX AND NOT APPLE)
+add_executable(${TARGET} ${PLAYGROUND_SOURCES} ${BASE_SOURCES} ${ENGINE3D_SOURCES} ${GAME_SOURCES} ${ASSET_FILES})
 endif()
 
 # ==============================================================================
@@ -109,7 +116,6 @@ endif()
 if(UNIX AND NOT APPLE)
     target_compile_options(${TARGET} PRIVATE -D_POSIX_C_SOURCE=200809L)
 endif()
-
 
 # ==============================================================================
 # Link libraries
