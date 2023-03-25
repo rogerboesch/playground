@@ -627,6 +627,14 @@ extern "C" {
         game = NULL;
     }
 
+    void game_update_controls(float deltaTime) {
+        if (game == NULL) {
+            return;
+        }
+
+        game->UpdateControlStates(deltaTime);
+    }
+
     void game_set_control_state(int code, int state) {
         if (game == NULL) {
             return;

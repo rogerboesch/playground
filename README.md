@@ -6,7 +6,29 @@ Vexxon is a Zaxxon alike game I write for the PiTrex as part of my [Vectrex news
 
 ![Vexxon - The Game](doc/game.png)
 
-## Playground
+## PiTrex
+
+### Setup
+
+Before you start build the project files you have to setup at first your PiTrex SD card.
+Read this [Newsletter Post](https://vectrex.substack.com/p/newsletter-0-the-pitrex-card) on how this is done.
+
+### Setup assets folder
+
+You must **copy all files** from ```src/game/assets``` to ```{HOME_FOLDER}\Documents\RBProjects```.
+
+
+### Build
+
+```
+$ git clone https://github.com/rogerboesch/playground
+$ cd playground
+$ cd src/pitrex
+$ mkdir build
+$ make
+```
+
+## Playground App
 
 This project allows to build, execute and test **PiTrex** games on Windows, macOS and Linux.
 
@@ -20,7 +42,7 @@ This project allows to build, execute and test **PiTrex** games on Windows, macO
 ### Setup assets folder
 
 For macOS you don't have to do anything, the asset files are copied into the application bundle.
-If you are on Windows or Linux you must **copy all files** from ```game/assets``` to ```{HOME_FOLDER}\Documents\RBProjects```.
+If you are on Windows or Linux you must **copy all files** from ```src/game/assets``` to ```{HOME_FOLDER}\Documents\RBProjects```.
 
 
 ### Windows
@@ -35,7 +57,7 @@ To **build** Playground.exe you have to install **SDL2** on your Windows machine
 ```
     C:\> SET SDL2DIR={PATH_TO_FOLDER}
     C:\> git clone https://github.com/rogerboesch/playground.git
-    C:\> cd playground\latest\playground
+    C:\> cd playground\src\playground
 ```
 
 after that create the Visual Studio (I use 2022) project with
@@ -58,7 +80,7 @@ For this I use homebrew (package manager).
 ```
     $ brew install sdl2
     $ git clone https://github.com/rogerboesch/playground.git
-    $ cd playground/latest/playground
+    $ cd playground/src/playground
 ```
 
 after that create the XCode project with
@@ -79,7 +101,7 @@ To **build** Playground you have to install **SDL2** on your Linux machine.
 ```
     $ sudo apt-get install libsdl2-dev
     $ git clone https://github.com/rogerboesch/playground.git
-    $ cd playground\latest\playgropund\
+    $ cd playground\src\playground\
 ```
 
 after that create the make file with

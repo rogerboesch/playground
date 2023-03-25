@@ -479,17 +479,12 @@ void GameEngine::ChangeControlState(int code, bool flag, float deltaTime) {
 }
 
 void GameEngine::UpdateControlStates(float deltaTime) {
-#if 0
+    // This must be called each from outside if NEEDED by a platform (Ex. PiTrex)
+    // It's not called by the engine itself anymore 
     for (int i = 0; i < MAX_CONTROLS; i ++) {
         bool state = platform_get_control_state(i+1);
         ChangeControlState(i, state, deltaTime);
     }
-#endif
-}
-
-void GameEngine::DumpControl(int code) {
-    //RBLOG_NUM1("Control", code+1);
-    //RBLOG_NUM1(" Platform", platform_get_control_state(code+1));
 }
 
 // MARK: - Lifeycle
@@ -575,15 +570,13 @@ void GameEngine::Frame() {
     
     SyncFrame(40);
     
-    platform_on_frame();
-
     _timer2 = platform_get_ms();
     float deltaTime = _timer2 - _timer1;
     _timer1 = _timer2;
 
     deltaTime /= 1000.0f;
     
-    UpdateControlStates(deltaTime);
+    platform_on_frame(deltaTime);
     
     bool result = OnUpdate(deltaTime);
 
