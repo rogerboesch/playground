@@ -4,7 +4,7 @@
 
 Vexxon is a Zaxxon alike game I write for the PiTrex as part of my [Vectrex newsletter](https://vectrex.substack.com)
 
-![Vexxon - The Game](doc/game.png)
+![Vexxon - The Game](doc/gameplay.gif)
 
 ## PiTrex
 
