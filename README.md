@@ -10,7 +10,7 @@ Vexxon is a Zaxxon alike game I write for the PiTrex as part of my [Vectrex news
 
 ### Setup
 
-Before you start build the project files you have to setup at first your PiTrex SD card.
+Before you start build the pro7ject files you have to setup at first your PiTrex SD card.
 Read this [Newsletter Post](https://vectrex.substack.com/p/newsletter-0-the-pitrex-card) on how this is done.
 
 ### Setup assets folder
