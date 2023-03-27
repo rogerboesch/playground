@@ -20,7 +20,7 @@ extern "C" {
 }
 
 extern "C" {
-    int pitrex_init(char* name, int width, int height);
+    int pitrex_init(const char* name, int width, int height);
     void pitrex_frame(void);
     void pitrex_handle_input(void);
     void pitrex_draw_line(float x1, float y1, float x2, float y2);

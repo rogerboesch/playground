@@ -19,11 +19,11 @@
 
 void game_set_control_state(int code, int state);
 
+int pitrex_init(const char* name, int width, int height);
+void pitrex_frame(void);
 void pitrex_delay(int64_t ms);
 void pitrex_draw_line(float x1, float y1, float x2, float y2);
 void pitrex_draw_vtext(float x, float y, char* str);
-int pitrex_init(char* name, int width, int height);
-void pitrex_frame(void);
 double pitrex_get_ticks(void);
 int pitrex_get_brightness(int color);
 
@@ -83,14 +83,14 @@ void pitrex_draw_vtext(float x, float y, char* str) {
     v_printStringRaster(x-127, 127-y, str, 40, -7, 0);
 }
 
-int pitrex_init(char* name, int width, int height) {    
+int pitrex_init(const char* name, int width, int height) {    
     vectrexinit(1);
 
     _screen_width = width;
     _screen_height = height;
 
 #ifndef FREESTANDING
-    v_setName("VEXXON"); /* TODO: Put into settings */
+    v_setName(name);
 #endif
 
     v_init();
