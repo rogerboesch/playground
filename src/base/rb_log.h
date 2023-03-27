@@ -18,7 +18,8 @@ extern "C" {
 	void rb_message(const char* msg, int user, int cr);
 	void rb_message_str1(const char* msg, const char* str1, int user, int cr);
 	void rb_message_num1(const char* msg, int num1, int user, int cr);
-    void rb_message_trace(const char* clazz, const char* function);
+	void rb_message_fnum1(const char* msg, float num1, int user, int cr);
+	void rb_message_trace(const char* clazz, const char* function);
 
 #ifdef __cplusplus
 }
@@ -30,6 +31,7 @@ extern "C" {
 #define RBLOG(msg) rb_message(msg, 0, 1);
 #define RBLOG_STR1(msg, str1) rb_message_str1(msg, str1, 0, 1);
 #define RBLOG_NUM1(msg, num1) rb_message_num1(msg, num1, 0, 1);
+#define RBLOG_FLOAT1(msg, num1) rb_message_fnum1(msg, num1, 0, 1);
 
 // Messages are showed to user and added to log (CR is added)
 #define RBMSG(msg) rb_message(msg, true, true);

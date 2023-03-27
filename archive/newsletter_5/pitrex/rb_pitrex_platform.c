@@ -41,7 +41,7 @@ int pitrex_get_brightness(int color) {
 }
 
 double pitrex_get_ticks(void) {
-    return v_millis() / 1000.0f;
+    return v_millis();
 }
 
 void pitrex_frame(void) {

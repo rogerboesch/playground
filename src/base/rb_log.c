@@ -38,6 +38,17 @@ void rb_message_num1(const char* msg, int num1, int user, int cr) {
 #endif
 }
 
+void rb_message_fnum1(const char* msg, float num1, int user, int cr) {
+	UNUSED_VAR(user);
+
+#ifdef ML_LUMIN
+	__android_log_print(ANDROID_LOG_ERROR, (const char*)"rblog", "%s: %f", msg, num1);
+#else
+	if (cr) printf("rblog> %s: %f\n", msg, num1);
+	else printf("rblog> %s: %f", msg, num1);
+#endif
+}
+
 void rb_message_trace(const char* clazz, const char* function) {
 #ifdef ML_LUMIN
     __android_log_print(ANDROID_LOG_ERROR, (const char*)"rblog", "%s::%s()", clazz, function);

@@ -39,7 +39,7 @@ void GameEngine::DrawBitmapString(char* msg, int x, int y, int size, byte color)
 // MARK: - Drawing
 
 void GameEngine::DrawLine(int x1, int y1, int x2, int y2, byte color) {
-    platform_draw_line(x1, y1, x2, y2, color, INVERT_OFF);
+    platform_draw_line(x1, y1, x2, y2, color, INVERT_ON);
 }
 
 void GameEngine::SetPixel(int x, int y, uint8_t paletteColor, int brightness) {
@@ -522,7 +522,7 @@ void GameEngine::Start() {
     _finished = !OnCreate();
     _timer1 = platform_get_ms();
 
-    if (!_finished) {
+    if (_finished) {
         RBLOG("OnCreate() failed");
     }
     else {
@@ -578,6 +578,8 @@ void GameEngine::Frame() {
 
     deltaTime /= 1000.0f;
     
+    RBLOG_FLOAT1("Delta time: ", deltaTime);
+
     platform_on_frame(deltaTime);
     
     bool result = OnUpdate(deltaTime);

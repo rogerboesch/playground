@@ -520,7 +520,7 @@ void GameEngine::Start() {
     _finished = !OnCreate();
     _timer1 = platform_get_ms();
 
-    if (!_finished) {
+    if (_finished) {
         RBLOG("OnCreate() failed");
     }
     else {
