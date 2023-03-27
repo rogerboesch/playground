@@ -90,7 +90,7 @@ int pitrex_init(const char* name, int width, int height) {
     _screen_height = height;
 
 #ifndef FREESTANDING
-    v_setName(name);
+    v_setName((char *)name);
 #endif
 
     v_init();
