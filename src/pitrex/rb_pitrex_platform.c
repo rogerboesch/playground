@@ -17,7 +17,17 @@
 #include <pitrex/pitrexio-gpio.h>
 #include <vectrex/vectrexInterface.h>
 
-extern int engine_step(void);
+void game_set_control_state(int code, int state);
+
+// Must be aligned to constants in rb_engine.hpp
+#define CONTROL1_BTN1        0
+#define CONTROL1_BTN2        1
+#define CONTROL1_BTN3        2
+#define CONTROL1_BTN4        3
+#define CONTROL1_JOY_LEFT    4
+#define CONTROL1_JOY_RIGHT   5
+#define CONTROL1_JOY_UP      6
+#define CONTROL1_JOY_DOWN    7
 
 #define LIGHT_LOW       80
 #define LIGHT_HIGH      110
@@ -25,7 +35,7 @@ extern int engine_step(void);
 #define LIGHT_STEPS     (LIGHT_HIGH-LIGHT_LOW)/10
 
 static int _light = LIGHT_DEFAULT;
-static bool _quit = false;
+static int _quit = 0;
 static int _time_per_frame = 16;
 static int _screen_width = 0;
 static int _screen_height = 0;
@@ -92,36 +102,36 @@ int pitrex_init(int width, int height) {
 void pitrex_handle_input() {
     // Handle joystick 1
     if (currentJoy1X < -50) {
-        input_set_control(CONTROL_LEFT, true);
+        game_set_control_state(CONTROL1_JOY_LEFT, true);
     }
     else {
-        input_set_control(CONTROL_LEFT, false);
+        game_set_control_state(CONTROL1_JOY_LEFT, false);
     }    
 
     if (currentJoy1X > 50) {
-        input_set_control(CONTROL_RIGHT, true);
+        game_set_control_state(CONTROL1_JOY_RIGHT, true);
     }
     else {
-        input_set_control(CONTROL_RIGHT, false);
+        game_set_control_state(CONTROL1_JOY_RIGHT, false);
     }    
 
     if (currentJoy1Y > 50) {
-        input_set_control(CONTROL_UP, true);
+        game_set_control_state(CONTROL1_JOY_UP, true);
     }
     else {
-        input_set_control(CONTROL_UP, false);
+        game_set_control_state(CONTROL1_JOY_UP, false);
     }    
 
     if (currentJoy1Y < -50) {
-        input_set_control(CONTROL_DOWN, true);
+        game_set_control_state(CONTROL1_JOY_DOWN, true);
     }
     else {
-        input_set_control(CONTROL_DOWN, false);
+        game_set_control_state(CONTROL1_JOY_DOWN, false);
     }    
 
     // Handle buttons from joystick 1
-    input_set_control(BUTTON_1, (currentButtonState&0x01) == (0x01) ? true : false);
-    input_set_control(BUTTON_2, (currentButtonState&0x02) == (0x02) ? true : false);
-    input_set_control(BUTTON_3, (currentButtonState&0x04) == (0x04) ? true : false);
-    input_set_control(BUTTON_4, (currentButtonState&0x08) == (0x08) ? true : false);
+    game_set_control_state(CONTROL1_BTN1, (currentButtonState&0x01) == (0x01) ? true : false);
+    game_set_control_state(CONTROL1_BTN2, (currentButtonState&0x02) == (0x02) ? true : false);
+    game_set_control_state(CONTROL1_BTN3, (currentButtonState&0x04) == (0x04) ? true : false);
+    game_set_control_state(CONTROL1_BTN4, (currentButtonState&0x08) == (0x08) ? true : false);
 }
