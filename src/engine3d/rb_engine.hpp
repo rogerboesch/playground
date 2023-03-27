@@ -136,8 +136,6 @@ public:
 // Helper
 public:
     int GetBrightness(float lum);
-
-private:
     void ChangeControlState(int code, bool flag, float deltaTime);
     void UpdateControlStates(float deltaTime);
     
