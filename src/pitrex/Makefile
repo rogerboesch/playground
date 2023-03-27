@@ -82,7 +82,7 @@ $(BUILD_DIR)baremetalUtil.o: $(VECTREX_DIR)baremetalUtil.c
 
 # Build executable
 vexxon:	$(BUILD_DIR)game_vexxon.o \
-		$(BUILD_DIR)rb_engine.o $(BUILD_DIR)rb_file.o $(BUILD_DIR)rb_rb_level.o $(BUILD_DIR)rb_math.o $(BUILD_DIR)rb_mesh.o $(BUILD_DIR)rb_object.o \
+		$(BUILD_DIR)rb_engine.o $(BUILD_DIR)rb_file.o $(BUILD_DIR)rb_level.o $(BUILD_DIR)rb_math.o $(BUILD_DIR)rb_mesh.o $(BUILD_DIR)rb_object.o \
 		$(BUILD_DIR)rb_log.o \
 		$(BUILD_DIR)rb_pitrex_main.o $(BUILD_DIR)rb_pitrex_platform.o $(BUILD_DIR)rb_pitrex_window.o \
 		$(BUILD_DIR)bcm2835.o $(BUILD_DIR)pitrexio-gpio.o $(BUILD_DIR)vectrexInterface.o $(BUILD_DIR)osWrapper.o $(BUILD_DIR)baremetalUtil.o
@@ -90,7 +90,7 @@ vexxon:	$(BUILD_DIR)game_vexxon.o \
 	$(RM) vexxon
 	$(CC) $(CFLAGS) -o vexxon \
 	$(BUILD_DIR)game_vexxon.o \
-	$(BUILD_DIR)rb_engine.o $(BUILD_DIR)rb_file.o $(BUILD_DIR)rb_rb_level.o $(BUILD_DIR)rb_math.o $(BUILD_DIR)rb_mesh.o $(BUILD_DIR)rb_object.o \
+	$(BUILD_DIR)rb_engine.o $(BUILD_DIR)rb_file.o $(BUILD_DIR)rb_level.o $(BUILD_DIR)rb_math.o $(BUILD_DIR)rb_mesh.o $(BUILD_DIR)rb_object.o \
 	$(BUILD_DIR)rb_log.o \
 	$(BUILD_DIR)rb_pitrex_main.o \
 	$(BUILD_DIR)rb_pitrex_platform.o \
