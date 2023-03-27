@@ -6,8 +6,8 @@
 //  Copyright © 2021 by Roger Boesch - use only with permission
 //
 
-#include "rb_pitrex_platform.h"
 #include "rb_pitrex_window.h"
+#include "rb_platform.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -18,6 +18,18 @@
 #include <vectrex/vectrexInterface.h>
 
 void game_set_control_state(int code, int state);
+
+void pitrex_delay(int64_t ms);
+void pitrex_draw_line(float x1, float y1, float x2, float y2);
+void pitrex_draw_vtext(float x, float y, char* str);
+int pitrex_init(char* name, int width, int height);
+void pitrex_frame(void);
+double pitrex_get_ticks(void);
+int pitrex_get_brightness(int color);
+
+#define DEFAULT_TEXT_SIZE       7
+#define DEFAULT_TEXT_SMALL_SIZE 6
+#define DEFAULT_INPUT_WAIT_TIME 30
 
 // Must be aligned to constants in rb_engine.hpp
 #define CONTROL1_BTN1        0
@@ -71,7 +83,7 @@ void pitrex_draw_vtext(float x, float y, char* str) {
     v_printStringRaster(x-127, 127-y, str, 40, -7, 0);
 }
 
-int pitrex_init(int width, int height) {    
+int pitrex_init(char* name, int width, int height) {    
     vectrexinit(1);
 
     _screen_width = width;

@@ -479,12 +479,14 @@ void GameEngine::ChangeControlState(int code, bool flag, float deltaTime) {
 }
 
 void GameEngine::UpdateControlStates(float deltaTime) {
+#if 0 // TODO: Refactor later
     // This must be called each from outside if NEEDED by a platform (Ex. PiTrex)
     // It's not called by the engine itself anymore 
     for (int i = 0; i < MAX_CONTROLS; i ++) {
         bool state = platform_get_control_state(i+1);
         ChangeControlState(i, state, deltaTime);
     }
+#endif
 }
 
 // MARK: - Lifeycle
