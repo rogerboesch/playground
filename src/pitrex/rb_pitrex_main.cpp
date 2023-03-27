@@ -77,9 +77,8 @@ extern "C" {
         pitrex_draw_line(xy, y1, x2, y2);
     }
 
-
     void platform_on_frame(float deltaTime) {
-            game_update_controls(deltaTime);
+        game_update_controls(deltaTime);
     }
 
     void vtext_draw_string(int x, int y, char* str, float scale) {
