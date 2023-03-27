@@ -12,7 +12,8 @@
 #include "rb_engine.hpp"
 #include "rb_platform.h"
 
-#define SCREEN_HEIGHT   360     /* Temporary, must later be in a game header file */
+#define SCREEN_WIDTH    360      /* Temporary, must later be in a game header file */
+#define SCREEN_HEIGHT   480     
 
 extern "C" {
     int vexxon_start();
@@ -38,12 +39,13 @@ void _store_asset_path() {
 }
 
 void _game_main() {
-    pitrex_frame();
+    pitrex_init(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     vexxon_start();
 
     int quit = 0;
     while (!quit) {
+        pitrex_frame();
         pitrex_handle_input();
 
         if (vexxon_frame() == 0) 

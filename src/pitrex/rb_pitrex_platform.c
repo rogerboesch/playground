@@ -8,8 +8,6 @@
 
 #include "rb_pitrex_platform.h"
 #include "rb_pitrex_window.h"
-#include "rb_input.h"
-#include "rb_engine.h"
 
 #include <stdio.h>
 #include <string.h>
