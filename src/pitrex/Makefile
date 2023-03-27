@@ -23,7 +23,9 @@ BUILD_DIR := build/
 CFLAGS := -g -I$(INC_DIR) -I$(SRC_BASE_DIR) -I$(SRC_ENGINE3D_DIR) -I$(SRC_GAME_DIR) -DSETTINGS_DIR="\"$(SETTINGS)\"" -DAVOID_TICKS -DPIZERO -DRPI0 -DPITREX -lpthread -lm
 CC := gcc
 
-.PHONY: dirCheck vexxon
+.PHONY: dirCheck
+
+all: dirCheck vexxon
 
 dirCheck:
 	if [ ! -d $(BUILD_DIR) ]; then mkdir $(BUILD_DIR); fi
