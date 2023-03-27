@@ -11,10 +11,6 @@
 
 #include "rb_platform.h"
 
-#define P_PI 3.14159265358979323846264338327950288
-#define DEG_TO_RAD(angleInDegrees) ((angleInDegrees) * M_PI / 180.0)
-#define RAD_TO_DEG(angleInRadians) ((angleInRadians) * 180.0 / M_PI)
-
 #define DEFAULT_TEXT_SIZE       7
 #define DEFAULT_TEXT_SMALL_SIZE 6
 #define DEFAULT_INPUT_WAIT_TIME 30
