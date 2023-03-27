@@ -596,35 +596,40 @@ extern "C" {
 	
     static Vexxon* game = NULL;
 
-	void vexxon_start() {
+	int vexxon_start() {
         if (game == NULL) {
             game = new Vexxon();
         }
 
         game->Init(STR_PRG_NAME, SCREEN_WIDTH, SCREEN_HEIGHT, false);
         game->Start();
+
+        return 1;
 	}
 
-	void vexxon_frame() {
+	int vexxon_frame() {
         if (game == NULL) {
-            return;
+            return 0;
         }
 
         if (game->IsFinished()) {
-            return;
+            return 0;
         }
 
         game->Frame();
+        return 1;
 	}
 
-    void vexxon_stop() {
+    int vexxon_stop() {
         if (game == NULL) {
-            return;
+            return 0;
         }
 
         game->Stop();
         delete game;
         game = NULL;
+
+        return 1;
     }
 
     void game_update_controls(float deltaTime) {

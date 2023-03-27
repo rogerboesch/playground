@@ -13,9 +13,9 @@
 #include "rb_platform.h"
 
 extern "C" {
-    void vexxon_start();
-    void vexxon_frame();
-    void vexxon_stop();
+    int vexxon_start();
+    int vexxon_frame();
+    int vexxon_stop();
     void game_update_controls(float deltaTime);
 }
 

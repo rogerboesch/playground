@@ -30,9 +30,9 @@ extern "C" {
 }
 
 extern "C" {
-    void vexxon_start();
-    void vexxon_frame();
-    void vexxon_stop();
+    int vexxon_start();
+    int vexxon_frame();
+    int vexxon_stop();
 }
 
 char s_asset_path[1024];
