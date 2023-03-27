@@ -80,10 +80,9 @@ extern "C" {
     void platform_set_pixel(int x, int y, byte color, int brightness) { }
 
     void platform_draw_line(int x1, int y1, int x2, int y2, byte color, int invert) {
-        if (invert == INVERT_ON) {
-            y1 = s_screen_height - y1;
-            y2 = s_screen_height - y2;
-        }
+        // Must always be inverted on PiTrex platform
+        y1 = s_screen_height - y1;
+        y2 = s_screen_height - y2;
 
         pitrex_draw_line(x1, y1, x2, y2);
     }

@@ -39,7 +39,7 @@ void GameEngine::DrawBitmapString(char* msg, int x, int y, int size, byte color)
 // MARK: - Drawing
 
 void GameEngine::DrawLine(int x1, int y1, int x2, int y2, byte color) {
-    platform_draw_line(x1, y1, x2, y2, color, INVERT_ON);
+    platform_draw_line(x1, y1, x2, y2, color, INVERT_OFF);
 }
 
 void GameEngine::SetPixel(int x, int y, uint8_t paletteColor, int brightness) {
@@ -578,8 +578,6 @@ void GameEngine::Frame() {
 
     deltaTime /= 1000.0f;
     
-    RBLOG_FLOAT1("Delta time: ", deltaTime);
-
     platform_on_frame(deltaTime);
     
     bool result = OnUpdate(deltaTime);
