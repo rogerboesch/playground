@@ -102,36 +102,36 @@ int pitrex_init(int width, int height) {
 void pitrex_handle_input() {
     // Handle joystick 1
     if (currentJoy1X < -50) {
-        game_set_control_state(CONTROL1_JOY_LEFT, true);
+        game_set_control_state(CONTROL1_JOY_LEFT, 1);
     }
     else {
-        game_set_control_state(CONTROL1_JOY_LEFT, false);
+        game_set_control_state(CONTROL1_JOY_LEFT, 0);
     }    
 
     if (currentJoy1X > 50) {
-        game_set_control_state(CONTROL1_JOY_RIGHT, true);
+        game_set_control_state(CONTROL1_JOY_RIGHT, 1);
     }
     else {
-        game_set_control_state(CONTROL1_JOY_RIGHT, false);
+        game_set_control_state(CONTROL1_JOY_RIGHT, 0);
     }    
 
     if (currentJoy1Y > 50) {
-        game_set_control_state(CONTROL1_JOY_UP, true);
+        game_set_control_state(CONTROL1_JOY_UP, 1);
     }
     else {
-        game_set_control_state(CONTROL1_JOY_UP, false);
+        game_set_control_state(CONTROL1_JOY_UP, 0);
     }    
 
     if (currentJoy1Y < -50) {
-        game_set_control_state(CONTROL1_JOY_DOWN, true);
+        game_set_control_state(CONTROL1_JOY_DOWN, 1);
     }
     else {
-        game_set_control_state(CONTROL1_JOY_DOWN, false);
+        game_set_control_state(CONTROL1_JOY_DOWN, 0);
     }    
 
     // Handle buttons from joystick 1
-    game_set_control_state(CONTROL1_BTN1, (currentButtonState&0x01) == (0x01) ? true : false);
-    game_set_control_state(CONTROL1_BTN2, (currentButtonState&0x02) == (0x02) ? true : false);
-    game_set_control_state(CONTROL1_BTN3, (currentButtonState&0x04) == (0x04) ? true : false);
-    game_set_control_state(CONTROL1_BTN4, (currentButtonState&0x08) == (0x08) ? true : false);
+    game_set_control_state(CONTROL1_BTN1, (currentButtonState&0x01) == (0x01) ? 1 : 0);
+    game_set_control_state(CONTROL1_BTN2, (currentButtonState&0x02) == (0x02) ? 1 : 0);
+    game_set_control_state(CONTROL1_BTN3, (currentButtonState&0x04) == (0x04) ? 1 : 0);
+    game_set_control_state(CONTROL1_BTN4, (currentButtonState&0x08) == (0x08) ? 1 : 0);
 }
