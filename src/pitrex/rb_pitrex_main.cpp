@@ -12,6 +12,8 @@
 #include "rb_engine.hpp"
 #include "rb_platform.h"
 
+#define SCREEN_HEIGHT   360     /* Temporary, must later be in a game header file */
+
 extern "C" {
     int vexxon_start();
     int vexxon_frame();
@@ -70,11 +72,11 @@ extern "C" {
 
     void platform_draw_line(int x1, int y1, int x2, int y2, byte color, int invert) {
         if (invert == INVERT_ON) {
-            y1 = _screen_height - y1;
-            y2 = _screen_height - y2;
+            y1 = SCREEN_HEIGHT - y1;
+            y2 = SCREEN_HEIGHT - y2;
         }
 
-        pitrex_draw_line(xy, y1, x2, y2);
+        pitrex_draw_line(x1, y1, x2, y2);
     }
 
     void platform_on_frame(float deltaTime) {

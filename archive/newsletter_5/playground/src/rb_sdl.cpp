@@ -521,7 +521,7 @@ extern "C" {
         _sdl_init(width, height, 512, 512);
     }
 
-    void platform_on_frame() {
+    void platform_on_frame(float deltaTime) {
         _sdl_clear_buffer(0);
     }
 }
