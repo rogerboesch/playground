@@ -22,6 +22,7 @@ SETTINGS := /opt/pitrex/settings
 BUILD_DIR := build/
 CFLAGS := -g -I$(INC_DIR) -I$(SRC_BASE_DIR) -I$(SRC_ENGINE3D_DIR) -I$(SRC_GAME_DIR) -DSETTINGS_DIR="\"$(SETTINGS)\"" -DAVOID_TICKS -DPIZERO -DRPI0 -DPITREX -lpthread -lm
 CC := gcc
+CCP := g++
 
 .PHONY: dirCheck
 
@@ -36,21 +37,21 @@ clean:
 
 # Project files (Game)
 $(BUILD_DIR)game_vexxon.o: $(SRC_GAME_DIR)game_vexxon.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)game_vexxon.o -c $(SRC_GAME_DIR)game_vexxon.cpp
+	$(CCP) $(CFLAGS) -o $(BUILD_DIR)game_vexxon.o -c $(SRC_GAME_DIR)game_vexxon.cpp
 
 # Project files (Engine3D)
 $(BUILD_DIR)rb_engine.o: $(SRC_ENGINE3D_DIR)rb_engine.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_engine.o -c $(SRC_ENGINE3D_DIR)rb_engine.cpp
+	$(CCP) $(CFLAGS) -o $(BUILD_DIR)rb_engine.o -c $(SRC_ENGINE3D_DIR)rb_engine.cpp
 $(BUILD_DIR)rb_file.o: $(SRC_ENGINE3D_DIR)rb_file.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_file.o -c $(SRC_ENGINE3D_DIR)rb_file.cpp
+	$(CCP) $(CFLAGS) -o $(BUILD_DIR)rb_file.o -c $(SRC_ENGINE3D_DIR)rb_file.cpp
 $(BUILD_DIR)rb_level.o: $(SRC_ENGINE3D_DIR)rb_level.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_level.o -c $(SRC_ENGINE3D_DIR)rb_level.cpp
+	$(CCP) $(CFLAGS) -o $(BUILD_DIR)rb_level.o -c $(SRC_ENGINE3D_DIR)rb_level.cpp
 $(BUILD_DIR)rb_math.o: $(SRC_ENGINE3D_DIR)rb_math.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_math.o -c $(SRC_ENGINE3D_DIR)rb_math.cpp
+	$(CCP) $(CFLAGS) -o $(BUILD_DIR)rb_math.o -c $(SRC_ENGINE3D_DIR)rb_math.cpp
 $(BUILD_DIR)rb_mesh.o: $(SRC_ENGINE3D_DIR)rb_mesh.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_mesh.o -c $(SRC_ENGINE3D_DIR)rb_mesh.cpp
+	$(CCP) $(CFLAGS) -o $(BUILD_DIR)rb_mesh.o -c $(SRC_ENGINE3D_DIR)rb_mesh.cpp
 $(BUILD_DIR)rb_object.o: $(SRC_ENGINE3D_DIR)rb_object.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_object.o -c $(SRC_ENGINE3D_DIR)rb_object.cpp
+	$(CCP) $(CFLAGS) -o $(BUILD_DIR)rb_object.o -c $(SRC_ENGINE3D_DIR)rb_object.cpp
 
 # Project files (Base)
 $(BUILD_DIR)rb_log.o: $(SRC_BASE_DIR)rb_log.c
@@ -58,7 +59,7 @@ $(BUILD_DIR)rb_log.o: $(SRC_BASE_DIR)rb_log.c
 
 # Project files (PiTrex)
 $(BUILD_DIR)rb_pitrex_main.o: rb_pitrex_main.cpp
-	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_pitrex_main.o -c rb_pitrex_main.cpp
+	$(CCP) $(CFLAGS) -o $(BUILD_DIR)rb_pitrex_main.o -c rb_pitrex_main.cpp
 $(BUILD_DIR)rb_pitrex_platform.o: rb_pitrex_platform.c
 	$(CC) $(CFLAGS) -o $(BUILD_DIR)rb_pitrex_platform.o -c rb_pitrex_platform.c
 $(BUILD_DIR)rb_pitrex_window.o: rb_pitrex_window.c
@@ -88,7 +89,7 @@ vexxon:	$(BUILD_DIR)game_vexxon.o \
 		$(BUILD_DIR)bcm2835.o $(BUILD_DIR)pitrexio-gpio.o $(BUILD_DIR)vectrexInterface.o $(BUILD_DIR)osWrapper.o $(BUILD_DIR)baremetalUtil.o
 
 	$(RM) vexxon
-	$(CC) $(CFLAGS) -o vexxon \
+	$(CCP) $(CFLAGS) -o vexxon \
 	$(BUILD_DIR)game_vexxon.o \
 	$(BUILD_DIR)rb_engine.o $(BUILD_DIR)rb_file.o $(BUILD_DIR)rb_level.o $(BUILD_DIR)rb_math.o $(BUILD_DIR)rb_mesh.o $(BUILD_DIR)rb_object.o \
 	$(BUILD_DIR)rb_log.o \
