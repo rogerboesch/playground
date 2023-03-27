@@ -39,7 +39,7 @@ const char* platform_resource_file_path(const char* filename, const char* extens
 double platform_get_ms(void);
 
 void platform_on_init(const char* name, int width, int height);
-void platform_on_frame(double deltaTime);
+void platform_on_frame(float deltaTime);
 
 #ifdef __cplusplus
 }
