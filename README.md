@@ -25,7 +25,7 @@ $ git clone https://github.com/rogerboesch/playground
 $ cd playground
 $ cd src/pitrex
 $ mkdir build
-$ make
+$ make all
 ```
 
 ## Playground App
