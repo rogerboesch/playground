@@ -35,12 +35,13 @@
 #define SECTION_TIME         2.0    // Time until next section gets created
 
 #define CAMERA_INTRO        {0, 0, -9}
-#define CAMERA_YAW_INTRO     0
+#define CAMERA_YAW_INTRO    0
 #define CAMERA_PLAY         {-21.799999,-7.900000,-7.290111}
 #define CAMERA_YAW_PLAY      -0.916769
 
-#define PLAYER_INTRO        {0, 2, 0}
+#define PLAYER_INTRO        { 0,  2, 0}
 #define PLAYER_PLAY         {-5, -2, 0}
+
 #define MAX_FLY_HEIGHT       6      // Maximum height of flight
 #define MIN_FLY_HEIGHT       2      // Minimum height of flight
 
@@ -63,21 +64,21 @@
 #define SPEED_GROUND        -10     // Ground speed
 #define SPEED_TANK          -8      // Speed of tanksend
 
-#define STR_PRG_NAME (char*)"VEXXON"
-#define STR_COPYRIGHT (char*)"VEXXON 0.3.5 BY RORO"
-#define STR_START_MSG (char*)"PRESS BUTTON TO START"
-#define STR_FLIGHT_ALARM (char*)"FLIGHT ALARM"
-#define STR_PLANE_ALARM (char*)"PLANE ALARM"
-#define STR_TANK_ALARM (char*)"TANK ALARM"
-#define STR_ROCKET_ALARM (char*)"ROCKET ALARM"
-#define STR_HEIGHT_ABBRV (char*)"H"
-#define STR_LEVEL_END (char*)"LEVEL COMPLETED"
-#define STR_LEVEL_LOST (char*)"LEVEL LOST"
+constexpr auto STR_PRG_NAME = (char*)"VEXXON";
+constexpr auto STR_COPYRIGHT = (char*)"VEXXON 0.3.5 BY RORO";
+constexpr auto STR_START_MSG = (char*)"PRESS BUTTON TO START";
+constexpr auto STR_FLIGHT_ALARM = (char*)"FLIGHT ALARM";
+constexpr auto STR_PLANE_ALARM = (char*)"PLANE ALARM";
+constexpr auto STR_TANK_ALARM = (char*)"TANK ALARM";
+constexpr auto STR_ROCKET_ALARM = (char*)"ROCKET ALARM";
+constexpr auto STR_HEIGHT_ABBRV = (char*)"H";
+constexpr auto STR_LEVEL_END = (char*)"LEVEL COMPLETED";
+constexpr auto STR_LEVEL_LOST = (char*)"LEVEL LOST";
 
 #define GAME_OBJECT_PLAYER 100
 
 typedef enum _GAME_STATE {
-    GAME_INITIALIZE, GAME_INTRO, GAME_PLAY, GAME_END, GAME_LOST
+    GAME_INITIALIZE, GAME_INTRO, GAME_PLAY, GAME_END
 } GAME_STATE;
 
 int random(int min, int max) {
@@ -88,46 +89,36 @@ int random(int min, int max) {
 class Vexxon : public GameEngine {
 public:
     Vexxon() {}
-
+    
     GAME_STATE GetGameState() { return _state; }
-
+    
 private:
     GameObject* _spaceship;
     GameObject* _player;
-    GameObject* _shadow;
     GameObject* _tank;
     GameObject* _rocket;
     GameObject* _jet;
-    GameObject* _bullet;
     Mesh* _spaceshipMesh;
-
+    
     int _levelNumber = 1;
     Level _level;
 
     bool _topView = false;
-    int _bullets_available = SCORE_BULLETS;
-    float _fuel_available = SCORE_FUEL;
-    int _fuel_per_second = SCORE_FUEL_PS;
-    int _score_per_second = SCORE_FUEL_PS;
 
     float _score = 0;
     GAME_STATE _state = GAME_INITIALIZE;
-
+    
     float _borderDelay = 0;
     float _fYaw = 0;
 
-    // MARK: - Life cycle
+// MARK: - Life cycle
 protected:
-
-    virtual bool OnCreate() {
+	
+	virtual bool OnCreate() {
         if (!_level.LoadNumber(_levelNumber)) {
             return false;
         }
-
-        _bullets_available = _level.bullets;
-        _fuel_available = _level.fuel;
-        _fuel_per_second = _level.fuel_per_second;
-
+        
         // To preload the objects
         _spaceship = new GameObject("spaceship");
         _jet = new GameObject("jet", LEVEL_OBJECT_JET_STANDING);
@@ -138,9 +129,6 @@ protected:
 
         _rocket = new GameObject("rocket", LEVEL_OBJECT_ROCKET);
         _rocket->SetColor(colorRed);
-
-        _bullet = new GameObject("bullet", LEVEL_OBJECT_BULLET);
-        _bullet->SetColor(colorYellow);
 
         _player = new GameObject(_jet->GetMesh(), GAME_OBJECT_PLAYER);
         _player->SetPosition(PLAYER_PLAY);
@@ -153,34 +141,25 @@ protected:
         _spaceship->SetColor(colorBlue);
         AddGameObject(_spaceship);
 
-        _shadow = new GameObject(GAME_OBJECT_TYPE_RECTANGLE);
-        _shadow->SetPosition(0, 0, 0);
-        _shadow->SetColor(colorWhite);
-        _shadow->SetSpeed(0, 0, 0);
-        _shadow->SetHidden(false);
-        AddGameObject(_shadow);
-
-        Mat4x4 matProj = MatrixMakeProjection(90.0f, (float)GetScreenHeight() / (float)GetScreenWidth(), 0.1f, 1000.0f);
-        SetProjectionMatrix(matProj);
+		Mat4x4 matProj = MatrixMakeProjection(90.0f, (float)GetScreenHeight() / (float)GetScreenWidth(), 0.1f, 1000.0f);
+		SetProjectionMatrix(matProj);
 
         SetCamera(GAME_INTRO);
 
         _state = GAME_INTRO;
+        
+		return true;
+	}
 
-        return true;
-    }
-
-    virtual bool OnUpdate(float deltaTime) {
-        RemoveDeadObjects();
-
+	virtual bool OnUpdate(float deltaTime) {
         if (_state == GAME_INTRO) {
             AddNextSection(deltaTime);
             IntroScene();
-
+            
             if (IsControlPressed(CONTROL1_BTN1)) {
                 UpdateCameraPosition(deltaTime);
             }
-
+            
             if (IsControlPressed(CONTROL1_BTN4)) {
                 _state = GAME_PLAY;
 
@@ -189,47 +168,12 @@ protected:
                 _player->SetRotationSpeed(0, 0, 0);
                 _player->SetScale(1, 1, 1);
                 _player->SetHidden(false);
-                _shadow->SetHidden(false);
                 _spaceship->SetHidden(true);
-
+                
                 SetCamera(GAME_PLAY);
             }
         }
-        else if (_state == GAME_LOST) {
-            DrawHUD();
-
-            _player->SetHidden(false);
-            _shadow->SetHidden(false);
-            _player->SetRotationSpeed(2, 2, 2);
-
-            if (IsControlPressed(CONTROL1_BTN4)) {
-                Restart();
-            }
-        }
-        else if (_state == GAME_END) {
-            DrawHUD();
-
-            AddNextSection(deltaTime);
-
-            if (IsControlPressed(CONTROL1_BTN4)) {
-                Restart();
-            }
-            else if (IsControlPressed(CONTROL1_BTN1)) {
-                // Next level, not implemented yet
-            }
-        }
-        else {
-            if (_fuel_available <= 0) {
-                _state = GAME_LOST;
-                return true;
-            }
-
-            _fuel_available -= _fuel_per_second * deltaTime;
-            _score += _score_per_second * deltaTime;
-
-            DrawShadow();
-            DrawHUD();
-
+        else {            
             AddNextSection(deltaTime);
 
             VerifyGameObjects();
@@ -239,22 +183,22 @@ protected:
             }
             else {
                 if (IsJoystick1Up()) {
-                    _player->Move(0, -SPEED_UPDOPWN_JET * deltaTime, 0);
+                    _player->Move(0, -SPEED_UPDOPWN_JET*deltaTime, 0);
                     LimitFlightRange();
                 }
                 else if (IsJoystick1Down()) {
-                    _player->Move(0, SPEED_UPDOPWN_JET * deltaTime, 0);
+                    _player->Move(0, SPEED_UPDOPWN_JET*deltaTime, 0);
                     LimitFlightRange();
                 }
 
                 if (IsJoystick1Left()) {
-                    _player->Move(SPEED_MOVEMENT_JET * deltaTime, 0, 0);
+                    _player->Move(SPEED_MOVEMENT_JET*deltaTime, 0, 0);
                     _player->SetRotation(0, 0, DEG_TO_RAD(-180));
                     LimitFlightRange();
                 }
                 else {
                     if (IsJoystick1Right()) {
-                        _player->Move(-SPEED_MOVEMENT_JET * deltaTime, 0, 0);
+                        _player->Move(-SPEED_MOVEMENT_JET*deltaTime, 0, 0);
                         _player->SetRotation(0, 0, DEG_TO_RAD(180));
                         LimitFlightRange();
                     }
@@ -262,48 +206,34 @@ protected:
                         _player->SetRotation(0, 0, 0);
                     }
                 }
-
-                if (IsControlPressed(CONTROL1_BTN2)) {
-                    _shadow->ToggleHidden();
-                }
-
-                if (IsControlHold(CONTROL1_BTN3)) {
-                    FireBullets(2);
-                }
-                else if (IsControlHold(CONTROL1_BTN4)) {
-                    FireBullets(1);
-                }
             }
         }
+        
+		BuildWorldMatrix();
+		UpdateCamera(_fYaw);
 
-        BuildWorldMatrix();
-        UpdateCamera(_fYaw);
-
-        return true;
-    }
+		return true;
+	}
 
     void Restart() {
         _spaceship->SetHidden(true);
 
-        _shadow->SetHidden(false);
         _player->SetHidden(false);
         _player->SetRotationSpeed(0, 0, 0);
-
+        
         _level.Rewind();
-        _bullets_available = _level.bullets;
-        _fuel_available = _level.fuel;
         _score = 0;
 
         _state = GAME_PLAY;
     }
-
-    // MARK: - Scenes
+    
+// MARK: - Scenes
 private:
-
+    
     void IntroScene() {
         char temp[256];
         sprintf(temp, "LEVEL %d", _levelNumber);
-
+        
         DrawBitmapString(STR_COPYRIGHT, 20, 20, 40, colorWhite);
         DrawBitmapString(temp, 20, 40, 40, colorGray);
         DrawBitmapString(STR_START_MSG, 20, 60, 40, colorWhite);
@@ -313,10 +243,9 @@ private:
         _spaceship->SetScale(3, 3, 3);
 
         _player->SetHidden(true);
-        _shadow->SetHidden(true);
     }
 
-    // MARK: - State helpers
+// MARK: - State helpers
 private:
     void LimitFlightRange() {
         Vec3D pos = _player->GetPosition();
@@ -327,7 +256,7 @@ private:
         else if (height <= MIN_FLY_HEIGHT) {
             pos.y = -MIN_FLY_HEIGHT;
         }
-
+        
         if (pos.x < -15) {
             pos.x = -15;
         }
@@ -336,14 +265,6 @@ private:
         }
 
         _player->SetPosition(pos);
-    }
-
-    void RemoveDeadObjects() {
-        for (auto gameObject : m_gameObjects) {
-            if (gameObject->GetPosition().z < -40) {
-                gameObject->SetDead();
-            }
-        }
     }
 
     void SetCamera(int state) {
@@ -356,7 +277,7 @@ private:
             _fYaw = CAMERA_YAW_PLAY;
         }
     }
-
+ 
     void UpdateCameraPosition(float deltaTime) {
         // Used for testing
         if (IsJoystick1Up()) {
@@ -380,14 +301,14 @@ private:
         }
         else if (IsControlHold(CONTROL1_BTN4)) {
             ChangeCameraPosZ(-10.0f * deltaTime);
-
+            
             if (GetCameraPos().z < -30) {
                 SetCameraPosZ(0);
             }
         }
     }
-
-    // MARK: - Level
+    
+// MARK: - Level
 private:
 
     void AddEndLevel(LevelObject levelObject) {
@@ -397,40 +318,40 @@ private:
         gameObject->SetHidden(true);
         gameObject->SetColor(colorRed);
         AddGameObject(gameObject);
-
+        
         RBLOG(" Add end level marker");
     }
-
+    
     void AddBottomWall(int height) {
         GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE);
-        gameObject->SetPosition(-14, GROUND - height, START_DISTANCE);
+        gameObject->SetPosition(-14, GROUND-height, START_DISTANCE);
         gameObject->SetScale(29, height, 1);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
         gameObject->SetColor(colorGreenLight);
         AddGameObject(gameObject);
     }
-
+    
     void AddTopWall(int height) {
         GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE);
-        gameObject->SetPosition(-14, GROUND - MAX_BORDER_HEIGHT + height - 1, START_DISTANCE);
+        gameObject->SetPosition(-14, GROUND-MAX_BORDER_HEIGHT+height-1, START_DISTANCE);
         gameObject->SetScale(29, height, 1);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
         gameObject->SetColor(colorGreenLight);
         AddGameObject(gameObject);
     }
-
+    
     void AddRightWall() {
         GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE);
-        gameObject->SetPosition(-14, GROUND - MAX_BORDER_HEIGHT, START_DISTANCE);
+        gameObject->SetPosition(-14, GROUND-MAX_BORDER_HEIGHT, START_DISTANCE);
         gameObject->SetScale(20, MAX_BORDER_HEIGHT, 1);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
         gameObject->SetColor(colorGreenLight);
         AddGameObject(gameObject);
     }
-
+    
     void AddLeftWall() {
         GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE);
-        gameObject->SetPosition(-5, GROUND - MAX_BORDER_HEIGHT, START_DISTANCE);
+        gameObject->SetPosition(-5, GROUND-MAX_BORDER_HEIGHT, START_DISTANCE);
         gameObject->SetScale(20, MAX_BORDER_HEIGHT, 1);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
         gameObject->SetColor(colorGreenLight);
@@ -442,7 +363,7 @@ private:
             GameObject* cube;
             cube = new GameObject(GAME_OBJECT_TYPE_RECTANGLE);
             cube->SetColor(colorGreen);
-            cube->SetPosition(-15, GROUND - height, START_DISTANCE);
+            cube->SetPosition(-15, GROUND-height, START_DISTANCE);
             cube->SetScale(1, height, 1);
             cube->SetSpeed(0, 0, SPEED_GROUND);
             cube->SetColor(colorGreen);
@@ -452,17 +373,17 @@ private:
             GameObject* cube;
             cube = new GameObject(GAME_OBJECT_TYPE_CUBE);
             cube->SetColor(colorGreen);
-            cube->SetPosition(-15, GROUND - height, START_DISTANCE);
+            cube->SetPosition(-15, GROUND-height, START_DISTANCE);
             cube->SetScale(1, height, 1);
             cube->SetSpeed(0, 0, SPEED_GROUND);
             AddGameObject(cube);
         }
     }
-
+    
     void AddLeftBorderCube(int height) {
         GameObject* cube = new GameObject(GAME_OBJECT_TYPE_CUBE);
         cube->SetColor(colorGreen);
-        cube->SetPosition(15, GROUND - height, START_DISTANCE);
+        cube->SetPosition(15, GROUND-height, START_DISTANCE);
         cube->SetScale(1, height, 1);
         cube->SetSpeed(0, 0, SPEED_GROUND);
         AddGameObject(cube);
@@ -470,88 +391,88 @@ private:
 
     void AddLevelObject(LevelObject levelObject) {
         switch (levelObject.type) {
-        case LEVEL_OBJECT_JET_FLYING:
-            RBLOG(" Add flying jet");
-            AddFlyingJet(levelObject);
-            break;
-        case LEVEL_OBJECT_JET_STANDING:
-            RBLOG(" Add jet");
-            AddJet(levelObject);
-            break;
-        case LEVEL_OBJECT_TANK:
-            RBLOG(" Add tank");
-            AddTank(levelObject);
-            break;
-        case LEVEL_OBJECT_ROCKET:
-            RBLOG(" Add rocket");
-            AddRocket(levelObject);
-            break;
-        case LEVEL_OBJECT_FUELSILO:
-            RBLOG(" Add fuel silo");
-            AddFuelSilo(levelObject);
-            break;
-        case LEVEL_OBJECT_END:
-            RBLOG(" Add end level marker");
-            AddEndLevel(levelObject);
-            break;
+            case LEVEL_OBJECT_JET_FLYING:
+                RBLOG(" Add flying jet");
+                AddFlyingJet(levelObject);
+                break;
+            case LEVEL_OBJECT_JET_STANDING:
+                RBLOG(" Add jet");
+                AddJet(levelObject);
+                break;
+            case LEVEL_OBJECT_TANK:
+                RBLOG(" Add tank");
+                AddTank(levelObject);
+                break;
+            case LEVEL_OBJECT_ROCKET:
+                RBLOG(" Add rocket");
+                AddRocket(levelObject);
+                break;
+            case LEVEL_OBJECT_FUELSILO:
+                RBLOG(" Add fuel silo");
+                AddFuelSilo(levelObject);
+                break;
+            case LEVEL_OBJECT_END:
+                RBLOG(" Add end level marker");
+                AddEndLevel(levelObject);
+                break;
         }
     }
 
     void CreateSection(LevelLine line) {
-        int height = line.border - 2;
-
+        int height = line.border-2;
+        
         // Wall types
         switch (line.border) {
             // No border
-        case 0:
-            RBLOG(" Add no border");
-            break;
+            case 0:
+                RBLOG(" Add no border");
+                break;
             // Has border
-        case 1:
-            RBLOG(" Add small border");
-            AddLeftBorderCube(3);
-            AddRightBorderCube(0);
-            break;
+            case 1:
+                RBLOG(" Add small border");
+                AddLeftBorderCube(3);
+                AddRightBorderCube(0);
+                break;
             // End level border
-        case 2:
-            RBLOG(" Add end level border");
-            AddLeftBorderCube(1);
-            AddRightBorderCube(1);
-            break;
+            case 2:
+                RBLOG(" Add end level border");
+                AddLeftBorderCube(1);
+                AddRightBorderCube(1);
+                break;
             // Has border: height
-        case 3:
-        case 4:
-        case 5:
-        case 6:
-        case 7:
-        case 8:
-        case 9:
-            RBLOG_NUM1(" Add wall with height", height);
-            AddLeftBorderCube(MAX_BORDER_HEIGHT);
-            AddRightBorderCube(height + 1);
-            AddBottomWall(height);
-            break;
-        case 10:
-            RBLOG(" Add fly trough wall (X)");
-            AddLeftBorderCube(MAX_BORDER_HEIGHT);
-            AddRightBorderCube(MAX_BORDER_HEIGHT);
-            AddBottomWall(2);
-            AddTopWall(2);
-            break;
-        case 11:
-            RBLOG(" Add left open wall (Y)");
-            AddLeftBorderCube(MAX_BORDER_HEIGHT);
-            AddRightBorderCube(MAX_BORDER_HEIGHT);
-            AddRightWall();
-            break;
-        case 12:
-            RBLOG(" Add right open wall (Z)");
-            AddLeftBorderCube(MAX_BORDER_HEIGHT);
-            AddRightBorderCube(MAX_BORDER_HEIGHT);
-            AddLeftWall();
-            break;
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+                RBLOG_NUM1(" Add wall with height", height);
+                AddLeftBorderCube(MAX_BORDER_HEIGHT);
+                AddRightBorderCube(height+1);
+                AddBottomWall(height);
+                break;
+            case 10:
+                RBLOG(" Add fly trough wall (X)");
+                AddLeftBorderCube(MAX_BORDER_HEIGHT);
+                AddRightBorderCube(MAX_BORDER_HEIGHT);
+                AddBottomWall(2);
+                AddTopWall(2);
+                break;
+            case 11:
+                RBLOG(" Add left open wall (Y)");
+                AddLeftBorderCube(MAX_BORDER_HEIGHT);
+                AddRightBorderCube(MAX_BORDER_HEIGHT);
+                AddRightWall();
+                break;
+            case 12:
+                RBLOG(" Add right open wall (Z)");
+                AddLeftBorderCube(MAX_BORDER_HEIGHT);
+                AddRightBorderCube(MAX_BORDER_HEIGHT);
+                AddLeftWall();
+                break;
         }
-
+        
         for (auto object : line.gameObjects) {
             AddLevelObject(object);
         }
@@ -573,37 +494,37 @@ private:
                 if (_level.HasMoreLines()) {
                     LevelLine line;
                     _level.GetLine(line);
-
+                    
                     CreateSection(line);
                 }
             }
-
+            
             _borderDelay = 0;
         }
     }
 
-    // MARK: - Gems
+// MARK: - Gems
 private:
 
     void AddFuelSilo(LevelObject levelObject) {
         int x = -levelObject.x;
 
         GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE, levelObject.type);
-        gameObject->SetPosition(LEVEL_OFFSET + x, GROUND + 1, START_DISTANCE);
+        gameObject->SetPosition(LEVEL_OFFSET+x, GROUND+1, START_DISTANCE);
         gameObject->SetScale(2, 3, 2);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
         gameObject->SetColor(colorCyan);
         AddGameObject(gameObject);
     }
 
-    // MARK: - Enemies
+// MARK: - Enemies
 private:
 
     void AddFlyingJet(LevelObject levelObject) {
         int x = -levelObject.x;
 
         GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE, levelObject.type);
-        gameObject->SetPosition(LEVEL_OFFSET + x, GROUND - 2, START_DISTANCE);
+        gameObject->SetPosition(LEVEL_OFFSET+x, GROUND-2, START_DISTANCE);
         gameObject->SetRotationSpeed(2, 0, 0);
         gameObject->SetScale(1, 1, 1);
         gameObject->SetSpeed(0, 0, SPEED_ENEMY_JET);
@@ -613,9 +534,9 @@ private:
 
     void AddJet(LevelObject levelObject) {
         int x = -levelObject.x;
-
+        
         GameObject* gameObject = new GameObject(_jet->GetMesh(), levelObject.type);
-        gameObject->SetPosition(LEVEL_OFFSET + x, GROUND + 1, START_DISTANCE);
+        gameObject->SetPosition(LEVEL_OFFSET+x, GROUND+1, START_DISTANCE);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
         gameObject->SetColor(colorRedLight);
         AddGameObject(gameObject);
@@ -623,9 +544,9 @@ private:
 
     void AddRocket(LevelObject levelObject) {
         int x = -levelObject.x;
-
+        
         GameObject* gameObject = new GameObject(_rocket->GetMesh(), levelObject.type);
-        gameObject->SetPosition(LEVEL_OFFSET + x, GROUND + 1, START_DISTANCE);
+        gameObject->SetPosition(LEVEL_OFFSET+x, GROUND+1, START_DISTANCE);
         gameObject->SetRotation(0, 0, DEG_TO_RAD(-180));
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
         gameObject->SetColor(colorYellow);
@@ -636,7 +557,7 @@ private:
         int x = -levelObject.x;
 
         GameObject* gameObject = new GameObject(_tank->GetMesh(), levelObject.type);
-        gameObject->SetPosition(LEVEL_OFFSET + x, GROUND + 1, START_DISTANCE);
+        gameObject->SetPosition(LEVEL_OFFSET+x, GROUND+1, START_DISTANCE);
         gameObject->SetRotation(0, 0, DEG_TO_RAD(-180));
         gameObject->SetColor(colorViolett);
 
@@ -656,130 +577,26 @@ private:
                     return;
                 }
             }
-
-            // Enemy alarms
-            if (!gameObject->IsDead() && gameObject->GetPosition().z < DISTANCE_ALARM) {
-                int tag = gameObject->GetTag();
-
-                switch (tag) {
-                case LEVEL_OBJECT_JET_FLYING:
-                    DrawBitmapString(STR_FLIGHT_ALARM, 20, 60, 20, colorRed);
-                    return;
-                case LEVEL_OBJECT_JET_STANDING:
-                    DrawBitmapString(STR_PLANE_ALARM, 20, 60, 20, colorYellow);
-                    return;
-                case LEVEL_OBJECT_ROCKET:
-                    DrawBitmapString(STR_ROCKET_ALARM, 20, 60, 20, colorRed);
-                    return;
-                case LEVEL_OBJECT_TANK:
-                    DrawBitmapString(STR_TANK_ALARM, 20, 60, 20, colorViolett);
-                    return;
-                }
-            }
         }
     }
 
-    // MARK: - Player
+// MARK: - Player
 private:
 
-    void FireBullet(int offset) {
-        Vec3D pos = _player->GetPosition();
-
-        // Center
-        GameObject* cube = new GameObject(_bullet->GetMesh(), LEVEL_OBJECT_BULLET);
-        cube->SetLifeTime(1.0);
-        cube->SetPosition(pos.x + offset, pos.y, pos.z);
-        cube->SetSpeed(0, 0, 60);
-        cube->SetColor(colorYellowLight);
-        AddGameObject(cube);
-    }
-
-    void FireBullets(int bullets) {
-        if (_bullets_available <= 0) {
-            RBLOG("Fire: NO BULLETS LEFT");
-            return;
-        }
-
-        switch (bullets) {
-        case 1:
-            FireBullet(0);
-            break;
-        case 2:
-            FireBullet(-1);
-            FireBullet(1);
-            break;
-        case 3:
-            FireBullet(-1);
-            FireBullet(0);
-            FireBullet(1);
-            break;
-        default:
-            return;
-        }
-
-        _bullets_available -= bullets;
-    }
-
-    // MARK: - Drawing
+// MARK: - Drawing
 private:
 
     void DrawFloor() {
-        DrawLine(134, HORIZONT, SCREEN_WIDTH - 136, HORIZONT, colorGray);
+        DrawLine(134, HORIZONT, SCREEN_WIDTH-136, HORIZONT, colorGray);
     }
-
-    void DrawHUD() {
-        Vec3D pos = _player->GetPosition();
-        float y = -pos.y - MIN_FLY_HEIGHT;
-        float height = 100 * y / (MAX_FLY_HEIGHT - MIN_FLY_HEIGHT);
-
-        DrawLine(10, HORIZONT, 10, HORIZONT + 100, colorGray);
-        DrawLine(10, HORIZONT, 10, HORIZONT + height, colorGreen);
-        DrawLine(11, HORIZONT, 11, HORIZONT + height, colorGreen);
-
-        DrawBitmapString(STR_HEIGHT_ABBRV, 6, 130, 40, 100);
-
-        char temp[256];
-        sprintf(temp, "B %03d", _bullets_available);
-        DrawBitmapString(temp, 20, 20, 40, _bullets_available >= SCORE_BULLETS_ALARM ? colorWhite : colorRed);
-
-        sprintf(temp, "F %03d", (int)_fuel_available);
-        DrawBitmapString(temp, 100, 20, 40, _fuel_available >= SCORE_FUEL_ALARM ? colorWhite : colorRed);
-
-        sprintf(temp, "S %04d", (int)_score);
-        DrawBitmapString(temp, 280, 20, 40, 100);
-
-        if (_state == GAME_END) {
-            DrawBitmapString(STR_LEVEL_END, 60, 60, 40, colorYellow);
-        }
-        else if (_state == GAME_LOST) {
-            DrawBitmapString(STR_LEVEL_LOST, 60, 60, 40, colorRed);
-        }
-    }
-
-    void DrawCross() {
-        Vec3D pos = _player->GetPosition();
-
-        float x = GetScreenWidth() / 2 - (pos.x * 5);
-        float y = -1 * (pos.y - GROUND) * 5;
-        y += HORIZONT;
-
-        DrawLine(x, y + 20, x, y - 20, colorGray);
-        DrawLine(x - 20, y, x + 20, y, colorGray);
-    }
-
-    void DrawShadow() {
-        Vec3D pos = _player->GetPosition();
-        pos.z = -pos.y / 2;
-        pos.y = 0;
-
-        _shadow->SetPosition(pos);
-    }
+    
 };
-extern "C" {
 
+extern "C" {
+	
     static Vexxon* game = NULL;
 
-    int vexxon_start() {
+	int vexxon_start() {
         if (game == NULL) {
             game = new Vexxon();
         }
@@ -788,9 +605,9 @@ extern "C" {
         game->Start();
 
         return 1;
-    }
+	}
 
-    int vexxon_frame() {
+	int vexxon_frame() {
         if (game == NULL) {
             return 0;
         }
@@ -801,7 +618,7 @@ extern "C" {
 
         game->Frame();
         return 1;
-    }
+	}
 
     int vexxon_stop() {
         if (game == NULL) {
