@@ -114,7 +114,7 @@ else()
 endif()
 
 if(UNIX AND NOT APPLE)
-    target_compile_options(${TARGET} PRIVATE -D_POSIX_C_SOURCE=200809L -std=c99)
+    target_compile_options(${TARGET} PRIVATE -D_POSIX_C_SOURCE=200809L -std=c++11)
 endif()
 
 # ==============================================================================
