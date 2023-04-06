@@ -1,5 +1,5 @@
 
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.0)
 project(Playground)
 
 # ==============================================================================
@@ -110,11 +110,11 @@ if(MSVC)
 else()
 #    target_compile_options(${TARGET} PRIVATE -Wall -Wextra -pedantic)
     target_compile_options(${TARGET} PRIVATE -ffast-math)
-	target_compile_features(${TARGET} PUBLIC c_std_99)
+	#target_compile_features(${TARGET} PUBLIC c_std_99)
 endif()
 
 if(UNIX AND NOT APPLE)
-    target_compile_options(${TARGET} PRIVATE -D_POSIX_C_SOURCE=200809L)
+    target_compile_options(${TARGET} PRIVATE -D_POSIX_C_SOURCE=200809L -std=c99)
 endif()
 
 # ==============================================================================
