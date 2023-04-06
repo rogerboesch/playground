@@ -10,8 +10,16 @@
 #include "rb_base.h"
 
 
+Vec3D Vec3DMakeZero() {
+    return { 0.0f, 0.0f, 0.0f, 1.0f };
+}
+
 Vec3D Vec3DMake(int x, int y, int z) {
-    return { float(x), float(y), float(z)};
+    return { float(x), float(y), float(z) };
+}
+
+Vec3D Vec3DMakef(float x, float y, float z) {
+    return { x, y, z, 1.0 };
 }
 
 Vec3D Vec3DAdd(Vec3D &v1, Vec3D &v2) {

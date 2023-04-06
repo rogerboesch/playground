@@ -12,7 +12,10 @@
 
 #include <math.h>
 
+Vec3D Vec3DMakeZero();
 Vec3D Vec3DMake(int x, int y, int z);
+Vec3D Vec3DMakef(float x, float y, float z);
+
 Vec3D Vec3DAdd(Vec3D &v1, Vec3D &v2);
 Vec3D Vec3DSub(Vec3D &v1, Vec3D &v2);
 Vec3D Vec3DMul(Vec3D &v1, float k);

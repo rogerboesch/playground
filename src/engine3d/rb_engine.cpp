@@ -11,6 +11,7 @@
 #include "rb_platform.h"
 #include "rb_log.h"
 #include "rb_vtext.h"
+#include "rb_math.hpp"
 
 #include <list>
 #include <algorithm>
@@ -266,10 +267,10 @@ void GameEngine::ClipAndDraw(std::vector<Triangle>& vecTrianglesToRaster, byte c
                 // to lie on the inside of the plane. I like how this
                 // comment is almost completely and utterly justified
                 switch (p) {
-                    case 0: nTrisToAdd = TriangleClipAgainstPlane({ 0.0f, 0.0f, 0.0f }, { 0.0f, 1.0f, 0.0f }, test, clipped[0], clipped[1]); break;
-                    case 1: nTrisToAdd = TriangleClipAgainstPlane({ 0.0f, (float)_screenWidth - 1, 0.0f }, { 0.0f, -1.0f, 0.0f }, test, clipped[0], clipped[1]); break;
-                    case 2: nTrisToAdd = TriangleClipAgainstPlane({ 0.0f, 0.0f, 0.0f }, { 1.0f, 0.0f, 0.0f }, test, clipped[0], clipped[1]); break;
-                    case 3: nTrisToAdd = TriangleClipAgainstPlane({ (float)_screenWidth - 1, 0.0f, 0.0f }, { -1.0f, 0.0f, 0.0f }, test, clipped[0], clipped[1]); break;
+                    case 0: nTrisToAdd = TriangleClipAgainstPlane(Vec3DMakeZero(), Vec3DMakef(0.0f, 1.0f, 0.0f), test, clipped[0], clipped[1]); break;
+                    case 1: nTrisToAdd = TriangleClipAgainstPlane(Vec3DMakef(0.0f, (float)_screenWidth - 1, 0.0f), Vec3DMakef(0.0f, -1.0f, 0.0f) , test, clipped[0], clipped[1]); break;
+                    case 2: nTrisToAdd = TriangleClipAgainstPlane(Vec3DMakeZero(), Vec3DMakef(1.0f, 0.0f, 0.0f), test, clipped[0], clipped[1]); break;
+                    case 3: nTrisToAdd = TriangleClipAgainstPlane(Vec3DMakef((float)_screenWidth - 1, 0.0f, 0.0f), Vec3DMakef(-1.0f, 0.0f, 0.0f), test, clipped[0], clipped[1]); break;
                 }
 
                 // Clipping may yield a variable number of triangles, so
@@ -353,7 +354,7 @@ void GameEngine::Transform(std::vector<Triangle>& vecTrianglesToRaster, Mesh& me
             // Clip Viewed Triangle against near plane
             int nClippedTriangles = 0;
             Triangle clipped[2];
-            nClippedTriangles = TriangleClipAgainstPlane({ 0.0f, 0.0f, 0.1f }, { 0.0f, 0.0f, 1.0f }, triViewed, clipped[0], clipped[1]);
+            nClippedTriangles = TriangleClipAgainstPlane(Vec3DMakef(0.0f, 0.0f, 0.1f), Vec3DMakef(0.0f, 0.0f, 1.0f), triViewed, clipped[0], clipped[1]);
 
             // We may end up with multiple triangles form the clip, so project as required
             for (int n = 0; n < nClippedTriangles; n++) {
