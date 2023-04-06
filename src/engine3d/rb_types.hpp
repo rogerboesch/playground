@@ -11,15 +11,15 @@
 typedef unsigned char byte;
 
 struct Vec2D {
-    float x = 0;
-    float y = 0;
+    float x;
+    float y;
 };
 
 struct Vec3D {
-    float x = 0;
-    float y = 0;
-    float z = 0;
-    float w = 1;
+    float x;
+    float y;
+    float z;
+    float w;
 };
 
 struct VecRGB {
