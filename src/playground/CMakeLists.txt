@@ -71,19 +71,11 @@ source_group(
     "Assets" FILES ${ASSET_FILES}
 )
 
-#list(APPEND
-#    ENGINE3D_SOURCES
-#    ${ASSET_FILES}
-#) 
-
 # ==============================================================================
 # Target properties and definitions
 # ==============================================================================
 
 set(CMAKE_CXX_STANDARD 17) 
-#set_target_properties(${TARGET} PROPERTIES C_STANDARD 90)
-#set_target_properties(${TARGET} PROPERTIES C_EXTENSIONS ON)
-#set_target_properties(${TARGET} PROPERTIES INTERPROCEDURAL_OPTIMIZATION ON)
 
 set(TARGET Playground)
 
@@ -97,7 +89,7 @@ if(APPLE)
 endif()
 
 if(UNIX AND NOT APPLE)
-add_executable(${TARGET} ${PLAYGROUND_SOURCES} ${BASE_SOURCES} ${ENGINE3D_SOURCES} ${GAME_SOURCES} ${ASSET_FILES})
+    add_executable(${TARGET} ${PLAYGROUND_SOURCES} ${BASE_SOURCES} ${ENGINE3D_SOURCES} ${GAME_SOURCES})
 endif()
 
 # ==============================================================================
@@ -108,9 +100,7 @@ if(MSVC)
     target_compile_options(${TARGET} PRIVATE /W4 /D_CRT_SECURE_NO_WARNINGS)
     target_compile_options(${TARGET} PRIVATE /fp:fast)
 else()
-#    target_compile_options(${TARGET} PRIVATE -Wall -Wextra -pedantic)
     target_compile_options(${TARGET} PRIVATE -ffast-math)
-	#target_compile_features(${TARGET} PUBLIC c_std_99)
 endif()
 
 if(UNIX AND NOT APPLE)
