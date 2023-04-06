@@ -30,6 +30,7 @@ float Vec3DAngle(Vec3D& vec1, Vec3D& vec2);
 int TriangleClipAgainstPlane(Vec3D plane_p, Vec3D plane_n, Triangle &in_tri, Triangle &out_tri1, Triangle &out_tri2);
 
 Vec3D MatrixMultiplyVector(Mat4x4 &m, Vec3D &i);
+Mat4x4 MatrixMakeZero();
 Mat4x4 MatrixMakeIdentity();
 Mat4x4 MatrixMakeRotationX(float fAngleRad);
 Mat4x4 MatrixMakeRotationY(float fAngleRad);

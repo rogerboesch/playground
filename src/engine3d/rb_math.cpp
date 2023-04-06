@@ -8,7 +8,7 @@
 
 #include "rb_math.hpp"
 #include "rb_base.h"
-
+#include <string.h>
 
 Vec3D Vec3DMakeZero() {
     return Vec3D(0.0f, 0.0f, 0.0f);
@@ -182,18 +182,27 @@ Vec3D MatrixMultiplyVector(Mat4x4 &m, Vec3D &i) {
     return v;
 }
 
+Mat4x4 MatrixMakeZero() {
+    Mat4x4 matrix;
+    memset(&matrix, 16, 0);
+
+    return matrix;
+}
+
 Mat4x4 MatrixMakeIdentity() {
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     matrix.m[0][0] = 1.0f;
     matrix.m[1][1] = 1.0f;
     matrix.m[2][2] = 1.0f;
     matrix.m[3][3] = 1.0f;
-    
+
     return matrix;
 }
 
 Mat4x4 MatrixMakeRotationX(float fAngleRad) {
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     matrix.m[0][0] = 1.0f;
     matrix.m[1][1] = cosf(fAngleRad);
     matrix.m[1][2] = sinf(fAngleRad);
@@ -205,7 +214,8 @@ Mat4x4 MatrixMakeRotationX(float fAngleRad) {
 }
 
 Mat4x4 MatrixMakeRotationY(float fAngleRad) {
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     matrix.m[0][0] = cosf(fAngleRad);
     matrix.m[0][2] = sinf(fAngleRad);
     matrix.m[2][0] = -sinf(fAngleRad);
@@ -217,7 +227,8 @@ Mat4x4 MatrixMakeRotationY(float fAngleRad) {
 }
 
 Mat4x4 MatrixMakeRotationZ(float fAngleRad) {
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     matrix.m[0][0] = cosf(fAngleRad);
     matrix.m[0][1] = sinf(fAngleRad);
     matrix.m[1][0] = -sinf(fAngleRad);
@@ -229,7 +240,8 @@ Mat4x4 MatrixMakeRotationZ(float fAngleRad) {
 }
 
 Mat4x4 MatrixMakeScale(float sx, float sy, float sz) {
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     matrix.m[0][0] = sx;
     matrix.m[0][1] = 0;
     matrix.m[0][2] = 0;
@@ -254,7 +266,8 @@ Mat4x4 MatrixMakeScale(float sx, float sy, float sz) {
 }
 
 Mat4x4 MatrixMakeTranslation(float x, float y, float z) {
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     matrix.m[0][0] = 1.0f;
     matrix.m[1][1] = 1.0f;
     matrix.m[2][2] = 1.0f;
@@ -268,7 +281,8 @@ Mat4x4 MatrixMakeTranslation(float x, float y, float z) {
 
 Mat4x4 MatrixMakeProjection(float fFovDegrees, float fAspectRatio, float fNear, float fFar) {
     float fFovRad = 1.0f / tanf(fFovDegrees * 0.5f / 180.0f * 3.14159f);
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     matrix.m[0][0] = fAspectRatio * fFovRad;
     matrix.m[1][1] = fFovRad;
     matrix.m[2][2] = fFar / (fFar - fNear);
@@ -289,7 +303,8 @@ Mat4x4 MatrixMakeOrtho(float left, float right, float bottom, float top, float n
     float deltaY = top - bottom;
     float deltaZ = farZ - nearZ;
 
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
 
     if ((deltaX == 0.0f) || (deltaY == 0.0f) || (deltaZ == 0.0f)) {
         return matrix;
@@ -306,7 +321,8 @@ Mat4x4 MatrixMakeOrtho(float left, float right, float bottom, float top, float n
 }
 
 Mat4x4 MatrixMultiplyMatrix(Mat4x4 &m1, Mat4x4 &m2) {
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     for (int c = 0; c < 4; c++)
         for (int r = 0; r < 4; r++)
             matrix.m[r][c] = m1.m[r][0] * m2.m[0][c] + m1.m[r][1] * m2.m[1][c] + m1.m[r][2] * m2.m[2][c] + m1.m[r][3] * m2.m[3][c];
@@ -328,7 +344,8 @@ Mat4x4 MatrixPointAt(Vec3D &pos, Vec3D &target, Vec3D &up) {
     Vec3D newRight = Vec3DCrossProduct(newUp, newForward);
 
     // Construct Dimensioning and Translation Matrix
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     matrix.m[0][0] = newRight.x;    matrix.m[0][1] = newRight.y;    matrix.m[0][2] = newRight.z;    matrix.m[0][3] = 0.0f;
     matrix.m[1][0] = newUp.x;        matrix.m[1][1] = newUp.y;        matrix.m[1][2] = newUp.z;        matrix.m[1][3] = 0.0f;
     matrix.m[2][0] = newForward.x;    matrix.m[2][1] = newForward.y;    matrix.m[2][2] = newForward.z;    matrix.m[2][3] = 0.0f;
@@ -340,7 +357,8 @@ Mat4x4 MatrixPointAt(Vec3D &pos, Vec3D &target, Vec3D &up) {
 
 // Only for Rotation/Translation Matrices
 Mat4x4 MatrixQuickInverse(Mat4x4 &m) {
-    Mat4x4 matrix = { 0 };
+    Mat4x4 matrix = MatrixMakeZero();
+    
     matrix.m[0][0] = m.m[0][0]; matrix.m[0][1] = m.m[1][0]; matrix.m[0][2] = m.m[2][0]; matrix.m[0][3] = 0.0f;
     matrix.m[1][0] = m.m[0][1]; matrix.m[1][1] = m.m[1][1]; matrix.m[1][2] = m.m[2][1]; matrix.m[1][3] = 0.0f;
     matrix.m[2][0] = m.m[0][2]; matrix.m[2][1] = m.m[1][2]; matrix.m[2][2] = m.m[2][2]; matrix.m[2][3] = 0.0f;
