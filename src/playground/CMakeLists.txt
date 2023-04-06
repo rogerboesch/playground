@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 project(Playground)
 
 # ==============================================================================
-# Include and library pathes
+# Include and library
 # ==============================================================================
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
