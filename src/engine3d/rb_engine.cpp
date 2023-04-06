@@ -337,7 +337,7 @@ void GameEngine::Transform(std::vector<Triangle>& vecTrianglesToRaster, Mesh& me
 
         // If ray is aligned with normal, then triangle is visible
         if (Vec3DDotProduct(normal, _cameraRay) < 0.0f) {
-            Vec3D light_direction = { 0.0f, 1.0f, -1.0f };
+            Vec3D light_direction = Vec3DMakef(0.0f, 1.0f, -1.0f);
             light_direction = Vec3DNormalise(light_direction);
 
             float dp = std::max(0.1f, Vec3DDotProduct(light_direction, normal));
@@ -380,7 +380,7 @@ void GameEngine::Transform(std::vector<Triangle>& vecTrianglesToRaster, Mesh& me
                 triProjected.p[2].y *= -1.0f;
 
                 // Offset verts into visible normalised space
-                Vec3D vOffsetView = { 1,1,0 };
+                Vec3D vOffsetView = Vec3DMakef(1.0f, 1.0f, 0.0f);
                 triProjected.p[0] = Vec3DAdd(triProjected.p[0], vOffsetView);
                 triProjected.p[1] = Vec3DAdd(triProjected.p[1], vOffsetView);
                 triProjected.p[2] = Vec3DAdd(triProjected.p[2], vOffsetView);
@@ -426,8 +426,8 @@ void GameEngine::BuildWorldMatrix() {
 }
 
 void GameEngine::UpdateCamera(float fYaw) {
-    Vec3D vUp = { 0,1,0 };
-    Vec3D vTarget = { 0,0,1 };
+    Vec3D vUp = Vec3DMakef(0.0f, 1.0f, 0.0f);
+    Vec3D vTarget = Vec3DMakef(0.0f, 0.0f, 1.0f);
     Mat4x4 matCameraRot = MatrixMakeRotationY(fYaw);
     _lookDir = MatrixMultiplyVector(matCameraRot, vTarget);
     
