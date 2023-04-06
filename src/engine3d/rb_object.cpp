@@ -107,48 +107,40 @@ void GameObject::Dump(int id) {
 const std::vector<Triangle> GameObject::PrimtiveGetCube() {
     std::vector<Triangle> triangeList;
 
-    triangeList = {
-
+    // TODO: Optimze, dont re-create
+    // 
     // SOUTH
-    { 0.0f, 0.0f, 0.0f,1,    0.0f, 1.0f, 0.0f,1,    1.0f, 1.0f, 0.0f,1 ,0,3 },
-    { 0.0f, 0.0f, 0.0f,1,    1.0f, 1.0f, 0.0f,1,    1.0f, 0.0f, 0.0f,1 ,0,1 },
+    triangeList.push_back(Triangle(Vec3DMake(0.0f, 0.0f, 0.0f), Vec3DMake(0.0f, 1.0f, 0.0f), Vec3DMake(1.0f, 1.0f, 0.0f)));
+    triangeList.push_back(Triangle(Vec3DMake(0.0f, 0.0f, 0.0f), Vec3DMake(1.0f, 1.0f, 0.0f), Vec3DMake(1.0f, 0.0f, 0.0f)));
 
     // EAST
-    { 1.0f, 0.0f, 0.0f,1,    1.0f, 1.0f, 0.0f,1,    1.0f, 1.0f, 1.0f,1 ,0,3 },
-    { 1.0f, 0.0f, 0.0f,1,    1.0f, 1.0f, 1.0f,1,    1.0f, 0.0f, 1.0f,1 ,0,1 },
+    triangeList.push_back(Triangle(Vec3DMake(1.0f, 0.0f, 0.0f), Vec3DMake(1.0f, 1.0f, 0.0f), Vec3DMake(1.0f, 1.0f, 1.0f)));
+    triangeList.push_back(Triangle(Vec3DMake(1.0f, 0.0f, 0.0f), Vec3DMake(1.0f, 1.0f, 1.0f), Vec3DMake(1.0f, 0.0f, 1.0f)));
 
     // NORTH
-    { 1.0f, 0.0f, 1.0f,1,    1.0f, 1.0f, 1.0f,1,    0.0f, 1.0f, 1.0f,1 ,0,3 },
-    { 1.0f, 0.0f, 1.0f,1,    0.0f, 1.0f, 1.0f,1,    0.0f, 0.0f, 1.0f,1 ,0,1 },
+    triangeList.push_back(Triangle(Vec3DMake(1.0f, 0.0f, 1.0f), Vec3DMake(1.0f, 1.0f, 1.0f), Vec3DMake(0.0f, 1.0f, 1.0f)));
+    triangeList.push_back(Triangle(Vec3DMake(1.0f, 0.0f, 1.0f), Vec3DMake(0.0f, 1.0f, 1.0f), Vec3DMake(0.0f, 0.0f, 1.0f)));
 
     // WEST
-    { 0.0f, 0.0f, 1.0f,1,    0.0f, 1.0f, 1.0f,1,    0.0f, 1.0f, 0.0f,1 ,0,3 },
-    { 0.0f, 0.0f, 1.0f,1,    0.0f, 1.0f, 0.0f,1,    0.0f, 0.0f, 0.0f,1 ,0,1 },
+    triangeList.push_back(Triangle(Vec3DMake(0.0f, 0.0f, 1.0f), Vec3DMake(0.0f, 1.0f, 1.0f), Vec3DMake(0.0f, 1.0f, 0.0f)));
+    triangeList.push_back(Triangle(Vec3DMake(0.0f, 0.0f, 1.0f), Vec3DMake(0.0f, 1.0f, 0.0f), Vec3DMake(0.0f, 0.0f, 0.0f)));
 
     // TOP
-    { 0.0f, 1.0f, 0.0f,1,    0.0f, 1.0f, 1.0f,1,    1.0f, 1.0f, 1.0f,1 ,0,3 },
-    { 0.0f, 1.0f, 0.0f,1,    1.0f, 1.0f, 1.0f,1,    1.0f, 1.0f, 0.0f,1 ,0,1 },
+    triangeList.push_back(Triangle(Vec3DMake(0.0f, 1.0f, 0.0f), Vec3DMake(0.0f, 1.0f, 1.0f), Vec3DMake(1.0f, 1.0f, 1.0f)));
+    triangeList.push_back(Triangle(Vec3DMake(0.0f, 1.0f, 0.0f), Vec3DMake(1.0f, 1.0f, 1.0f), Vec3DMake(1.0f, 1.0f, 0.0f)));
 
     // BOTTOM
-    { 1.0f, 0.0f, 1.0f,1,    0.0f, 0.0f, 1.0f,1,    0.0f, 0.0f, 0.0f,1 ,0,3 },
-    { 1.0f, 0.0f, 1.0f,1,    0.0f, 0.0f, 0.0f,1,    1.0f, 0.0f, 0.0f,1 ,0,1 },
-
-    };
+    triangeList.push_back(Triangle(Vec3DMake(1.0f, 0.0f, 1.0f), Vec3DMake(0.0f, 0.0f, 1.0f), Vec3DMake(0.0f, 0.0f, 0.0f)));
+    triangeList.push_back(Triangle(Vec3DMake(1.0f, 0.0f, 1.0f), Vec3DMake(0.0f, 0.0f, 0.0f), Vec3DMake(1.0f, 0.0f, 0.0f)));
 
     return triangeList;
 }
 
 const std::vector<Triangle> GameObject::PrimtiveGetRectangle() {
     std::vector<Triangle> triangeList;
-
-    // TODO: Flatten later
-    triangeList = {
-
-    // BOTTOM
-    { 1.0f, 0.0f, 1.0f,1,    0.0f, 0.0f, 1.0f,1,    0.0f, 0.0f, 0.0f,1 ,0,3 },
-    { 1.0f, 0.0f, 1.0f,1,    0.0f, 0.0f, 0.0f,1,    1.0f, 0.0f, 0.0f,1 ,0,1 },
-
-    };
+    
+    triangeList.push_back(Triangle(Vec3DMake(1, 0, 1), Vec3DMake(0, 0, 1), Vec3DMake(0, 0, 0)));
+    triangeList.push_back(Triangle(Vec3DMake(1, 0, 1), Vec3DMake(0, 0, 0), Vec3DMake(1, 0, 0)));
 
     return triangeList;
 }

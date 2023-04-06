@@ -11,31 +11,31 @@
 
 
 Vec3D Vec3DMakeZero() {
-    return { 0.0f, 0.0f, 0.0f, 1.0f };
+    return Vec3D(0.0f, 0.0f, 0.0f);
 }
 
 Vec3D Vec3DMake(int x, int y, int z) {
-    return { float(x), float(y), float(z) };
+    return Vec3D(float(x), float(y), float(z));
 }
 
 Vec3D Vec3DMakef(float x, float y, float z) {
-    return { x, y, z, 1.0 };
+    return Vec3D(x, y, z);
 }
 
 Vec3D Vec3DAdd(Vec3D &v1, Vec3D &v2) {
-    return { v1.x + v2.x, v1.y + v2.y, v1.z + v2.z };
+    return Vec3D(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z);
 }
 
 Vec3D Vec3DSub(Vec3D &v1, Vec3D &v2) {
-    return { v1.x - v2.x, v1.y - v2.y, v1.z - v2.z };
+    return Vec3D(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z);
 }
 
 Vec3D Vec3DMul(Vec3D &v1, float k) {
-    return { v1.x * k, v1.y * k, v1.z * k };
+    return Vec3D(v1.x * k, v1.y * k, v1.z * k);
 }
 
 Vec3D Vec3DDiv(Vec3D &v1, float k) {
-    return { v1.x / k, v1.y / k, v1.z / k };
+    return Vec3D(v1.x / k, v1.y / k, v1.z / k);
 }
 
 float Vec3DDotProduct(Vec3D &v1, Vec3D &v2) {
@@ -48,7 +48,7 @@ float Vec3DLength(Vec3D &v) {
 
 Vec3D Vec3DNormalise(Vec3D &v) {
     float l = Vec3DLength(v);
-    return { v.x / l, v.y / l, v.z / l };
+    return Vec3D(v.x / l, v.y / l, v.z / l);
 }
 
 Vec3D Vec3DCrossProduct(Vec3D &v1, Vec3D &v2) {
