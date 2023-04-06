@@ -30,11 +30,11 @@ GameEngine::~GameEngine() {}
 // MARK: - Text
 
 void GameEngine::DrawVectorString(char* msg, int x, int y, int size, byte color) {
-    vtext_draw_string(x, y, msg, 1, color);
+   // vtext_draw_string(x, y, msg, 1, color);
 }
 
 void GameEngine::DrawBitmapString(char* msg, int x, int y, int size, byte color) {
-    vtext_draw_string(x, y, msg, 1, color);
+   // vtext_draw_string(x, y, msg, 1, color);
 }
 
 // MARK: - Drawing
