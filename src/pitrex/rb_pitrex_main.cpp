@@ -91,19 +91,10 @@ extern "C" {
     }
 
     void vtext_draw_string(int x, int y, char* str, float scale) {
-        float xx = 254 / s_screen_width * x;
-        float yy = 254 / s_screen_height * y;
-        
-        //x = 0 - 127 + (int)xx;
-        //y = 0 + 127 - (int)yy;
-
-        pitrex_draw_text(0, 0, "1");
-        pitrex_draw_text(-127, 0, "2");
-        pitrex_draw_text(127, 0, "3");
-        pitrex_draw_text(0, -127, "4");
-        pitrex_draw_text(0, 127, "5");
-
-//        pitrex_draw_text(x, y, str);
+        int xx = 0 - 127 + (254 * x / 362);
+        int yy = 0 + 127 - (254 * y / 362);
+	        
+        pitrex_draw_text((int)xx, (int)yy, str);
     }
     
     double platform_get_ms() {
