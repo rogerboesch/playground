@@ -30,6 +30,7 @@ extern "C" {
 
 char s_asset_path[1024];
 int s_screen_height = 0;
+int s_screen_width = 0;
 
 void _store_asset_path() {
     const char* home_dir = getenv("HOME");
@@ -73,7 +74,9 @@ extern "C" {
     }
 
     void platform_on_init(const char* name, int width, int height) {
+        s_screen_width = width;
         s_screen_height = height;
+
         pitrex_init(name, width, height);
     }
 
@@ -88,6 +91,12 @@ extern "C" {
     }
 
     void vtext_draw_string(int x, int y, char* str, float scale) {
+        float xx = 254 / s_screen_width * x;
+        float yy = 254 / s_screen_height * y;
+        
+        x = 0 - 127 + (int)xx;
+        y = 0 - 127 + (int)yy;
+
         pitrex_draw_text(x, y, str);
     }
     
