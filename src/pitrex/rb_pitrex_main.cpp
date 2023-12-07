@@ -97,7 +97,13 @@ extern "C" {
         //x = 0 - 127 + (int)xx;
         //y = 0 + 127 - (int)yy;
 
-        pitrex_draw_text(x, y, str);
+        pitrex_draw_text(0, 0, "1");
+        pitrex_draw_text(-127, 0, "2");
+        pitrex_draw_text(127, 0, "3");
+        pitrex_draw_text(0, -127, "4");
+        pitrex_draw_text(0, 127, "5");
+
+//        pitrex_draw_text(x, y, str);
     }
     
     double platform_get_ms() {
