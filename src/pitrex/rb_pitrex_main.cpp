@@ -95,7 +95,7 @@ extern "C" {
         float yy = 254 / s_screen_height * y;
         
         x = 0 - 127 + (int)xx;
-        y = 0 - 127 + (int)yy;
+        y = 0 + 127 - (int)yy;
 
         pitrex_draw_text(x, y, str);
     }
