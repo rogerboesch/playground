@@ -24,7 +24,7 @@ extern "C" {
     void pitrex_frame(void);
     void pitrex_handle_input(void);
     void pitrex_draw_line(float x1, float y1, float x2, float y2);
-    void pitrex_draw_text(float x, float y, char* str);
+    void pitrex_draw_vtext(float x, float y, char* str);
     double pitrex_get_ticks(void);
 }
 
@@ -88,7 +88,7 @@ extern "C" {
     }
 
     void vtext_draw_string(int x, int y, char* str, float scale) {
-        pitrex_draw_text(x, y, str);
+        pitrex_draw_vtext(x, y, str);
     }
     
     double platform_get_ms() {

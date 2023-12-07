@@ -23,7 +23,7 @@ int pitrex_init(const char* name, int width, int height);
 void pitrex_frame(void);
 void pitrex_delay(int64_t ms);
 void pitrex_draw_line(float x1, float y1, float x2, float y2);
-void pitrex_draw_text(float x, float y, char* str);
+void pitrex_draw_vtext(float x, float y, char* str);
 double pitrex_get_ticks(void);
 int pitrex_get_brightness(int color);
 
@@ -78,7 +78,7 @@ void pitrex_draw_line(float x1, float y1, float x2, float y2) {
     v_line(_screen_width-x1, y1, _screen_width-x2, y2, _light);
 }
 
-void pitrex_draw_text(float x, float y, char* str) {
+void pitrex_draw_vtext(float x, float y, char* str) {
     v_setBrightness(LIGHT_DEFAULT);
     v_printStringRaster(x-127, 127-y, str, 40, -7, 0);
 }

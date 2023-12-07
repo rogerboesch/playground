@@ -304,9 +304,9 @@ private:
         char temp[256];
         sprintf(temp, "LEVEL %d", _levelNumber);
 
-        DrawString(STR_COPYRIGHT, 20, 20, 40, colorWhite);
-        DrawString(temp, 20, 40, 40, colorGray);
-        DrawString(STR_START_MSG, 20, 60, 40, colorWhite);
+        DrawBitmapString(STR_COPYRIGHT, 20, 20, 40, colorWhite);
+        DrawBitmapString(temp, 20, 40, 40, colorGray);
+        DrawBitmapString(STR_START_MSG, 20, 60, 40, colorWhite);
 
         _spaceship->SetHidden(false);
         _spaceship->SetRotationSpeed(0, 2, 0);
@@ -663,16 +663,16 @@ private:
 
                 switch (tag) {
                 case LEVEL_OBJECT_JET_FLYING:
-                    DrawString(STR_FLIGHT_ALARM, 20, 60, 20, colorRed);
+                    DrawBitmapString(STR_FLIGHT_ALARM, 20, 60, 20, colorRed);
                     return;
                 case LEVEL_OBJECT_JET_STANDING:
-                    DrawString(STR_PLANE_ALARM, 20, 60, 20, colorYellow);
+                    DrawBitmapString(STR_PLANE_ALARM, 20, 60, 20, colorYellow);
                     return;
                 case LEVEL_OBJECT_ROCKET:
-                    DrawString(STR_ROCKET_ALARM, 20, 60, 20, colorRed);
+                    DrawBitmapString(STR_ROCKET_ALARM, 20, 60, 20, colorRed);
                     return;
                 case LEVEL_OBJECT_TANK:
-                    DrawString(STR_TANK_ALARM, 20, 60, 20, colorViolett);
+                    DrawBitmapString(STR_TANK_ALARM, 20, 60, 20, colorViolett);
                     return;
                 }
             }
@@ -736,23 +736,23 @@ private:
         DrawLine(10, HORIZONT, 10, HORIZONT + height, colorGreen);
         DrawLine(11, HORIZONT, 11, HORIZONT + height, colorGreen);
 
-        DrawString(STR_HEIGHT_ABBRV, 6, 130, 40, 100);
+        DrawBitmapString(STR_HEIGHT_ABBRV, 6, 130, 40, 100);
 
         char temp[256];
         sprintf(temp, "B %03d", _bullets_available);
-        DrawString(temp, 20, 20, 40, _bullets_available >= SCORE_BULLETS_ALARM ? colorWhite : colorRed);
+        DrawBitmapString(temp, 20, 20, 40, _bullets_available >= SCORE_BULLETS_ALARM ? colorWhite : colorRed);
 
         sprintf(temp, "F %03d", (int)_fuel_available);
-        DrawString(temp, 100, 20, 40, _fuel_available >= SCORE_FUEL_ALARM ? colorWhite : colorRed);
+        DrawBitmapString(temp, 100, 20, 40, _fuel_available >= SCORE_FUEL_ALARM ? colorWhite : colorRed);
 
         sprintf(temp, "S %04d", (int)_score);
-        DrawString(temp, 280, 20, 40, 100);
+        DrawBitmapString(temp, 280, 20, 40, 100);
 
         if (_state == GAME_END) {
-            DrawString(STR_LEVEL_END, 60, 60, 40, colorYellow);
+            DrawBitmapString(STR_LEVEL_END, 60, 60, 40, colorYellow);
         }
         else if (_state == GAME_LOST) {
-            DrawString(STR_LEVEL_LOST, 60, 60, 40, colorRed);
+            DrawBitmapString(STR_LEVEL_LOST, 60, 60, 40, colorRed);
         }
     }
 

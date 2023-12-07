@@ -77,7 +77,7 @@ public:
 // Text
 public:
     void DrawVectorString(char* msg, int x, int y, int size, byte color);
-    void DrawString(char* msg, int x, int y, int size, byte color);
+    void DrawBitmapString(char* msg, int x, int y, int size, byte color);
 
 // World and camera matrix
 public:
