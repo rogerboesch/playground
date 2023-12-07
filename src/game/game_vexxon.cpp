@@ -239,11 +239,11 @@ protected:
             }
             else {
                 if (IsJoystick1Up()) {
-                    _player->Move(0, -SPEED_UPDOPWN_JET * deltaTime, 0);
+                    _player->Move(0, SPEED_UPDOPWN_JET * deltaTime, 0);
                     LimitFlightRange();
                 }
                 else if (IsJoystick1Down()) {
-                    _player->Move(0, SPEED_UPDOPWN_JET * deltaTime, 0);
+                    _player->Move(0, -SPEED_UPDOPWN_JET * deltaTime, 0);
                     LimitFlightRange();
                 }
 
@@ -302,11 +302,11 @@ private:
 
     void IntroScene() {
         char temp[256];
-        sprintf(temp, "LEVEL %d", _levelNumber);
+        sprintf(temp, "LEVEL %02d", _levelNumber);
 
-        DrawString(STR_COPYRIGHT, 20, 20, 40, colorWhite);
-        DrawString(temp, 20, 40, 40, colorGray);
-        DrawString(STR_START_MSG, 20, 60, 40, colorWhite);
+        DrawString(STR_COPYRIGHT, 70, 40, 40, colorWhite);
+        DrawString(temp, 150, 360, 40, colorGray);
+        DrawString(STR_START_MSG, 80, 380, 40, colorWhite);
 
         _spaceship->SetHidden(false);
         _spaceship->SetRotationSpeed(0, 2, 0);
@@ -743,16 +743,16 @@ private:
         DrawString(temp, 20, 20, 40, _bullets_available >= SCORE_BULLETS_ALARM ? colorWhite : colorRed);
 
         sprintf(temp, "F %03d", (int)_fuel_available);
-        DrawString(temp, 100, 20, 40, _fuel_available >= SCORE_FUEL_ALARM ? colorWhite : colorRed);
+        DrawString(temp, 150, 20, 40, _fuel_available >= SCORE_FUEL_ALARM ? colorWhite : colorRed);
 
         sprintf(temp, "S %04d", (int)_score);
         DrawString(temp, 280, 20, 40, 100);
 
         if (_state == GAME_END) {
-            DrawString(STR_LEVEL_END, 60, 60, 40, colorYellow);
+            DrawString(STR_LEVEL_END, 100, 60, 40, colorYellow);
         }
         else if (_state == GAME_LOST) {
-            DrawString(STR_LEVEL_LOST, 60, 60, 40, colorRed);
+            DrawString(STR_LEVEL_LOST, 130, 60, 40, colorRed);
         }
     }
 
