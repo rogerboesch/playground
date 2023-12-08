@@ -59,6 +59,15 @@ public:
     void Dump();
     void Dump(int id);
 
+    float GetMinX() { return _position.x; }
+    float GetMinY() { return _position.y; }
+    float GetMinZ() { return _position.z; }
+    float GetMaxX() { return _position.x + _scale.x; }
+    float GetMaxY() { return _position.y + _scale.y; }
+    float GetMaxZ() { return _position.z + _scale.z; }
+
+    bool IsColliding(GameObject& other);
+
 private:
     const std::vector<Triangle> PrimtiveGetCube();
     const std::vector<Triangle> PrimtiveGetRectangle();

@@ -88,6 +88,17 @@ void GameObject::Update(float delta) {
     }
 }
 
+bool GameObject::IsColliding(GameObject& other) {
+    return (
+        GetMinX() <= other.GetMaxX() &&
+        GetMaxX() >= other.GetMinX() &&
+        GetMinY() <= other.GetMaxY() &&
+        GetMaxY() >= other.GetMinY() &&
+        GetMinZ() <= other.GetMaxZ() &&
+        GetMaxZ() >= other.GetMinZ()
+    );
+}
+
 void GameObject::Dump() {
     printf("Game object: %d (%d)\n", _id, _tag);
     printf("- Position: %.2f,%.2f,%.2f (%.2f,%.2f,%.2f)\n", _position. x, _position.y, _position.z, _speed.x, _speed.y, _speed.z);

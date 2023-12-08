@@ -133,6 +133,8 @@ public:
 
     void SetFilled(bool flag) { _filled = flag; }
     
+    void SetAutoUpdate(bool flag) { _autoUpdate = flag; }
+
 // Helper
 public:
     int GetBrightness(float lum);
@@ -157,5 +159,6 @@ private:
     double _frame_last = -1;
     bool _finished;
     bool _filled = false;
+    bool _autoUpdate = true;            // If true then game objects get updated by engine
     CONTROL _controls[MAX_CONTROLS];
 };

@@ -19,6 +19,8 @@
 #define LEVEL_OBJECT_ROCKET         4
 #define LEVEL_OBJECT_FUELSILO       5
 #define LEVEL_OBJECT_BULLET         6
+#define LEVEL_OBJECT_PLAYER_BULLET  7
+#define LEVEL_OBJECT_LEVEL          8
 #define LEVEL_OBJECT_END            10
 
 // MARK: - Level data

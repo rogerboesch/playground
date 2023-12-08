@@ -64,8 +64,9 @@
 #define SPEED_TANK          -8      // Speed of tanksend
 
 #define STR_PRG_NAME (char*)"VEXXON"
-#define STR_COPYRIGHT (char*)"VEXXON 0.3.5 BY RORO"
+#define STR_COPYRIGHT (char*)"VEXXON 0.5.1 BY RORO"
 #define STR_START_MSG (char*)"PRESS BUTTON TO START"
+#define STR_RESTART_MSG (char*)"PRESS BUTTON TO RESTART"
 #define STR_FLIGHT_ALARM (char*)"FLIGHT ALARM"
 #define STR_PLANE_ALARM (char*)"PLANE ALARM"
 #define STR_TANK_ALARM (char*)"TANK ALARM"
@@ -73,11 +74,12 @@
 #define STR_HEIGHT_ABBRV (char*)"H"
 #define STR_LEVEL_END (char*)"LEVEL COMPLETED"
 #define STR_LEVEL_LOST (char*)"LEVEL LOST"
+#define STR_PLAYER_DESTROYED (char*)"PLAYER DESTROYED"
 
 #define GAME_OBJECT_PLAYER 100
 
 typedef enum _GAME_STATE {
-    GAME_INITIALIZE, GAME_INTRO, GAME_PLAY, GAME_END, GAME_LOST
+    GAME_INITIALIZE, GAME_INTRO, GAME_PLAY, GAME_END, GAME_LOST, PLAYER_HIT
 } GAME_STATE;
 
 int random(int min, int max) {
@@ -115,6 +117,8 @@ private:
 
     float _borderDelay = 0;
     float _fYaw = 0;
+
+    std::vector<GameObject *> m_bullets;
 
     // MARK: - Life cycle
 protected:
@@ -218,6 +222,14 @@ protected:
                 // Next level, not implemented yet
             }
         }
+        else if (_state == PLAYER_HIT) {
+            DrawHUD();
+            PlayerHitScene();
+            
+            if (IsControlPressed(CONTROL1_BTN4)) {
+                Restart();
+            }
+        }
         else {
             if (_fuel_available <= 0) {
                 _state = GAME_LOST;
@@ -234,6 +246,8 @@ protected:
 
             VerifyGameObjects();
 
+            DetectCollisions();
+            
             if (IsControlHold(CONTROL1_BTN1)) {
                 UpdateCameraPosition(deltaTime);
             }
@@ -295,17 +309,118 @@ protected:
         _score = 0;
 
         _state = GAME_PLAY;
+        
+        SetAutoUpdate(true);
+    }
+
+    // MARK: - Object handling
+private:
+    
+    void DetectCollisions() {
+        // Player collisions
+        for (auto gameObject : m_gameObjects) {
+            // Wall detection
+            if (gameObject->GetTag() == LEVEL_OBJECT_LEVEL && !gameObject->IsDead()) {
+                if (_player->IsColliding(*gameObject)) {
+                    // We have a collision between player and wall
+                    PlayerHitObject(gameObject);
+                }
+            }
+            
+            // Enemy detection
+            else if (gameObject->GetTag() <= LEVEL_OBJECT_BULLET && !gameObject->IsDead()) {
+                if (_player->IsColliding(*gameObject)) {
+                    // We have a collision between player and enemy
+                    PlayerHitEnemy(gameObject);
+                }
+            }
+        }
+
+        // Player bullet collisions
+        for (auto bullet : m_bullets) {
+            for (auto gameObject : m_gameObjects) {
+                // Enemy detection
+                if (gameObject->GetTag() < LEVEL_OBJECT_BULLET && !gameObject->IsDead()) {
+                    if (bullet->IsColliding(*gameObject)) {
+                        // We have a collision between player bullet and enemy
+                        PlayerBulletHitEnemy(bullet, gameObject);
+                    }
+                }
+            }
+        }
+    }
+    
+    void PlayerHitObject(GameObject* gameObject) {
+        printf("Player hits level <%d>\n", gameObject->GetID());
+        
+        _state = PLAYER_HIT;
+        SetAutoUpdate(false);
+    }
+
+    void PlayerHitEnemy(GameObject* gameObject) {
+        printf("Player hits enemy <%d>\n", gameObject->GetID());
+
+        _state = PLAYER_HIT;
+    }
+
+    void PlayerBulletHitEnemy(GameObject* bullet, GameObject* gameObject) {
+        printf("Player bullet <%d> hits enemy <%d>\n", gameObject->GetID());
+
+        bullet->SetDead();
+        gameObject->SetDead();
+
+        switch (gameObject->GetTag()) {
+            case LEVEL_OBJECT_FUELSILO:
+                _fuel_available += _level.fuel_fillup_per_silo;
+                _score += _level.score_silo;
+                break;
+            case LEVEL_OBJECT_TANK:
+                _score += _level.score_tank;
+                _bullets_available += _level.bullets/4;
+                break;
+            case LEVEL_OBJECT_ROCKET:
+                _score += _level.score_rocket;
+                _bullets_available += _level.bullets/4;
+                break;
+            case LEVEL_OBJECT_JET_FLYING:
+                _score += _level.score_jet_flying;
+                _bullets_available += _level.bullets/4;
+                break;
+            case LEVEL_OBJECT_JET_STANDING:
+                _score += _level.score_jet;
+                _bullets_available += _level.bullets/4;
+                break;
+        }
+    }
+
+    void DestroyDeadBullets() {
+        int size = (int)m_bullets.size();
+        
+        for (int i = size-1; i >= 0; i--) {
+            if (m_bullets.at(i)->IsDead()) {
+                m_bullets.erase(m_bullets.begin()+i);
+            }
+        }
+    }
+    
+    void RemoveDeadObjects() {
+        for (auto gameObject : m_gameObjects) {
+            if (gameObject->GetPosition().z < -40) {
+                gameObject->SetDead();
+            }
+        }
     }
 
     // MARK: - Scenes
 private:
 
     void IntroScene() {
-        char temp[256];
-        sprintf(temp, "LEVEL %02d", _levelNumber);
+        char str[256];
+        sprintf(str, "LEVEL %02d", _levelNumber);
 
         DrawString(STR_COPYRIGHT, 70, 40, 40, colorWhite);
-        DrawString(temp, 150, 360, 40, colorGray);
+        
+        DrawString(str, 150, 360, 40, colorGray);
         DrawString(STR_START_MSG, 80, 380, 40, colorWhite);
 
         _spaceship->SetHidden(false);
@@ -314,6 +429,25 @@ private:
 
         _player->SetHidden(true);
         _shadow->SetHidden(true);
+    }
+
+    void PlayerHitScene() {
+        char str[256];
+        sprintf(str, "LEVEL %02d", _levelNumber);
+
+        DrawString(STR_PLAYER_DESTROYED, 90, 40, 40, colorRed);
+        
+        DrawString(str, 150, 360, 40, colorGray);
+        DrawString(STR_RESTART_MSG, 80, 380, 40, colorWhite);
+        
+        int width = SCREEN_WIDTH / 4;
+        DrawLine(0, 300, width, 250, colorWhite);
+        DrawLine(width, 250, 2*width, 150, colorWhite);
+        DrawLine(2*width, 150, 3*width, 130, colorWhite);
+        DrawLine(3*width, 130, 4*width, 200, colorWhite);
+        
+        DrawLine(0, 0, 2*width, 150, colorWhite);
+        DrawLine(width, 250, 4*width, SCREEN_HEIGHT, colorWhite);
     }
 
     // MARK: - State helpers
@@ -336,14 +470,6 @@ private:
         }
 
         _player->SetPosition(pos);
-    }
-
-    void RemoveDeadObjects() {
-        for (auto gameObject : m_gameObjects) {
-            if (gameObject->GetPosition().z < -40) {
-                gameObject->SetDead();
-            }
-        }
     }
 
     void SetCamera(int state) {
@@ -402,7 +528,7 @@ private:
     }
 
     void AddBottomWall(int height) {
-        GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE);
+        GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE, LEVEL_OBJECT_LEVEL);
         gameObject->SetPosition(-14, GROUND - height, START_DISTANCE);
         gameObject->SetScale(29, height, 1);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
@@ -411,7 +537,7 @@ private:
     }
 
     void AddTopWall(int height) {
-        GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE);
+        GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE, LEVEL_OBJECT_LEVEL);
         gameObject->SetPosition(-14, GROUND - MAX_BORDER_HEIGHT + height - 1, START_DISTANCE);
         gameObject->SetScale(29, height, 1);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
@@ -420,7 +546,7 @@ private:
     }
 
     void AddRightWall() {
-        GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE);
+        GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE, LEVEL_OBJECT_LEVEL);
         gameObject->SetPosition(-14, GROUND - MAX_BORDER_HEIGHT, START_DISTANCE);
         gameObject->SetScale(20, MAX_BORDER_HEIGHT, 1);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
@@ -429,7 +555,7 @@ private:
     }
 
     void AddLeftWall() {
-        GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE);
+        GameObject* gameObject = new GameObject(GAME_OBJECT_TYPE_CUBE, LEVEL_OBJECT_LEVEL);
         gameObject->SetPosition(-5, GROUND - MAX_BORDER_HEIGHT, START_DISTANCE);
         gameObject->SetScale(20, MAX_BORDER_HEIGHT, 1);
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
@@ -440,7 +566,7 @@ private:
     void AddRightBorderCube(int height) {
         if (height == 0) {
             GameObject* cube;
-            cube = new GameObject(GAME_OBJECT_TYPE_RECTANGLE);
+            cube = new GameObject(GAME_OBJECT_TYPE_RECTANGLE, LEVEL_OBJECT_LEVEL);
             cube->SetColor(colorGreen);
             cube->SetPosition(-15, GROUND - height, START_DISTANCE);
             cube->SetScale(1, height, 1);
@@ -450,7 +576,7 @@ private:
         }
         else {
             GameObject* cube;
-            cube = new GameObject(GAME_OBJECT_TYPE_CUBE);
+            cube = new GameObject(GAME_OBJECT_TYPE_CUBE, LEVEL_OBJECT_LEVEL);
             cube->SetColor(colorGreen);
             cube->SetPosition(-15, GROUND - height, START_DISTANCE);
             cube->SetScale(1, height, 1);
@@ -460,7 +586,7 @@ private:
     }
 
     void AddLeftBorderCube(int height) {
-        GameObject* cube = new GameObject(GAME_OBJECT_TYPE_CUBE);
+        GameObject* cube = new GameObject(GAME_OBJECT_TYPE_CUBE, LEVEL_OBJECT_LEVEL);
         cube->SetColor(colorGreen);
         cube->SetPosition(15, GROUND - height, START_DISTANCE);
         cube->SetScale(1, height, 1);
@@ -644,7 +770,7 @@ private:
         gameObject->SetSpeed(0, 0, SPEED_GROUND);
         AddGameObject(gameObject);
     }
-
+    
     void VerifyGameObjects() {
         for (auto gameObject : m_gameObjects) {
             // End of level marker
@@ -685,13 +811,15 @@ private:
     void FireBullet(int offset) {
         Vec3D pos = _player->GetPosition();
 
-        // Center
         GameObject* cube = new GameObject(_bullet->GetMesh(), LEVEL_OBJECT_BULLET);
         cube->SetLifeTime(1.0);
         cube->SetPosition(pos.x + offset, pos.y, pos.z);
         cube->SetSpeed(0, 0, 60);
         cube->SetColor(colorYellowLight);
         AddGameObject(cube);
+        
+        // Add also to bullet list to speed up collision detection
+        m_bullets.push_back(cube);
     }
 
     void FireBullets(int bullets) {

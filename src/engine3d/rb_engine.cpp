@@ -586,14 +586,27 @@ void GameEngine::Frame() {
     for (auto gameObject : m_gameObjects) {
         if (!gameObject->IsDead()) {
             
-            if (result)
-                gameObject->Update(deltaTime);
+            if (result) {
+                if (_autoUpdate) {
+                    gameObject->Update(deltaTime);
+                }
+            }
             
             if (!gameObject->IsHidden()) {
                 DrawMesh(*gameObject->GetMesh(), gameObject->GetPosition(), gameObject->GetRotation(), gameObject->GetScale(), gameObject->GetColor());
             }
         }
     }
+    
+    // TODO: Remove dead objects
+    int size = (int)m_gameObjects.size();
+    
+    for (int i = size-1; i >= 0; i--) {
+        if (m_gameObjects.at(i)->IsDead()) {
+            m_gameObjects.erase(m_gameObjects.begin()+i);
+        }
+    }
+
 }
 
 int GameEngine::GetBrightness(float lum) {    
