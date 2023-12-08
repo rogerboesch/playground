@@ -92,7 +92,7 @@ extern "C" {
 
     void vtext_draw_string(int x, int y, char* str, float scale) {
         int xx = 0 - 127 + (254 * x / 362);
-        int yy = 0 + 127 - (254 * y / 362);
+        int yy = 0 + 127 - (254 * y / 482);
 	        
         pitrex_draw_text((int)xx, (int)yy, str);
     }
