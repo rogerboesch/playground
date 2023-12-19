@@ -113,6 +113,8 @@ public:
 // Getter/Setter
 public:
     void AddGameObject(GameObject* object) { m_gameObjects.push_back(object); }
+    void RemoveGameObjects() { m_gameObjects.clear(); }
+    
     bool IsFinished() { return _finished; }
     void SetFinished() { _finished = true; }
     int GetScreenWidth() { return _screenWidth; }

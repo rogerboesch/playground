@@ -100,10 +100,21 @@ bool GameObject::IsColliding(GameObject& other) {
 }
 
 void GameObject::Dump() {
-    printf("Game object: %d (%d)\n", _id, _tag);
-    printf("- Position: %.2f,%.2f,%.2f (%.2f,%.2f,%.2f)\n", _position. x, _position.y, _position.z, _speed.x, _speed.y, _speed.z);
-    printf("- Rotation: %.2f,%.2f,%.2f (%.2f,%.2f,%.2f)\n", _rotation. x, _rotation.y, _rotation.z, _rotationSpeed.x, _rotationSpeed.y, _rotationSpeed.z);
-    printf("- Lifetime: %f of %f (%d)\n", _elapsed, _lifetime, _isDead);
+    if (_isPlayer)
+        printf("Player: %d\n", _id);
+    else
+        printf("Game object: %d (%d)\n", _id, _tag);
+
+    printf("- AABB: %.2f,%.2f|%.2f,%.2f|%.2f,%.2f\n", GetMinX(), GetMaxX(), GetMinY(), GetMaxY(), GetMinZ(), GetMaxZ());
+    printf("- Position: %.2f,%.2f,%.2f (SP %.2f,%.2f,%.2f)\n", _position. x, _position.y, _position.z, _speed.x, _speed.y, _speed.z);
+    printf("- Rotation: %.2f,%.2f,%.2f (RSP %.2f,%.2f,%.2f)\n", _rotation. x, _rotation.y, _rotation.z, _rotationSpeed.x, _rotationSpeed.y, _rotationSpeed.z);
+    printf("- Scale: %.3f,%3f,%3f\n", _scale.x, _scale.y, _scale.z);
+    
+    if (_lifetime >= FLT_MAX)
+        printf("- Lifetime: %.3f (%d)\n", _elapsed, _isDead);
+    else
+        printf("- Lifetime: %.3f of %.3f (%d)\n", _elapsed, _lifetime, _isDead);
+
     printf("- Color: %s (%d)\n", _color == -1 ? "automatic" : "fix", _color);
     printf("- Type: %d\n\n", _type);
 }

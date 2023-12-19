@@ -42,6 +42,7 @@ public:
     Vec3D& GetRotationSpeed() { return _rotationSpeed; }
     Mesh* GetMesh() { return _mesh; }
     
+    void SetPlayer(bool flag) { _isPlayer = flag; }
     void SetHidden(bool flag) { _isHidden = flag; }
     void ToggleHidden() { _isHidden = !_isHidden; }
     bool IsHidden() { return _isHidden; }
@@ -87,6 +88,6 @@ private:
     float _elapsed;
     bool _isHidden = false;
     bool _isDead;
-
+    bool _isPlayer = false;
     static Mesh* s_cube;
 };

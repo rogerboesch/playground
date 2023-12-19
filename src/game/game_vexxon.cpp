@@ -147,6 +147,7 @@ protected:
         _bullet->SetColor(colorYellow);
 
         _player = new GameObject(_jet->GetMesh(), GAME_OBJECT_PLAYER);
+        _player->SetPlayer(true);
         _player->SetPosition(PLAYER_PLAY);
         _player->SetSpeed(0, 0, 0);
         _player->SetColor(colorBlue);
@@ -225,8 +226,9 @@ protected:
         else if (_state == PLAYER_HIT) {
             DrawHUD();
             PlayerHitScene();
-            
+
             if (IsControlPressed(CONTROL1_BTN4)) {
+                ClearLevel();
                 Restart();
             }
         }
@@ -296,6 +298,11 @@ protected:
         return true;
     }
 
+    void ClearLevel() {
+        RemoveGameObjects();
+        AddGameObject(_player);
+    }
+
     void Restart() {
         _spaceship->SetHidden(true);
 
@@ -351,20 +358,32 @@ private:
     }
     
     void PlayerHitObject(GameObject* gameObject) {
+        printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
         printf("Player hits level <%d>\n", gameObject->GetID());
-        
+        _player->Dump();
+        gameObject->Dump();
+        printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
+
         _state = PLAYER_HIT;
         SetAutoUpdate(false);
     }
 
     void PlayerHitEnemy(GameObject* gameObject) {
+        printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
         printf("Player hits enemy <%d>\n", gameObject->GetID());
+        _player->Dump();
+        gameObject->Dump();
+        printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 
         _state = PLAYER_HIT;
     }
 
     void PlayerBulletHitEnemy(GameObject* bullet, GameObject* gameObject) {
+        printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
         printf("Player bullet <%d> hits enemy <%d>\n", gameObject->GetID());
+        _player->Dump();
+        gameObject->Dump();
+        printf("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n");
 
         bullet->SetDead();
         gameObject->SetDead();
